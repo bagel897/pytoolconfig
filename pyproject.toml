@@ -19,6 +19,8 @@ Homepage = ""
 dev = [
     "pytest>=7.0.1",
 ]
+[tool.pytoolconfig]
+formatter = "black"
 
 [build-system]
 requires = ["pdm-pep517>=0.12.0"]

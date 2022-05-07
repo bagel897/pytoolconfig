@@ -3,18 +3,21 @@ The goal of this project is to manage configuration for python tools, such as Bl
 It will have several features:
  - [ ] Configuration file autodetection searching for the .git directory.
  - [ ] Universal keys
-   - python minimum/maximum
+   - python minimum/maximum (via standard metadata specifiers)
    - line length
    - formatter ie: black
- - [ ] Global configuration
+ - [ ] Global Configuration
+ - [ ] Configuration document generation
  - NO writing support, only reading
 Support for 
 - [ ] Pyproject.toml 
 - [ ] Ini files 
 - [ ] Tox.ini, setup.cfg
-- [ ] config.py 
+- [ ] config.py
+- [ ] Command line
+
 ## Configuration Load Order
-For example, black
+0. Command Line
 1. pyproject.toml (mandatory, automatic) if tool.black (or your tool) is present
 2. additional sources configured in order they were added.
 3. global configuration from

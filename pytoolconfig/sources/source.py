@@ -1,26 +1,10 @@
-from abc import ABCMeta, abstractmethod, abstractproperty
-from pathlib import Path
-from typing import List, Optional
+from abc import ABC,abstractmethod 
+from typing import Dict, Optional
+
+from pytoolconfig.types import key
 
 
-class Source(ABCMeta):
+class Source(ABC):
     @abstractmethod
-    def __init__(self, filename: Path, tool: str):
-        pass
-
-    @abstractproperty
-    def exists(self) -> bool:
-        pass
-
-    @abstractmethod
-    def is_present(self, table: Optional[str] = None) -> bool:
-        pass
-
-    @abstractmethod
-    def get_key(self, key: str, table: Optional[str] = None) -> str:
-        pass
-
-    @staticmethod
-    @abstractmethod
-    def get_filenames(self, tool: str) -> List[str]:
+    def parse(self) -> Optional[Dict[str, key]]:
         pass
