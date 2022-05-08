@@ -17,8 +17,14 @@ class PyProject(Source):
     file_exists: bool = True
 
     def __init__(self, working_directory: Path, tool: str, global_config: bool = False):
-        filename = find_config_file(working_directory, "pyproject.toml")
-        if not filename:
+        filename: Optional[Path]
+        if global_config:
+            import appdirs
+
+            filename = Path(appdirs.user_config_dir()) / "pytool.toml"
+        else:
+            filename = find_config_file(working_directory, "pyproject.toml")
+        if not filename or not filename.exists():
             self.file_exists = False
             return
         self.toml_dict = tomllib.loads(filename.read_text())

@@ -1,4 +1,4 @@
-from abc import ABC,abstractmethod 
+from abc import ABC, abstractmethod
 from typing import Dict, Optional
 
 from pytoolconfig.types import key

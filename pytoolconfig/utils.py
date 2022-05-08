@@ -1,15 +1,6 @@
 """Utility functions and classes."""
-from dataclasses import dataclass
 from pathlib import Path
-from typing import List, Optional, Type, Union
-
-
-@dataclass
-class ConfigKey:
-    name: str
-    value: Optional[Union[str, int, List[str]]]
-    description: str
-    type: Type
+from typing import List, Optional
 
 
 def find_config_file(
