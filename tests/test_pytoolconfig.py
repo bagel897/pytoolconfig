@@ -1,11 +1,12 @@
 import os
+import sys
 from argparse import ArgumentParser
 
 import pytest
 from pydantic import BaseModel, Field
 
-from pytoolconfig.pytoolconfig import PyToolConfig
-from pytoolconfig.sources.ini import IniConfig
+from pytoolconfig import PyToolConfig
+from pytoolconfig.sources import IniConfig
 
 
 class SimpleModel(BaseModel):
@@ -66,6 +67,8 @@ def test_cli(cwd):
 
 
 def test_global(cwd):
+    if sys.platform != "linux":
+        pytest.skip()
     os.environ["XDG_CONFIG_HOME"] = cwd.as_posix()
     config = PyToolConfig("bogus", cwd, NestedModel, global_config=True)
     result = config.parse()

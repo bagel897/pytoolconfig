@@ -1,4 +1,5 @@
 """Tool to configure Python tools."""
+import sys
 from argparse import SUPPRESS, ArgumentParser
 from pathlib import Path
 from typing import Dict, Generator, List, Optional, Tuple, Type
@@ -17,8 +18,10 @@ class UniversalConfig(BaseModel):
     formatter: Optional[str] = Field(
         default=None, description="Formatter used to format this File."
     )
-    max_line_length: int = Field(
-        default=80, gt=5, description="Minimum Number of Lines in the File"
+    max_line_length: int = Field(default=80, gt=5, description="Maximum line length.")
+    min_py_version: Tuple[int, int] = Field(
+        default=(sys.version_info.major, sys.version_info.minor),
+        description="Mimimum target python version. Taken from requires-python.",
     )
 
 
@@ -27,15 +30,11 @@ def _add_args(arg_parser, model):
         if isinstance(field.type_, BaseModel):
             _add_args(arg_parser, field)
 
-        # if "command_line" in field.extras:
-        #     print(field)
-
 
 class PyToolConfig:
     """Python Tool Configuration Aggregator."""
 
     sources: List[Source] = []
-    global_sources: List[Source] = []
     tool: str
     working_directory: Path
     model: Type[BaseModel]
@@ -63,14 +62,12 @@ class PyToolConfig:
         global_sources: custom global sources
         """
         self.model = model
+        self.tool = tool
         self.sources = [PyProject(working_directory, tool)]
         self.sources.extend(custom_sources)
-        self.global_sources = []
         if global_config:
-            self.global_sources.append(
-                PyProject(working_directory, tool, global_config=True)
-            )
-        self.global_sources.extend(global_sources)
+            self.sources.append(PyProject(working_directory, tool, global_config=True))
+        self.sources.extend(global_sources)
 
         if arg_parser:
             self.arg_parser = arg_parser
@@ -82,27 +79,25 @@ class PyToolConfig:
 
         args: any additional command line overwritesself.
         """
-        sources = self.sources
-        sources.extend(self.global_sources)
-        raw_config = self._parse_sources(sources)
+        raw_config = self._parse_sources()
         if raw_config:
             configuration = self.model.parse_obj(raw_config)
         else:
             configuration = self.model()
         if self.arg_parser:
             parsed = self.arg_parser.parse_args(args)
-            for field in self._arg_fields():
+            for field in self._fields_with_param("command_line"):
                 if field.name in parsed:
                     setattr(configuration, field.name, vars(parsed)[field.name])
         return configuration
 
-    def _arg_fields(self) -> Generator[ModelField, None, None]:
+    def _fields_with_param(self, param: str) -> Generator[ModelField, None, None]:
         for field in self.model.__fields__.values():
-            if "command_line" in field.field_info.extra:
+            if param in field.field_info.extra:
                 yield field
 
     def _setup_arg_parser(self):
-        for field in self._arg_fields():
+        for field in self._fields_with_param("command_line"):
             flags = field.field_info.extra["command_line"]
             if not isinstance(flags, Tuple):
                 flags = (flags,)
@@ -114,9 +109,8 @@ class PyToolConfig:
                 metavar=field.name,
                 dest=field.name,
             )
-            print(field.field_info.extra["command_line"])
 
-    def _parse_sources(self, sources) -> Optional[Dict[str, key]]:
+    def _parse_sources(self) -> Optional[Dict[str, key]]:
         for source in self.sources:
             configuration = source.parse()
             if configuration:

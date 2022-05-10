@@ -24,6 +24,7 @@ class IniConfig(Source):
     def __init__(self, working_directory: Path, filename: str, base_table: str):
         self.file = find_config_file(working_directory, filename)
         self.base_table = base_table
+        self.name = filename
 
     def parse(self) -> Optional[Dict[str, key]]:
         if self.file is None:
@@ -35,7 +36,6 @@ class IniConfig(Source):
             split = table.split(".")
             if split[0] == self.base_table:
                 _add_split_to_dict(output, split[1:], config[table])
-        print(output)
         if output == {}:
             return None
         return output

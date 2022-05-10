@@ -1,7 +1,7 @@
 [project]
 name = "pytoolconfig"
 version = "0.1.0"
-description = ""
+description = "Python tool configuration"
 authors = [
     {name = "bageljr", email = "bageljr897@protonmail.com"},
 ]
@@ -10,6 +10,7 @@ dependencies = [
     "tomli>=2.0",
     "pydantic>=1.7.4",
     "typing-extensions>=4.1.1",
+    "packaging>=21.3",
 ]
 requires-python = ">=3.7"
 
@@ -19,6 +20,9 @@ Homepage = ""
 [project.optional-dependencies]
 global = [
     "appdirs>=1.4.4",
+]
+doc = [
+    "tabulate>=0.8.9",
 ]
 [tool.pdm]
 [tool.pdm.dev-dependencies]

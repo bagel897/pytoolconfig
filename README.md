@@ -43,10 +43,8 @@ class NestedModel(BaseModel):
 2. Pass an array of global sources to the PyToolConfig constructor. PyToolConfig will add a pytool.toml file first if the global_config option is passed.
 3. Parse as usual
 
+## Universal Keys 
+## Documentation
 ## Goals
-- [ ] Universal keys - feedback appreciated
-   - python minimum/maximum (via standard metadata specifiers)
-   - line length
-   - formatter ie: black
 - [ ] Configuration document generation
 
