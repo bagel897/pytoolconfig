@@ -1,6 +1,7 @@
 import os
 import sys
 from argparse import ArgumentParser
+from typing import Tuple
 
 import pytest
 from pydantic import BaseModel, Field
@@ -24,6 +25,12 @@ class SubTool(BaseModel):
 class NestedModel(BaseModel):
     subtool: SubTool = SubTool()
     foo_other: str = Field(description="w", default="no", command_line=("--foo", "-f"))
+
+    target: Tuple[int, int] = Field(
+        description="Minimum python version",
+        default=(3, 1),
+        universal_config="min_py_version",
+    )
 
 
 def test_simple(cwd):
@@ -56,6 +63,7 @@ def test_nested(cwd):
     result = config.parse()
     # Default argument
     assert result.subtool.foo == "lo"
+    assert result.target == (3, 7)
 
 
 def test_cli(cwd):

@@ -6,13 +6,17 @@ The goal of this project is to manage configuration for python tools, such as bl
  - Optional global configuration
  - Optional command line overwrites
  - Pydantic data validation and output.
+ - Get minimum target python version
  - Read only support 
  
 Support for 
 - Pyproject.toml 
-- Ini files 
-- Tox.ini, setup.cfg (via Ini Files)
+- Ini files
+- setup.cfg 
+- tox.ini (via Ini Files)
 - Command line arguments
+- Custom sources 
+
 ## Usage:
 1. Define a pydantic model
 2. Initialize pytoolconfig 
@@ -29,11 +33,11 @@ Support for
  b) configured global configurations
 
 ## Command Line Overwrites:
-1. In the Configuration Model, set the ```command_line``` value in the `Field` constructor. (This only works for items in the base table/model)
+1. In the Configuration Model, set the ```command_line``` value in the `Field` constructor. (This only works for items in the base model)
 For example:
 ```py 
-class NestedModel(BaseModel):
-    foo_other: str = Field(description="w", default="no", command_line=("--foo", "-f"))
+class nestedmodel(basemodel):
+    foo_other: str = field(description="w", default="no", command_line=("--foo", "-f"))
 ```
 2. Pass an Argument Parser to the ```PyToolConfig``` constructor
 3. (Optional) Pass arguments to the ```parse()``` command
@@ -43,8 +47,15 @@ class NestedModel(BaseModel):
 2. Pass an array of global sources to the PyToolConfig constructor. PyToolConfig will add a pytool.toml file first if the global_config option is passed.
 3. Parse as usual
 
-## Universal Keys 
+## Universal Keys
+In your configuration model, set the ```universal_config``` value in the `Field constructor`. (This only works for items in the base model). You still need to set a default value.
+For example:
+```py 
+class nestedmodel(basemodel):
+    foo_other: str = field(description="w", default="no", universal_config=("min_py_version"))
+```
+The value of this field will be overwritten by pytoolconfig's equivalent universal configuration field.
 ## Documentation
 ## Goals
 - [ ] Configuration document generation
-
+- [x] Universal keys

@@ -4,25 +4,12 @@ from argparse import SUPPRESS, ArgumentParser
 from pathlib import Path
 from typing import Dict, Generator, List, Optional, Tuple, Type
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from pydantic.fields import ModelField
 
 from pytoolconfig.sources.pyproject import PyProject
 from pytoolconfig.sources.source import Source
-from pytoolconfig.types import key
-
-
-class UniversalConfig(BaseModel):
-    """Universal Configuration base model."""
-
-    formatter: Optional[str] = Field(
-        default=None, description="Formatter used to format this File."
-    )
-    max_line_length: int = Field(default=80, gt=5, description="Maximum line length.")
-    min_py_version: Tuple[int, int] = Field(
-        default=(sys.version_info.major, sys.version_info.minor),
-        description="Mimimum target python version. Taken from requires-python.",
-    )
+from pytoolconfig.types import UniversalConfig, key
 
 
 def _add_args(arg_parser, model):
@@ -49,6 +36,7 @@ class PyToolConfig:
         custom_sources: List[Source] = [],
         global_config: bool = False,
         global_sources: List[Source] = [],
+        universalconfig: bool = False,
     ):
         """
         Initialize the configuration object.
@@ -79,7 +67,7 @@ class PyToolConfig:
 
         args: any additional command line overwritesself.
         """
-        raw_config = self._parse_sources()
+        raw_config, universal = self._parse_sources()
         if raw_config:
             configuration = self.model.parse_obj(raw_config)
         else:
@@ -89,6 +77,13 @@ class PyToolConfig:
             for field in self._fields_with_param("command_line"):
                 if field.name in parsed:
                     setattr(configuration, field.name, vars(parsed)[field.name])
+        for field in self._fields_with_param("universal_config"):
+            if field.field_info.extra["universal_config"] in universal.__fields__:
+                setattr(
+                    configuration,
+                    field.name,
+                    vars(universal)[field.field_info.extra["universal_config"]],
+                )
         return configuration
 
     def _fields_with_param(self, param: str) -> Generator[ModelField, None, None]:
@@ -110,9 +105,9 @@ class PyToolConfig:
                 dest=field.name,
             )
 
-    def _parse_sources(self) -> Optional[Dict[str, key]]:
+    def _parse_sources(self) -> Tuple[Optional[Dict[str, key]], UniversalConfig]:
         for source in self.sources:
             configuration = source.parse()
             if configuration:
-                return configuration
-        return None
+                return configuration, source.universalconfig()
+        return None, self.sources[0].universalconfig()

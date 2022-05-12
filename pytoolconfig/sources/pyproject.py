@@ -5,7 +5,7 @@ from typing import Dict, Optional, Tuple
 from packaging.specifiers import SpecifierSet
 
 from pytoolconfig.sources.source import Source
-from pytoolconfig.types import key
+from pytoolconfig.types import UniversalConfig, key
 from pytoolconfig.utils import find_config_file, min_py_version
 
 try:
@@ -47,11 +47,20 @@ class PyProject(Source):
         assert self.toml_dict
         return self.toml_dict["tool"][self.tool]
 
+    def universalconfig(self) -> UniversalConfig:
+        assert self.toml_dict
+        min_py_version = self._min_py_version
+        if "pytoolconfig" in self.toml_dict["tool"].keys():
+            config = UniversalConfig.parse_obj(self.toml_dict["tool"]["pytoolconfig"])
+        else:
+            config = UniversalConfig()
+        if min_py_version:
+            config.min_py_version = min_py_version
+        return config
+
     @property
-    def min_py_version(self) -> Optional[Tuple[int, int]]:
+    def _min_py_version(self) -> Optional[Tuple[int, int]]:
         """Return the minimum python 3 version. Will go up to interpreter version."""
-        if not self._read():
-            return None
         assert self.toml_dict
         if (
             "project" not in self.toml_dict.keys()
