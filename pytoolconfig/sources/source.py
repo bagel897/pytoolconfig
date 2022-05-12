@@ -9,6 +9,14 @@ class Source(ABC):
     description: str  # The description, written as markdown.
 
     @abstractmethod
+    def _read(self) -> bool:
+        """Read the file.
+
+        If file does not exist or the tool does not exist in the file, return False.
+        Can be called multiple times and overwrite the existing configuration.
+        """
+
+    @abstractmethod
     def parse(self) -> Optional[Dict[str, key]]:
         """
         Parse the file.

@@ -32,7 +32,8 @@ keywords = ["toml"]
 [project.urls]
 "Homepage" = "https://github.com/hukkin/tomli"
 "Changelog" = "https://github.com/hukkin/tomli/blob/master/CHANGELOG.md"
-
+[tool.pytoolconfig]
+formatter = "black"
 
 [tool.isort]
 # Force imports to be sorted by module, independent of import type

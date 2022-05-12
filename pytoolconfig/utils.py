@@ -1,6 +1,10 @@
 """Utility functions and classes."""
+import sys
 from pathlib import Path
 from typing import List, Optional
+
+from packaging.specifiers import SpecifierSet
+from typing import Tuple
 
 
 def find_config_file(
@@ -16,3 +20,12 @@ def find_config_file(
     if working_directory == working_directory.anchor:
         return None
     return find_config_file(working_directory.parent, filename, bases)
+
+
+def min_py_version(specifier: str) -> Tuple[int, int]:
+    """Return the minimum python 3 version. Will go up to interpreter version."""
+    parsed = SpecifierSet(specifier)
+    for i in range(0, sys.version_info.minor):
+        if parsed.contains(f"3.{i}"):
+            return (3, i)
+    return (3, sys.version_info.minor)
