@@ -37,6 +37,8 @@ class PyToolConfig:
         global_config: bool = False,
         global_sources: List[Source] = [],
         universalconfig: bool = False,
+        bases: List[str] = [".git", ".hg"],
+        recursive: bool = True,
     ):
         """
         Initialize the configuration object.
@@ -48,13 +50,18 @@ class PyToolConfig:
         custom_sources: custom sources
         global_config: enable global configuration
         global_sources: custom global sources
+        bases: custom bases
         """
         self.model = model
         self.tool = tool
-        self.sources = [PyProject(working_directory, tool)]
+        self.sources = [PyProject(working_directory, tool, bases, recursive=recursive)]
         self.sources.extend(custom_sources)
         if global_config:
-            self.sources.append(PyProject(working_directory, tool, global_config=True))
+            self.sources.append(
+                PyProject(
+                    working_directory, tool, bases, global_config=True, recursive=False
+                )
+            )
         self.sources.extend(global_sources)
 
         if arg_parser:

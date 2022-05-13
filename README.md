@@ -55,7 +55,8 @@ class nestedmodel(basemodel):
     foo_other: str = field(description="w", default="no", universal_config=("min_py_version"))
 ```
 The value of this field will be overwritten by pytoolconfig's equivalent universal configuration field.
-## Documentation
+## Documentation Generation
+Refer to the documentation function in pytoolconfig
 ## Goals
 - [ ] Configuration document generation
 - [x] Universal keys

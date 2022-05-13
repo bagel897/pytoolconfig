@@ -3,7 +3,7 @@ from argparse import ArgumentParser
 from pydantic import BaseModel, Field
 
 from pytoolconfig import PyToolConfig
-from pytoolconfig.documentation import gen_docs
+from pytoolconfig.documentation import generate_documentation
 from pytoolconfig.sources import IniConfig
 
 
@@ -20,7 +20,7 @@ class NestedModel(BaseModel):
 
 def test_documentation(cwd):
     config = PyToolConfig("pytoolconfig", cwd, NestedModel)
-    gen_docs(config, cwd / "test_documentation.md")
+    generate_documentation(config, cwd / "test_documentation.md")
     config = PyToolConfig(
         "pytoolconfig",
         cwd,
@@ -29,4 +29,4 @@ def test_documentation(cwd):
         arg_parser=ArgumentParser(),
         global_config=True,
     )
-    gen_docs(config, cwd / "test_documentation_ini.md")
+    generate_documentation(config, cwd / "test_documentation_ini.md")

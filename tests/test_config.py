@@ -2,7 +2,7 @@ from pytoolconfig.sources import IniConfig, PyProject, SetupConfig
 
 
 def test_base_pyproject(cwd):
-    pyproject = PyProject(cwd, "pytoolconfig")
+    pyproject = PyProject(cwd, "pytoolconfig", [])
     assert pyproject.parse()["formatter"] == "black"
     assert pyproject._min_py_version == (3, 7)
     universal = pyproject.universalconfig()

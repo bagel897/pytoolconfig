@@ -1,10 +1,9 @@
 """Utility functions and classes."""
 import sys
 from pathlib import Path
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 from packaging.specifiers import SpecifierSet
-from typing import Tuple
 
 
 def find_config_file(
@@ -17,7 +16,7 @@ def find_config_file(
     for base in bases:
         if (working_directory / base).exists():
             return None
-    if working_directory == working_directory.anchor:
+    if working_directory == working_directory.parent:
         return None
     return find_config_file(working_directory.parent, filename, bases)
 

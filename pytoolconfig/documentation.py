@@ -58,7 +58,7 @@ def write_model(
     return extra
 
 
-def gen_docs(config: PyToolConfig, file: Path):
+def generate_documentation(config: PyToolConfig, file: Path):
     assert (
         len(config.model.__fields__) > 0
     )  # There must be at least one entry for configuration
