@@ -56,7 +56,7 @@ class nestedmodel(basemodel):
 ```
 The value of this field will be overwritten by pytoolconfig's equivalent universal configuration field.
 ## Documentation Generation
-Refer to the documentation function in pytoolconfig
+Refer to the generate_documentation function in pytoolconfig
 ## Goals
 - [ ] Configuration document generation
 - [x] Universal keys

@@ -15,8 +15,8 @@ class UniversalConfig(BaseModel):
     formatter: Optional[str] = Field(
         default=None, description="Formatter used to format this File."
     )
-    max_line_length: int = Field(default=80, gt=5, description="Maximum line length.")
-    min_py_version: Tuple[int, int] = Field(
-        default=(sys.version_info.major, sys.version_info.minor),
+    max_line_length: Optional[int] = Field(default=None, gt=5, description="Maximum line length.")
+    min_py_version: Optional[Tuple[int, int]] = Field(
+        default=None,
         description="Mimimum target python version. Taken from requires-python.",
     )
