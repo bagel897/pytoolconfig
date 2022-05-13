@@ -4,7 +4,7 @@ Program to generate documentation for a given PyToolConfig object.
 
 from io import TextIOBase
 from pathlib import Path
-from typing import Generator, List, Tuple, Type
+from typing import List, Tuple, Type
 
 from pydantic import BaseModel
 from pydantic.main import ModelMetaclass
@@ -37,7 +37,9 @@ def write_model(
         else:
             row = [
                 f"{name}.{field.name}",
-                field.field_info.description,
+                field.field_info.description.replace("\n", " ")
+                if field.field_info.description
+                else None,
                 field.type_.__name__,
                 field.default,
             ]
@@ -75,7 +77,8 @@ def generate_documentation(config: PyToolConfig, file: Path):
         else:
             f.write(f"{config.tool} supports the following configuration files\n")
             for idx, source in enumerate(config.sources):
-                f.writelines(f" {idx + 1}. {source.name}\n")
+                f.write(f" {idx + 1}. {source.name}  \n")
+            f.write("\n")
         universal_config = len(list(config._fields_with_param("universal_config"))) > 0
         command_line = config.arg_parser is not None
         for model, name in write_model(

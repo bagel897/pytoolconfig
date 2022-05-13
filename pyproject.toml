@@ -1,6 +1,6 @@
 [project]
 name = "pytoolconfig"
-version = "0.1.0"
+version = "0.1.1"
 description = "Python tool configuration"
 authors = [
     {name = "bageljr", email = "bageljr897@protonmail.com"},

@@ -1,8 +1,9 @@
 # Configuration
 pytoolconfig supports the following configuration files
- 1. pyproject.toml
- 2. setup.cfg
- 3. pytool.toml
+ 1. pyproject.toml  
+ 2. setup.cfg  
+ 3. pytool.toml  
+
 ## pytoolconfig
 | name                    | description                             | type   | default   | universal key                                              | command line flag   |
 |-------------------------|-----------------------------------------|--------|-----------|------------------------------------------------------------|---------------------|
