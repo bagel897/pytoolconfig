@@ -1,3 +1,4 @@
+"""Source for setup.cfg configuration files via ini config."""
 from pathlib import Path
 from typing import Optional, Tuple
 

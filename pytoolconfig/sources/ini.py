@@ -1,3 +1,4 @@
+"""Source for INI configuration files via configparser."""
 from configparser import ConfigParser, SectionProxy
 from pathlib import Path
 from typing import Dict, List, Optional
@@ -22,11 +23,28 @@ class IniConfig(Source):
     """Source for INI configuration files via configparser."""
 
     _config: ConfigParser
+    name: str
+    description: str
 
-    def __init__(self, working_directory: Path, filename: str, base_table: str):
+    def __init__(
+        self,
+        working_directory: Path,
+        filename: str,
+        base_table: str,
+        description: str = None,
+    ):
+        """
+        :param working_directory: the working directory to search.
+        :param filename: the filename to search for.
+        :param base_table: The table to search for.
+            The file will only be used if this is present.
+            The base_table will not be included in the parsed output.
+        :param description: The description used in documentation.
+        """
         self.file = find_config_file(working_directory, filename)
         self.base_table = base_table
         self.name = filename
+        self.description = description
         self._config = ConfigParser()
 
     def _read(self) -> bool:

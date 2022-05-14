@@ -43,14 +43,15 @@ class PyToolConfig:
         """
         Initialize the configuration object.
 
-        tool: name of the tool to use.
-        working_directory: Path to working directory in use.
-        model: Model of configuration.
-        arg_parser: Arugument Parser.
-        custom_sources: custom sources
-        global_config: enable global configuration
-        global_sources: custom global sources
-        bases: custom bases
+        :param tool: str name of the tool to use.
+        :param working_directory: Path working directory in use.
+        :param model: Type[BaseModel] Model of configuration.
+        :param arg_parser: ArgumentParser Arugument Parser.
+        :param custom_sources: List[Source] custom sources
+        :param global_config: List[Source] enable global configuration
+        :param global_sources: List[Source] custom global sources
+        :param bases: List[str] custom bases
+        :param recursive: bool Recusively search for the pyproject.toml file
         """
         self.model = model
         self.tool = tool

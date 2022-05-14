@@ -67,6 +67,12 @@ def write_model(
 
 
 def generate_documentation(config: PyToolConfig, file: Path):
+    """
+    Generate documentation for the given configuration.
+
+    :param config: PyToolConfig Configuration Object
+    :param file: Path Path to write to.
+    """
     assert (
         len(config.model.__fields__) > 0
     )  # There must be at least one entry for configuration

@@ -13,7 +13,7 @@ class Source(ABC):
         """Read the file.
 
         If file does not exist or the tool does not exist in the file, return False.
-        Can be called multiple times and overwrite the existing configuration.
+        Can be called multiple times and overwrite the existing cached configuration.
         """
 
     @abstractmethod

@@ -27,6 +27,10 @@ doc = [
 [tool.pdm.dev-dependencies]
 dev = [
     "pytest>=7.0.1",
+    "pdm-publish>=0.2.1",
+    "sphinx>=4.5.0",
+    "myst-parser>=0.17.2",
+    "sphinx-autodoc-typehints>=1.18.1",
 ]
 [tool.pytoolconfig]
 formatter = "black"

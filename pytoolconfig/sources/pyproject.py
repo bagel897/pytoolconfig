@@ -1,3 +1,4 @@
+"""Source for pyproject.toml files or more generally toml files."""
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
@@ -12,9 +13,14 @@ except ModuleNotFoundError:
 
 
 class PyProject(Source):
+    """Source for pyproject.toml files or more generally toml files."""
+
     tool: str
     toml_dict: Optional[Dict] = None
     name: str = "pyproject.toml"
+    description: str = """
+    PEP 518 defines pyproject.toml as a configuration file to store build system requirements for Python projects. With the help of tools like Poetry or Flit it can fully replace the need for setup.py and setup.cfg files.
+    """  # taken from black.
     file: Optional[Path]
 
     def __init__(
@@ -25,6 +31,13 @@ class PyProject(Source):
         global_config: bool = False,
         recursive: bool = True,
     ):
+        """
+        :param working_directory: Working Directory
+        :param tool: name of your tool. Will read configuration from [tool.yourtool]
+        :param bases: Base files/folders to look for (besides pyproject.toml)
+        :param global_config: use the global pytool.toml file instead
+        :param recursive: search recursively up the directory tree for the file.
+        """
         filename: Optional[Path]
         if global_config:
             import appdirs

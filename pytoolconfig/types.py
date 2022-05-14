@@ -1,6 +1,6 @@
 import sys
 from datetime import date, datetime, time
-from typing import Dict, List, Optional, Union, Tuple
+from typing import Dict, List, Optional, Tuple, Union
 
 from pydantic import BaseModel, Field
 
@@ -15,7 +15,10 @@ class UniversalConfig(BaseModel):
     formatter: Optional[str] = Field(
         default=None, description="Formatter used to format this File."
     )
-    max_line_length: Optional[int] = Field(default=None, gt=5, description="Maximum line length.")
+    max_line_length: Optional[int] = Field(
+        default=None, gt=5, description="Maximum line length."
+    )
+    
     min_py_version: Optional[Tuple[int, int]] = Field(
         default=None,
         description="Mimimum target python version. Taken from requires-python.",
