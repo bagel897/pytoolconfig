@@ -5,10 +5,11 @@ PyToolConfig allows you to parse command line overwrites for configuration items
 
 1. In the Configuration Model, set the ``command_line`` value in the ``Field`` constructor. (This only works for items in the base model)
 For example:
-..code_block: python
-   
+
+.. code-block:: python
+
    class nestedmodel(basemodel):
-      foo_other: str = field(description="w", default="no", command_line=("--foo", "-f"))
+      foo_other: str = Field(description="w", default="no", command_line=("--foo", "-f"))
 
 2. Pass an Argument Parser to the ``PyToolConfig`` constructor
 3. (Optional) Pass arguments to the ``parse()`` command

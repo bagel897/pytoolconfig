@@ -24,7 +24,7 @@ author = "bageljr"
 # The full version, including alpha/beta/rc tags
 release = "0.2.0"
 
-
+pygments_style = 'sphinx'
 # -- General configuration ---------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
@@ -32,8 +32,8 @@ release = "0.2.0"
 # ones.
 extensions = [
     "sphinx.ext.autodoc",
-    'sphinx.ext.autosummary',
-     "sphinx_autodoc_typehints"
+    "sphinx.ext.autosummary",
+    "sphinx_autodoc_typehints",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -56,4 +56,3 @@ html_theme = "sphinx_rtd_theme"
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
-

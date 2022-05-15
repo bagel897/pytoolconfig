@@ -10,7 +10,7 @@ Python Tool Configuration
 
 The goal of this project is to manage configuration for python tools, such as black and rope and add support for a pyproject.toml configuration file. 
 
-- Configuration file autodetection searching for the .git and .hg directories (and others as configured).
+- Configuration file autodetection. (Searches for the .git and .hg directories (and others as configured)).
 - :doc:`Optional global configuration <global_configuration>`
 - :doc:`Optional command line overwrites <command_line>`
 - Pydantic data validation and output.
