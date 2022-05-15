@@ -24,9 +24,10 @@ doc = [
     "tabulate>=0.8.9",
 ]
 # Required to generate pytoolconfig's own documentation
-gen_docs = [ 
+gen_docs = [
     "sphinx>=4.5.0",
     "sphinx-autodoc-typehints>=1.18.1",
+    "sphinx-rtd-theme>=1.0.0",
 ]
 [tool.pdm]
 [tool.pdm.dev-dependencies]
