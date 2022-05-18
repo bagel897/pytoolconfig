@@ -4,25 +4,30 @@ from argparse import ArgumentParser
 from typing import Tuple
 
 import pytest
-from pydantic import BaseModel, Field
+from pydantic import Field
+from pydantic.dataclasses import dataclass
 
 from pytoolconfig import PyToolConfig
 from pytoolconfig.sources import IniConfig
 
 
-class SimpleModel(BaseModel):
+@dataclass
+class SimpleModel:
     formatter: str
 
 
-class EmptyModel(BaseModel):
+@dataclass
+class EmptyModel:
     pass
 
 
-class SubTool(BaseModel):
+@dataclass
+class SubTool:
     foo: str = Field(description="foobar", default="lo")
 
 
-class NestedModel(BaseModel):
+@dataclass
+class NestedModel:
     subtool: SubTool = SubTool()
     foo_other: str = Field(description="w", default="no", command_line=("--foo", "-f"))
 

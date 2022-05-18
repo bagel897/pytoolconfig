@@ -1,21 +1,17 @@
 """Tool to configure Python tools."""
-import sys
 from argparse import SUPPRESS, ArgumentParser
 from pathlib import Path
-from typing import Dict, Generator, List, Optional, Tuple, Type
-
-from pydantic import BaseModel
-from pydantic.fields import ModelField
+from typing import Dict, List, Optional, Tuple, Type
 
 from pytoolconfig.sources.pyproject import PyProject
 from pytoolconfig.sources.source import Source
-from pytoolconfig.types import UniversalConfig, key
-
-
-def _add_args(arg_parser, model):
-    for field in model.__fields__.values():
-        if isinstance(field.type_, BaseModel):
-            _add_args(arg_parser, field)
+from pytoolconfig.types import (
+    ConfigField,
+    Dataclass,
+    UniversalConfig,
+    _gather_config_fields,
+    key,
+)
 
 
 class PyToolConfig:
@@ -24,14 +20,15 @@ class PyToolConfig:
     sources: List[Source] = []
     tool: str
     working_directory: Path
-    model: Type[BaseModel]
+    model: Type[Dataclass]
     arg_parser: Optional[ArgumentParser] = None
+    _config_fields: Dict[str, ConfigField]
 
     def __init__(
         self,
         tool: str,
         working_directory: Path,
-        model: Type[BaseModel],
+        model: Type[Dataclass],
         arg_parser: Optional[ArgumentParser] = None,
         custom_sources: List[Source] = [],
         global_config: bool = False,
@@ -54,6 +51,7 @@ class PyToolConfig:
         :param recursive: bool Recusively search for the pyproject.toml file
         """
         self.model = model
+        self._config_fields = _gather_config_fields(model)
         self.tool = tool
         self.sources = [PyProject(working_directory, tool, bases, recursive=recursive)]
         self.sources.extend(custom_sources)
@@ -69,7 +67,7 @@ class PyToolConfig:
             self.arg_parser = arg_parser
             self._setup_arg_parser()
 
-    def parse(self, args: List[str] = []) -> BaseModel:
+    def parse(self, args: List[str] = []) -> Dataclass:
         """
         Parse the configuration.
 
@@ -82,36 +80,31 @@ class PyToolConfig:
             configuration = self.model()
         if self.arg_parser:
             parsed = self.arg_parser.parse_args(args)
-            for field in self._fields_with_param("command_line"):
-                if field.name in parsed:
-                    setattr(configuration, field.name, vars(parsed)[field.name])
-        for field in self._fields_with_param("universal_config"):
-            if field.field_info.extra["universal_config"] in universal.__fields__:
+            for name in parsed:
+                setattr(configuration, name, vars(parsed)[name])
+        for name, field in self._config_fields.items():
+            if field.universal_config:
                 setattr(
                     configuration,
-                    field.name,
-                    vars(universal)[field.field_info.extra["universal_config"]],
+                    name,
+                    vars(universal)[field.universal_config],
                 )
         return configuration
 
-    def _fields_with_param(self, param: str) -> Generator[ModelField, None, None]:
-        for field in self.model.__fields__.values():
-            if param in field.field_info.extra:
-                yield field
-
     def _setup_arg_parser(self):
-        for field in self._fields_with_param("command_line"):
-            flags = field.field_info.extra["command_line"]
-            if not isinstance(flags, Tuple):
-                flags = (flags,)
-            self.arg_parser.add_argument(
-                *flags,
-                type=field.type_,
-                help=field.field_info.description,
-                default=SUPPRESS,
-                metavar=field.name,
-                dest=field.name,
-            )
+        for name, field in self._config_fields.items():
+            if field.command_line:
+                flags = field.command_line
+                if not isinstance(flags, Tuple):
+                    flags = (flags,)
+                self.arg_parser.add_argument(
+                    *flags,
+                    type=field._type,
+                    help=field.description,
+                    default=SUPPRESS,
+                    metavar=name,
+                    dest=name,
+                )
 
     def _parse_sources(self) -> Tuple[Optional[Dict[str, key]], UniversalConfig]:
         for source in self.sources:

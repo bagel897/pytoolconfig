@@ -8,7 +8,6 @@ authors = [
 license-expression = "LGPL-3.0-or-later"
 dependencies = [
     'tomli>=2.0; python_version < "3.11"',
-    "pydantic>=1.7.4",
     "packaging>=21.3",
 ]
 requires-python = ">=3.7"
@@ -17,6 +16,9 @@ requires-python = ">=3.7"
 Homepage = "https://github.com/bageljrkhanofemus/pytoolconfig"
 
 [project.optional-dependencies]
+validation = [
+    "pydantic>=1.7.4",
+]
 global = [
     "appdirs>=1.4.4",
 ]
@@ -32,6 +34,7 @@ gen_docs = [
 [tool.pdm]
 [tool.pdm.dev-dependencies]
 dev = [
+    "pytoolconfig[validation, global, doc]",
     "pytest>=7.0.1",
     "pdm-publish>=0.2.1",
 ]

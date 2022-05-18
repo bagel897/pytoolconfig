@@ -1,18 +1,20 @@
 from argparse import ArgumentParser
 
 from pydantic import BaseModel, Field
-
+from pydantic.dataclasses import dataclass
 from pytoolconfig import PyToolConfig
 from pytoolconfig.documentation import generate_documentation
 from pytoolconfig.sources import IniConfig
 from typing import Tuple
 
 
-class SubTool(BaseModel):
+@dataclass
+class SubTool:
     foo: str = Field(description="foobar", default="lo")
 
 
-class NestedModel(BaseModel):
+@dataclass
+class NestedModel:
     subtool: SubTool = SubTool()
     foo_other: str = Field(
         description="Tool One", default="no", command_line=("--foo", "-f")
