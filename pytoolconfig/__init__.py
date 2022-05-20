@@ -1,6 +1,6 @@
-from .documentation import generate_documentation
-from .pytoolconfig import PyToolConfig
+"""Python Tool Configuration."""
 from .fields import field
+from .pytoolconfig import PyToolConfig
 from .types import dataclass
 
-__all__ = ["PyToolConfig", "generate_documentation", "field", "dataclass"]
+__all__ = ["PyToolConfig", "field", "dataclass"]

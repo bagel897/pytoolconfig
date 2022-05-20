@@ -14,7 +14,11 @@ except ModuleNotFoundError:
 
 
 class PyProject(Source):
-    """Source for pyproject.toml files or more generally toml files."""
+    """
+    Source for pyproject.toml and pytool.toml files.
+
+    Can be extended to other toml files.
+    """
 
     tool: str
     toml_dict: Optional[Dict] = None

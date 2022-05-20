@@ -37,15 +37,15 @@ class PyToolConfig:
         """
         Initialize the configuration object.
 
-        :param tool: str name of the tool to use.
-        :param working_directory: Path working directory in use.
-        :param model: Type[BaseModel] Model of configuration.
-        :param arg_parser: ArgumentParser Arugument Parser.
-        :param custom_sources: List[Source] custom sources
-        :param global_config: List[Source] enable global configuration
-        :param global_sources: List[Source] custom global sources
-        :param bases: List[str] custom bases
-        :param recursive: bool Recusively search for the pyproject.toml file
+        :param tool: name of the tool to use.
+        :param working_directory: working directory in use.
+        :param model: Model of configuration.
+        :param arg_parser: Arugument Parser.
+        :param custom_sources: Custom sources
+        :param global_config: Enable global configuration
+        :param global_sources: Custom global sources
+        :param bases: Custom bases
+        :param recursive: Recusively search for the pyproject.toml file
         """
         self.model = model
         self._config_fields = _gather_config_fields(model)
@@ -68,7 +68,7 @@ class PyToolConfig:
         """
         Parse the configuration.
 
-        args: any additional command line overwritesself.
+        :param args: any additional command line overwrites.
         """
         configuration, universal = self._parse_sources()
         if self.arg_parser:
@@ -77,11 +77,13 @@ class PyToolConfig:
                 setattr(configuration, name, value)
         for name, field in self._config_fields.items():
             if field.universal_config:
-                setattr(
-                    configuration,
-                    name,
-                    vars(universal)[field.universal_config],
-                )
+                universal_value = vars(universal)[field.universal_config]
+                if universal_value is not None:
+                    setattr(
+                        configuration,
+                        name,
+                        universal_value,
+                    )
         return configuration
 
     def _setup_arg_parser(self):

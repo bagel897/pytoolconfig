@@ -1,4 +1,4 @@
-Universal Config 
+Universal Config
 ================
 Universal Configuration refers to keys given by pytoolconfig. You can overwrite your own configuration keys with the ones provided by pytoolconfig.
 
@@ -6,6 +6,9 @@ In your configuration model, set the ``universal_config`` value in the `Field` c
 For example:
 
 .. code-block:: python
+
+    from pytoolconfig import dataclass, field
+
 
     @dataclass
     class NestedModel:

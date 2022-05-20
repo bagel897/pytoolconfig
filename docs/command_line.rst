@@ -8,9 +8,12 @@ For example:
 
 .. code-block:: python
 
+    from pytoolconfig import dataclass, field
+
+
     @dataclass
-    class nestedmodel:
-        foo_other: str = Field(
+    class NestedModel:
+        foo_other: str = field(
             description="w", default="no", command_line=("--foo", "-f")
         )
 

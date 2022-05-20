@@ -66,8 +66,8 @@ def generate_documentation(config: PyToolConfig, file: Path):
     """
     Generate documentation for the given configuration.
 
-    :param config: PyToolConfig Configuration Object
-    :param file: Path Path to write to.
+    :param config: Configuration Object
+    :param file: Path to write to.
     """
     assert (
         len(config._config_fields) > 0

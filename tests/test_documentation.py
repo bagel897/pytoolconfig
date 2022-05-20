@@ -1,7 +1,6 @@
 from argparse import ArgumentParser
 from typing import Tuple
 
-
 from pytoolconfig import PyToolConfig, dataclass, field
 from pytoolconfig.documentation import generate_documentation
 from pytoolconfig.sources import IniConfig
