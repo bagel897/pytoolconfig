@@ -1,12 +1,16 @@
+"""Base class for defining custom sources."""
 from abc import ABC, abstractmethod
 from typing import Dict, Optional, Tuple
 
-from pytoolconfig.types import UniversalConfig, key
+from pytoolconfig.types import key
+from pytoolconfig.universal_config import UniversalConfig
 
 
 class Source(ABC):
+    """Base class for defining custom sources."""
+
     name: str  # The name of the tool for documentation
-    description: str  # The description, written as markdown.
+    description: Optional[str]  # The description, written as markdown.
 
     @abstractmethod
     def _read(self) -> bool:

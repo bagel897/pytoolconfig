@@ -6,11 +6,13 @@ from io import TextIOBase
 from pathlib import Path
 from typing import Dict, List, Tuple, Type
 
-from pydantic.main import ModelMetaclass
 from tabulate import tabulate
 
+from .fields import _gather_config_fields
 from .pytoolconfig import PyToolConfig
-from .types import ConfigField, Dataclass, UniversalConfig, _gather_config_fields
+from .types import ConfigField, Dataclass
+from .universal_config import UniversalConfig
+from .utils import _is_dataclass
 
 
 def write_model(
@@ -31,13 +33,13 @@ def write_model(
     data = []
     extra = []
     for name, field in model_fields.items():
-        if isinstance(field._type, ModelMetaclass):
+        if _is_dataclass(field._type):
             extra.append((field._type, f"{name}.{name}"))
         else:
             row = [
                 f"{name}.{name}",
                 field.description.replace("\n", " ") if field.description else None,
-                field._type.__name__,
+                field._type.__name__ if field._type else None,
                 field._default,
             ]
             if universal_config:

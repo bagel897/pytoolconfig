@@ -3,8 +3,9 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
 from pytoolconfig.sources.source import Source
-from pytoolconfig.types import UniversalConfig, key
-from pytoolconfig.utils import find_config_file, min_py_version
+from pytoolconfig.types import key
+from pytoolconfig.universal_config import UniversalConfig
+from pytoolconfig.utils import _dict_to_dataclass, find_config_file, min_py_version
 
 try:
     import tomllib
@@ -70,7 +71,9 @@ class PyProject(Source):
             return UniversalConfig()
         min_py_version = self._min_py_version
         if "pytoolconfig" in self.toml_dict["tool"].keys():
-            config = UniversalConfig.parse_obj(self.toml_dict["tool"]["pytoolconfig"])
+            config = _dict_to_dataclass(
+                UniversalConfig, self.toml_dict["tool"]["pytoolconfig"]
+            )
         else:
             config = UniversalConfig()
         if min_py_version:

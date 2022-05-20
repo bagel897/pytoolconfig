@@ -3,15 +3,12 @@ from argparse import SUPPRESS, ArgumentParser
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Type
 
+from pytoolconfig.fields import _gather_config_fields
 from pytoolconfig.sources.pyproject import PyProject
 from pytoolconfig.sources.source import Source
-from pytoolconfig.types import (
-    ConfigField,
-    Dataclass,
-    UniversalConfig,
-    _gather_config_fields,
-    key,
-)
+from pytoolconfig.types import ConfigField, Dataclass
+from pytoolconfig.universal_config import UniversalConfig
+from pytoolconfig.utils import _dict_to_dataclass
 
 
 class PyToolConfig:
@@ -73,15 +70,11 @@ class PyToolConfig:
 
         args: any additional command line overwritesself.
         """
-        raw_config, universal = self._parse_sources()
-        if raw_config:
-            configuration = self.model.parse_obj(raw_config)
-        else:
-            configuration = self.model()
+        configuration, universal = self._parse_sources()
         if self.arg_parser:
             parsed = self.arg_parser.parse_args(args)
-            for name in parsed:
-                setattr(configuration, name, vars(parsed)[name])
+            for name, value in parsed._get_kwargs():
+                setattr(configuration, name, value)
         for name, field in self._config_fields.items():
             if field.universal_config:
                 setattr(
@@ -106,9 +99,12 @@ class PyToolConfig:
                     dest=name,
                 )
 
-    def _parse_sources(self) -> Tuple[Optional[Dict[str, key]], UniversalConfig]:
+    def _parse_sources(self) -> Tuple[Dataclass, UniversalConfig]:
         for source in self.sources:
             configuration = source.parse()
             if configuration:
-                return configuration, source.universalconfig()
-        return None, self.sources[0].universalconfig()
+                return (
+                    _dict_to_dataclass(self.model, configuration),
+                    source.universalconfig(),
+                )
+        return self.model(), self.sources[0].universalconfig()

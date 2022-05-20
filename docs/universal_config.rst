@@ -6,8 +6,11 @@ In your configuration model, set the ``universal_config`` value in the `Field` c
 For example:
 
 .. code-block:: python
-   
-   class nestedmodel(basemodel):
-      foo_other: str = Field(description="w", default="no", universal_config=("min_py_version"))
+
+    @dataclass
+    class NestedModel:
+        foo_other: str = Field(
+            description="w", default="no", universal_config=("min_py_version")
+        )
 
 The value of this field will be overwritten by pytoolconfig's equivalent universal configuration field.

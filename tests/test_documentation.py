@@ -1,26 +1,25 @@
 from argparse import ArgumentParser
+from typing import Tuple
 
-from pydantic import BaseModel, Field
-from pydantic.dataclasses import dataclass
-from pytoolconfig import PyToolConfig
+
+from pytoolconfig import PyToolConfig, dataclass, field
 from pytoolconfig.documentation import generate_documentation
 from pytoolconfig.sources import IniConfig
-from typing import Tuple
 
 
 @dataclass
 class SubTool:
-    foo: str = Field(description="foobar", default="lo")
+    foo: str = field(description="foobar", default="lo")
 
 
 @dataclass
 class NestedModel:
     subtool: SubTool = SubTool()
-    foo_other: str = Field(
+    foo_other: str = field(
         description="Tool One", default="no", command_line=("--foo", "-f")
     )
-    min_py_ver: Tuple[int, int] = Field(
-        description="sauf", universal_config="min_py_version"
+    min_py_ver: Tuple[int, int] = field(
+        default=None, description="sauf", universal_config="min_py_version"
     )
 
 

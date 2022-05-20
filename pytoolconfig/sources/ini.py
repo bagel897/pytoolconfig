@@ -24,16 +24,18 @@ class IniConfig(Source):
 
     _config: ConfigParser
     name: str
-    description: str
+    description: Optional[str]
 
     def __init__(
         self,
         working_directory: Path,
         filename: str,
         base_table: str,
-        description: str = None,
+        description: Optional[str] = None,
     ):
         """
+
+
         :param working_directory: the working directory to search.
         :param filename: the filename to search for.
         :param base_table: The table to search for.

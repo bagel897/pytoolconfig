@@ -13,7 +13,7 @@ The goal of this project is to manage configuration for python tools, such as bl
 - Configuration file autodetection. (Searches for the .git and .hg directories (and others as configured)).
 - :doc:`Optional global configuration <global_configuration>`
 - :doc:`Optional command line overwrites <command_line>`
-- Pydantic data validation and output.
+- :doc:`Optional Pydantic data validation and output. <pydantic>`
 - :doc:`Universal Configuration keys <universal_config>`
 - :doc:`Documentation Generation <generated/pytoolconfig.generate_documentation>`
 - Read only support 
@@ -50,6 +50,7 @@ Contents
    command_line
    universal_config
    global_configuration
+   pydantic
    api
 
 

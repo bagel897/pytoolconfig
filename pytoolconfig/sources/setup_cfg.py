@@ -2,7 +2,7 @@
 from pathlib import Path
 from typing import Optional, Tuple
 
-from pytoolconfig.types import UniversalConfig
+from pytoolconfig.universal_config import UniversalConfig
 from pytoolconfig.utils import min_py_version
 
 from .ini import IniConfig

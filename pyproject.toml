@@ -37,9 +37,15 @@ dev = [
     "pytoolconfig[validation, global, doc]",
     "pytest>=7.0.1",
     "pdm-publish>=0.2.1",
+    "mypy>=0.950",
+    "types-tabulate>=0.8.9",
 ]
 [tool.pytoolconfig]
 formatter = "black"
+
+[mypy]
+plugins = "pydantic.mypy"
+strict = true
 
 [build-system]
 requires = ["pdm-pep517>=0.12.0"]

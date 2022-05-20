@@ -8,8 +8,11 @@ For example:
 
 .. code-block:: python
 
-   class nestedmodel(basemodel):
-      foo_other: str = Field(description="w", default="no", command_line=("--foo", "-f"))
+    @dataclass
+    class nestedmodel:
+        foo_other: str = Field(
+            description="w", default="no", command_line=("--foo", "-f")
+        )
 
 2. Pass an Argument Parser to the ``PyToolConfig`` constructor
 3. (Optional) Pass arguments to the ``parse()`` command
