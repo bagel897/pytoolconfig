@@ -86,20 +86,19 @@ class PyProject(Source):
         else:
             config = UniversalConfig()
         if "project" in self.toml_dict.keys():
-            if "requires-python" in self.toml_dict["project"].keys():
-                raw_python_ver = self.toml_dict["project"]["requires-python"]
+            project = self.toml_dict["project"]
+            if "requires-python" in project.keys():
+                raw_python_ver = project["requires-python"]
                 config.min_py_version = min_py_version(raw_python_ver)
                 config.max_py_version = max_py_version(raw_python_ver)
-            if "dependencies" in self.toml_dict["project"]:
-                dependencies = parse_dependencies(
-                    self.toml_dict["project"]["dependencies"]
-                )
+            if "dependencies" in project:
+                dependencies = parse_dependencies(project["dependencies"])
                 config.dependencies = dependencies
-            if "optional-dependencies" in self.toml_dict["project"]:
+            if "optional-dependencies" in project:
                 optional_deps = {}
-                for group, deps in self.toml_dict["project"][
-                    "optional-dependencies"
-                ].items():
+                for group, deps in project["optional-dependencies"].items():
                     optional_deps[group] = parse_dependencies(deps)
                 config.optional_dependencies = optional_deps
+            if "version" in project:
+                config.version = project["version"]
         return config

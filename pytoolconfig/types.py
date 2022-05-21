@@ -30,6 +30,7 @@ class UniversalKey(Enum):
     max_py_version = auto()
     dependencies = auto()
     optional_dependencies = auto()
+    version = auto()
 
 
 @dataclass

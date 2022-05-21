@@ -26,3 +26,4 @@ class UniversalConfig:
     optional_dependencies: Optional[Dict[str, List[Requirement]]] = field(
         None, "Optional dependencies of project. Requires PEP 621."
     )
+    version: Optional[str] = field(None, "Version of the project. Requires PEP 621.")

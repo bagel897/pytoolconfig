@@ -16,13 +16,14 @@
 
 
 # -- Project information -----------------------------------------------------
+from pytoolconfig._version import version
 
 project = "pytoolconfig"
 copyright = "2022, bageljr"
 author = "bageljr"
 
 # The full version, including alpha/beta/rc tags
-release = "0.2.0"
+release = version
 
 pygments_style = "sphinx"
 # -- General configuration ---------------------------------------------------
