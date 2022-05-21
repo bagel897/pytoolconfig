@@ -3,7 +3,7 @@ Program to generate documentation for a given PyToolConfig object.
 """
 
 from types import NoneType
-from typing import Any, Generator, Optional, get_args
+from typing import Any, Generator, Optional, Type, get_args, get_origin
 
 from docutils.statemachine import StringList
 from sphinx.application import Sphinx
@@ -14,6 +14,13 @@ from .fields import _gather_config_fields
 from .types import Dataclass
 from .universal_config import UniversalConfig
 from .utils import _is_dataclass
+
+
+def _type_to_str(type: Type) -> str:
+    if get_origin(type) is None:
+        return type.__name__
+    else:
+        return str(type).replace("typing.", "")
 
 
 def _write_model(
@@ -35,14 +42,18 @@ def _write_model(
         else:
             type = field._type
             if type is not None:
-                type = ",".join(
-                    type.__name__ for type in get_args(type) if type is not NoneType
+                resolved_type = ",".join(
+                    _type_to_str(sub_type)
+                    for sub_type in get_args(type)
+                    if sub_type is not NoneType
                 )
+            else:
+                resolved_type = None
 
             row = [
                 f"{name}",
                 field.description.replace("\n", " ") if field.description else None,
-                type,
+                resolved_type,
                 field._default,
             ]
             if universal_config:
