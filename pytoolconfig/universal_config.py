@@ -1,4 +1,6 @@
 """Universal Configuration base model."""
+from dataclasses import fields
+from enum import Enum
 from typing import List, Optional, Tuple
 
 from .fields import field
@@ -21,3 +23,8 @@ class UniversalConfig:
     dependencies: Optional[List[str]] = field(
         None, "Dependencies of project. Requires PEP 621."
     )
+
+
+UniversalKey = Enum(
+    "UniversalKey", [field.name for field in fields(UniversalConfig) if field.init]
+)

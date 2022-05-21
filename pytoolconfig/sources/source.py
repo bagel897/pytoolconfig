@@ -1,6 +1,6 @@
 """Base class for defining custom sources."""
 from abc import ABC, abstractmethod
-from typing import Dict, Optional, Tuple
+from typing import Dict, Optional
 
 from pytoolconfig.types import key
 from pytoolconfig.universal_config import UniversalConfig
@@ -39,12 +39,3 @@ class Source(ABC):
         Pre: file was read but tool isn't necessarily in file.
         """
         return UniversalConfig()
-
-    @property
-    def _min_py_version(self) -> Optional[Tuple[int, int]]:
-        """
-        Return the minimum python version.
-
-        Pre: file was read but tool isn't necessarily in file.
-        """
-        return None

@@ -5,7 +5,7 @@ from typing import Tuple
 
 import pytest
 
-from pytoolconfig import PyToolConfig, dataclass, field
+from pytoolconfig import PyToolConfig, UniversalKey, dataclass, field
 from pytoolconfig.sources import IniConfig
 
 
@@ -32,7 +32,7 @@ class NestedModel:
     target: Tuple[int, int] = field(
         description="Minimum python version",
         default=(3, 1),
-        universal_config="min_py_version",
+        universal_config=UniversalKey.min_py_version,
     )
 
 

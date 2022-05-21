@@ -25,12 +25,25 @@ def find_config_file(
 
 
 def min_py_version(specifier: str) -> Tuple[int, int]:
-    """Return the minimum python 3 version. Will go up to interpreter version."""
+    """Return the minimum python 3 version. Between 4 and interpreter version."""
     parsed = SpecifierSet(specifier)
-    for i in range(0, sys.version_info.minor):
+    for i in range(4, sys.version_info.minor):
         if parsed.contains(f"3.{i}"):
             return (3, i)
     return (3, sys.version_info.minor)
+
+
+def max_py_version(specifier: str) -> Tuple[int, int]:
+    """Return the maximum python 3 version. Between 4 and interpreter version."""
+    parsed = SpecifierSet(specifier)
+    for i in range(sys.version_info.minor, 4, -1):
+        if parsed.contains(f"3.{i}"):
+            return (3, i)
+    return (3, 4)  # Please don't cap your project at python3.4
+
+
+def dependencies(dependencies: List[str]) -> List[str]:
+    pass
 
 
 def _is_dataclass(field_type) -> bool:

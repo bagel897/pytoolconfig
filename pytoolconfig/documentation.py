@@ -49,7 +49,7 @@ def _write_model(
                 key_doc = None
                 if field.universal_config:
                     key = field.universal_config
-                    universal_key = _gather_config_fields(UniversalConfig)[key]
+                    universal_key = _gather_config_fields(UniversalConfig)[key.name]
                     row[1] = "This field is set via an universal key."
                     row[3] = universal_key._default
                     key_doc = universal_key.description

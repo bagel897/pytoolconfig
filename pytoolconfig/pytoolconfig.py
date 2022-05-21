@@ -77,7 +77,7 @@ class PyToolConfig:
                 setattr(configuration, name, value)
         for name, field in self._config_fields.items():
             if field.universal_config:
-                universal_value = vars(universal)[field.universal_config]
+                universal_value = vars(universal)[field.universal_config.name]
                 if universal_value is not None:
                     setattr(
                         configuration,

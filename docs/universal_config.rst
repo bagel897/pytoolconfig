@@ -7,13 +7,13 @@ For example:
 
 .. code-block:: python
 
-    from pytoolconfig import dataclass, field
+    from pytoolconfig import dataclass, field, UniversalKey
 
 
     @dataclass
     class NestedModel:
-        foo_other: str = Field(
-            description="w", default="no", universal_config=("min_py_version")
+        foo_other: str = field(
+            description="w", default="no", universal_config=UniversalKey.min_py_version
         )
 
 The value of this field will be overwritten by pytoolconfig's equivalent universal configuration field.

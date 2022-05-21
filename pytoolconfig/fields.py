@@ -3,7 +3,7 @@ import dataclasses
 from dataclasses import fields
 from typing import Any, Callable, Dict, Optional, Tuple, Type
 
-from .types import ConfigField, Dataclass
+from .types import ConfigField, Dataclass, UniversalKey
 
 _metadata_key = "pytoolconfig"
 
@@ -12,7 +12,7 @@ def field(
     default: Any = None,
     description: Optional[str] = None,
     command_line: Optional[Tuple[str]] = None,
-    universal_config: Optional[str] = None,
+    universal_config: Optional[UniversalKey] = None,
     default_factory: Optional[Callable] = None,
 ) -> dataclasses.Field:
     """Create a dataclass field with metadata."""

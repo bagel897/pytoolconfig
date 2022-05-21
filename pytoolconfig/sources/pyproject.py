@@ -1,11 +1,16 @@
 """Source for pyproject.toml files or more generally toml files."""
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional
 
 from pytoolconfig.sources.source import Source
 from pytoolconfig.types import key
 from pytoolconfig.universal_config import UniversalConfig
-from pytoolconfig.utils import _dict_to_dataclass, find_config_file, min_py_version
+from pytoolconfig.utils import (
+    _dict_to_dataclass,
+    find_config_file,
+    max_py_version,
+    min_py_version,
+)
 
 try:
     import tomllib
@@ -73,25 +78,17 @@ class PyProject(Source):
     def universalconfig(self) -> UniversalConfig:
         if not self.toml_dict:
             return UniversalConfig()
-        min_py_version = self._min_py_version
         if "pytoolconfig" in self.toml_dict["tool"].keys():
             config = _dict_to_dataclass(
                 UniversalConfig, self.toml_dict["tool"]["pytoolconfig"]
             )
         else:
             config = UniversalConfig()
-        if min_py_version:
-            config.min_py_version = min_py_version
-        return config
-
-    @property
-    def _min_py_version(self) -> Optional[Tuple[int, int]]:
-        """Return the minimum python 3 version. Will go up to interpreter version."""
-        assert self.toml_dict
         if (
-            "project" not in self.toml_dict.keys()
-            or "requires-python" not in self.toml_dict["project"].keys()
+            "project" in self.toml_dict.keys()
+            and "requires-python" in self.toml_dict["project"].keys()
         ):
-            return None
-        raw_python_ver = self.toml_dict["project"]["requires-python"]
-        return min_py_version(raw_python_ver)
+            raw_python_ver = self.toml_dict["project"]["requires-python"]
+            config.min_py_version = min_py_version(raw_python_ver)
+            config.max_py_version = max_py_version(raw_python_ver)
+        return config
