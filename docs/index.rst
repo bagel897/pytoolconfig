@@ -15,7 +15,7 @@ The goal of this project is to manage configuration for python tools, such as bl
 - :doc:`Optional command line overwrites <command_line>`
 - :doc:`Optional Pydantic data validation and output. <pydantic>`
 - :doc:`Universal Configuration keys <universal_config>`
-- :doc:`Documentation Generation <generated/pytoolconfig.documentation.generate_documentation>`
+- :doc:`Documentation Generation <documentation>`
 - Read only support
 
 Configuration Sources
@@ -36,11 +36,11 @@ Usage
 
 Configuration Load Order
 ------------------------
-0. Command Line - overwrites selected configuration properties individually
-1. pyproject.toml (mandatory, automatic) if tool.black (or your tool) is present
-2. additional sources configured in order they were added.
-3. global configuration from pytool.toml global file
-4. configured global configurations
+1. Command Line - overwrites selected configuration properties individually
+2. pyproject.toml (mandatory, automatic) if tool.black (or your tool) is present
+3. additional sources configured in order they were added.
+4. global configuration from pytool.toml global file
+5. configured global configurations
 
 Contents
 ========
@@ -49,6 +49,7 @@ Contents
 
    command_line
    universal_config
+   documentation
    global_configuration
    pydantic
    api

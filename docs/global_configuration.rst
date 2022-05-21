@@ -1,5 +1,3 @@
-.. _global_configuration:
-
 Global Configuration
 ====================
 

@@ -17,3 +17,5 @@ For example:
         )
 
 The value of this field will be overwritten by pytoolconfig's equivalent universal configuration field.
+
+.. autopytoolconfigtable:: pytoolconfig.universal_config.UniversalConfig
