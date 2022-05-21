@@ -1,6 +1,6 @@
 [project]
 name = "pytoolconfig"
-version = "0.1.1"
+version = "1.0.0"
 description = "Python tool configuration"
 authors = [
     {name = "bageljr", email = "bageljr897@protonmail.com"},
@@ -24,22 +24,24 @@ global = [
 ]
 doc = [
     "tabulate>=0.8.9",
+    "sphinx>=4.5.0",
 ]
 # Required to generate pytoolconfig's own documentation
 gen_docs = [
     "sphinx>=4.5.0",
     "sphinx-autodoc-typehints>=1.18.1",
-    "sphinx-rtd-theme>=1.0.0",
+    "sphinx-rtd-theme>=1.0.0"
 ]
 [tool.pdm]
 [tool.pdm.dev-dependencies]
 dev = [
-    "pytoolconfig[validation, global, doc]",
+    "pytoolconfig[validation, global, doc, gen_docs]",
     "pytest>=7.0.1",
     "pdm-publish>=0.2.1",
     "mypy>=0.950",
     "types-tabulate>=0.8.9",
     "pre-commit>=2.19.0",
+    "rstcheck>=5.0.0",
 ]
 [tool.pytoolconfig]
 formatter = "black"

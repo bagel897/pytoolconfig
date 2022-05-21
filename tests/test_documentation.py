@@ -1,9 +1,7 @@
-from argparse import ArgumentParser
-from typing import Tuple
+from typing import Optional, Tuple
 
-from pytoolconfig import PyToolConfig, dataclass, field
-from pytoolconfig.documentation import generate_documentation
-from pytoolconfig.sources import IniConfig
+from pytoolconfig import dataclass, field
+from pytoolconfig.documentation import _write_model
 
 
 @dataclass
@@ -14,7 +12,7 @@ class SubTool:
 @dataclass
 class NestedModel:
     subtool: SubTool = SubTool()
-    foo_other: str = field(
+    foo_other: Optional[str] = field(
         description="Tool One", default="no", command_line=("--foo", "-f")
     )
     min_py_ver: Tuple[int, int] = field(
@@ -22,15 +20,10 @@ class NestedModel:
     )
 
 
-def test_documentation(cwd):
-    config = PyToolConfig("pytoolconfig", cwd, NestedModel)
-    generate_documentation(config, cwd / "test_documentation.md")
-    config = PyToolConfig(
-        "pytoolconfig",
-        cwd,
-        NestedModel,
-        custom_sources=[IniConfig(cwd, "setup.cfg", "pytoolconfig")],
-        arg_parser=ArgumentParser(),
-        global_config=True,
-    )
-    generate_documentation(config, cwd / "test_documentation_ini.md")
+def test_documentation():
+    nodes = list(_write_model(NestedModel))
+    assert "description" in nodes[1]
+    assert "foo_other" in nodes[3]
+    assert "Tool One" in nodes[3]
+    assert "no" in nodes[3]
+    assert "Optional" not in nodes[3]

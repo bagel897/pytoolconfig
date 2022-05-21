@@ -2,44 +2,47 @@
 Program to generate documentation for a given PyToolConfig object.
 """
 
-from io import TextIOBase
-from pathlib import Path
-from typing import Dict, List, Tuple, Type
+from types import NoneType
+from typing import Any, Generator, Optional, get_args
 
+from docutils.statemachine import StringList
+from sphinx.application import Sphinx
+from sphinx.ext.autodoc import ClassDocumenter
 from tabulate import tabulate
 
 from .fields import _gather_config_fields
-from .pytoolconfig import PyToolConfig
-from .types import ConfigField, Dataclass
+from .types import Dataclass
 from .universal_config import UniversalConfig
 from .utils import _is_dataclass
 
 
-def write_model(
-    model_fields: Dict[str, ConfigField],
-    file: TextIOBase,
-    name: str,
-    universal_config: bool = False,
-    command_line: bool = False,
-) -> List[Tuple[Type[Dataclass], str]]:
-    file.writelines(f"## {name}\n")
+def _write_model(
+    model: Dataclass,
+) -> Generator[str, None, None]:
     header = ["name", "description", "type", "default"]
-
+    model_fields = _gather_config_fields(model)
+    universal_config = any(field.universal_config for field in model_fields.values())
+    command_line = any(field.command_line for field in model_fields.values())
     if universal_config:
         header.append("universal key")
     if command_line:
         header.append("command line flag")
-
-    data = []
     extra = []
+    table = []
     for name, field in model_fields.items():
         if _is_dataclass(field._type):
             extra.append((field._type, f"{name}.{name}"))
         else:
+            type = field._type
+            if type is not None:
+                type = ",".join(
+                    type.__name__ for type in get_args(type) if type is not NoneType
+                )
+
             row = [
-                f"{name}.{name}",
+                f"{name}",
                 field.description.replace("\n", " ") if field.description else None,
-                field._type.__name__ if field._type else None,
+                type,
                 field._default,
             ]
             if universal_config:
@@ -56,36 +59,40 @@ def write_model(
                 if isinstance(cli_doc, tuple):
                     key_doc = ", ".join(cli_doc)
                 row.append(cli_doc)
-            data.append(row)
-    file.writelines(tabulate(data, tablefmt="github", headers=header))
-    file.write("\n")
-    return extra
+            table.append(row)
+    for line in tabulate(table, tablefmt="rst", headers=header).split("\n"):
+        yield line
 
 
-def generate_documentation(config: PyToolConfig, file: Path):
-    """
-    Generate documentation for the given configuration.
+class PyToolConfigAutoDocumenter(ClassDocumenter):
+    """Sphinx autodocumenter for pytoolconfig models."""
 
-    :param config: Configuration Object
-    :param file: Path to write to.
-    """
-    assert (
-        len(config._config_fields) > 0
-    )  # There must be at least one entry for configuration
-    with file.open("w") as f:
-        f.write("# Configuration\n")
-        if len(config.sources) == 1:
-            f.write(f"{config.tool} supports the pyproject.toml configuration file\n")
-        else:
-            f.write(f"{config.tool} supports the following configuration files\n")
-            for idx, source in enumerate(config.sources):
-                f.write(f" {idx + 1}. {source.name}  \n")
-            f.write("\n")
-        universal_config = any(
-            field.universal_config for field in config._config_fields.values()
-        )
-        command_line = config.arg_parser is not None
-        for model, name in write_model(
-            config._config_fields, f, config.tool, universal_config, command_line
-        ):
-            write_model(_gather_config_fields(model), f, name, False, False)
+    objtype = "pytoolconfigtable"
+    content_indent = ""
+    titles_allowed = True
+
+    @classmethod
+    def can_document_member(
+        cls, member: Any, membername: str, isattr: bool, parent: Any
+    ) -> bool:
+        """Check if member is dataclass."""
+        return _is_dataclass(member)
+
+    def add_directive_header(self, sig: str) -> None:
+        """Remove directive headers."""
+        pass
+
+    def add_content(
+        self, more_content: Optional[StringList], no_docstring: bool = False
+    ):
+        """Create simple table to document configuration options."""
+        source = self.get_sourcename()
+        config = self.object
+        for line in _write_model(config):
+            self.add_line(line, source)
+
+
+def setup(app: Sphinx):
+    """Register automatic documenter."""
+    app.setup_extension("sphinx.ext.autodoc")
+    app.add_autodocumenter(PyToolConfigAutoDocumenter)
