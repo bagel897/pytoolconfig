@@ -2,8 +2,9 @@
 import sys
 from dataclasses import fields
 from pathlib import Path
-from typing import List, Mapping, Optional, Tuple, Type
+from typing import Generator, List, Mapping, Optional, Tuple, Type
 
+from packaging.requirements import Requirement
 from packaging.specifiers import SpecifierSet
 
 from .types import Dataclass, key
@@ -42,8 +43,10 @@ def max_py_version(specifier: str) -> Tuple[int, int]:
     return (3, 4)  # Please don't cap your project at python3.4
 
 
-def dependencies(dependencies: List[str]) -> List[str]:
-    pass
+def parse_dependencies(dependencies: List[str]) -> Generator[Requirement, None, None]:
+    for dependency in dependencies:
+        requirement = Requirement(dependency)
+        yield requirement
 
 
 def _is_dataclass(field_type) -> bool:

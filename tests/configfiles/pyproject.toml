@@ -48,6 +48,17 @@ known_first_party = ["tomli", "tests"]
 profile = "black"
 
 
+[project.optional-dependencies]
+validation = [
+    "pydantic>=1.7.4",
+]
+global = [
+    "appdirs>=1.4.4",
+]
+doc = [
+    "tabulate>=0.8.9",
+    "sphinx>=4.5.0",
+]
 [tool.tox]
 legacy_tox_ini = '''
 [tox]

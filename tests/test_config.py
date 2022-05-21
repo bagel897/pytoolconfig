@@ -10,6 +10,7 @@ def test_base_pyproject(cwd):
     assert universal.min_py_version == (3, 7)
     assert universal.max_py_version == (sys.version_info.major, sys.version_info.minor)
     assert universal.formatter == "black"
+    assert "sphinx" in [dep.name for dep in universal.optional_dependencies["doc"]]
 
 
 def test_base_ini(cwd):

@@ -10,6 +10,7 @@ from pytoolconfig.utils import (
     find_config_file,
     max_py_version,
     min_py_version,
+    parse_dependencies,
 )
 
 try:
@@ -84,11 +85,21 @@ class PyProject(Source):
             )
         else:
             config = UniversalConfig()
-        if (
-            "project" in self.toml_dict.keys()
-            and "requires-python" in self.toml_dict["project"].keys()
-        ):
-            raw_python_ver = self.toml_dict["project"]["requires-python"]
-            config.min_py_version = min_py_version(raw_python_ver)
-            config.max_py_version = max_py_version(raw_python_ver)
+        if "project" in self.toml_dict.keys():
+            if "requires-python" in self.toml_dict["project"].keys():
+                raw_python_ver = self.toml_dict["project"]["requires-python"]
+                config.min_py_version = min_py_version(raw_python_ver)
+                config.max_py_version = max_py_version(raw_python_ver)
+            if "dependencies" in self.toml_dict["project"]:
+                dependencies = parse_dependencies(
+                    self.toml_dict["project"]["dependencies"]
+                )
+                config.dependencies = dependencies
+            if "optional-dependencies" in self.toml_dict["project"]:
+                optional_deps = {}
+                for group, deps in self.toml_dict["project"][
+                    "optional-dependencies"
+                ].items():
+                    optional_deps[group] = parse_dependencies(deps)
+                config.optional_dependencies = optional_deps
         return config

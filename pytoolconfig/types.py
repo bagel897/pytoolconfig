@@ -1,6 +1,6 @@
-"""PyToolConfig internal definitions and functions. Largely dealing with the type hinting system of pydantic/dataclasses."""
+"""PyToolConfig internal definitions and functions."""
 from datetime import date, datetime, time
-from enum import Enum
+from enum import Enum, auto
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 try:
@@ -17,7 +17,19 @@ except ImportError:
 _base_types = Union[str, int, float, datetime, date, time, bool]
 _base_types_with_list = Union[_base_types, List[_base_types]]
 key = Union[Dict[str, _base_types_with_list], _base_types_with_list]
-UniversalKey = Enum
+
+
+# We have a circular dependency preventing us from generating universal keys from
+# universal_config. Universal Config requires field, which requires Universal Key.
+class UniversalKey(Enum):
+    """See universal config documentation."""
+
+    formatter = auto()
+    max_line_length = auto()
+    min_py_version = auto()
+    max_py_version = auto()
+    dependencies = auto()
+    optional_dependencies = auto()
 
 
 @dataclass

@@ -1,12 +1,14 @@
 import os
 import sys
 from argparse import ArgumentParser
+from dataclasses import fields
 from typing import Tuple
 
 import pytest
 
 from pytoolconfig import PyToolConfig, UniversalKey, dataclass, field
 from pytoolconfig.sources import IniConfig
+from pytoolconfig.universal_config import UniversalConfig
 
 
 @dataclass
@@ -84,3 +86,9 @@ def test_global(cwd):
     config = PyToolConfig("bogus", cwd, NestedModel, global_config=True)
     result = config.parse()
     assert result.subtool.foo == "ajf"
+
+
+def test_universal_key():
+    assert [field.name for field in fields(UniversalConfig)] == [
+        name for name in UniversalKey.__members__
+    ]
