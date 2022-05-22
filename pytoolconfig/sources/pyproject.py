@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 from pytoolconfig.sources.source import Source
-from pytoolconfig.types import key
+from pytoolconfig.types import Key
 from pytoolconfig.universal_config import UniversalConfig
 from pytoolconfig.utils import (
     _dict_to_dataclass,
@@ -49,7 +49,6 @@ class PyProject(Source):
         :param global_config: use the global pytool.toml file instead
         :param recursive: search recursively up the directory tree for the file.
         """
-        filename: Optional[Path]
         if global_config:
             import appdirs
 
@@ -70,7 +69,7 @@ class PyProject(Source):
             return False
         return self.tool in self.toml_dict["tool"].keys()
 
-    def parse(self) -> Optional[Dict[str, key]]:
+    def parse(self) -> Optional[Dict[str, Key]]:
         if not self._read():
             return None
         assert self.toml_dict

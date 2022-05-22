@@ -27,10 +27,9 @@ class PyToolConfig:
         working_directory: Path,
         model: Type[Dataclass],
         arg_parser: Optional[ArgumentParser] = None,
-        custom_sources: List[Source] = [],
+        custom_sources: Optional[List[Source]] = None,
         global_config: bool = False,
-        global_sources: List[Source] = [],
-        universalconfig: bool = False,
+        global_sources: Optional[List[Source]] = None,
         bases: List[str] = [".git", ".hg"],
         recursive: bool = True,
     ):
@@ -51,14 +50,16 @@ class PyToolConfig:
         self._config_fields = _gather_config_fields(model)
         self.tool = tool
         self.sources = [PyProject(working_directory, tool, bases, recursive=recursive)]
-        self.sources.extend(custom_sources)
+        if custom_sources:
+            self.sources.extend(custom_sources)
         if global_config:
             self.sources.append(
                 PyProject(
                     working_directory, tool, bases, global_config=True, recursive=False
                 )
             )
-        self.sources.extend(global_sources)
+        if global_sources:
+            self.sources.extend(global_sources)
 
         if arg_parser:
             self.arg_parser = arg_parser

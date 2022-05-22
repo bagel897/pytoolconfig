@@ -2,8 +2,7 @@
 Program to generate documentation for a given PyToolConfig object.
 """
 
-from types import NoneType
-from typing import Any, Generator, Optional, Type, get_args, get_origin
+from typing import Any, Generator, Optional, Type, get_origin
 
 from docutils.statemachine import StringList
 from sphinx.application import Sphinx
@@ -16,13 +15,12 @@ from .universal_config import UniversalConfig
 from .utils import _is_dataclass
 
 
-def _type_to_str(type: Type) -> Optional[str]:
-    if type is None:
+def _type_to_str(type_to_print: Type) -> Optional[str]:
+    if type_to_print is None:
         return None
-    if get_origin(type) is None:
-        return type.__name__
-    else:
-        return str(type).replace("typing.", "")
+    if get_origin(type_to_print) is None:
+        return type_to_print.__name__
+    return str(type_to_print).replace("typing.", "")
 
 
 def _write_model(
@@ -52,9 +50,10 @@ def _write_model(
                 row[3] = universal_key._default
             if command_line:
                 cli_doc = field.command_line
-                if isinstance(cli_doc, tuple):
-                    key_doc = ", ".join(cli_doc)
-                row.append(cli_doc)
+                if cli_doc is not None:
+                    row.append(", ".join(cli_doc))
+                else:
+                    row.append(None)
             table.append(row)
     yield from tabulate(table, tablefmt="rst", headers=header).split("\n")
 
@@ -75,7 +74,6 @@ class PyToolConfigAutoDocumenter(ClassDocumenter):
 
     def add_directive_header(self, sig: str) -> None:
         """Remove directive headers."""
-        pass
 
     def add_content(
         self, more_content: Optional[StringList], no_docstring: bool = False

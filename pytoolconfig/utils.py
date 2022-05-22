@@ -7,7 +7,7 @@ from typing import Generator, List, Mapping, Optional, Tuple, Type
 from packaging.requirements import Requirement
 from packaging.specifiers import SpecifierSet
 
-from .types import Dataclass, key
+from .types import Dataclass, Key
 
 
 def find_config_file(
@@ -26,7 +26,7 @@ def find_config_file(
 
 
 def min_py_version(specifier: str) -> Tuple[int, int]:
-    """Return the minimum python 3 version. Between 4 and interpreter version."""
+    """Return the minimum python 3 version. Between 3.4 and interpreter version."""
     parsed = SpecifierSet(specifier)
     for i in range(4, sys.version_info.minor):
         if parsed.contains(f"3.{i}"):
@@ -35,7 +35,7 @@ def min_py_version(specifier: str) -> Tuple[int, int]:
 
 
 def max_py_version(specifier: str) -> Tuple[int, int]:
-    """Return the maximum python 3 version. Between 4 and interpreter version."""
+    """Return the maximum python 3 version. Between 3.4 and interpreter version."""
     parsed = SpecifierSet(specifier)
     for i in range(sys.version_info.minor, 4, -1):
         if parsed.contains(f"3.{i}"):
@@ -44,16 +44,16 @@ def max_py_version(specifier: str) -> Tuple[int, int]:
 
 
 def parse_dependencies(dependencies: List[str]) -> Generator[Requirement, None, None]:
+    """Parse the dependencies from TOML using packaging."""
     for dependency in dependencies:
-        requirement = Requirement(dependency)
-        yield requirement
+        yield Requirement(dependency)
 
 
 def _is_dataclass(field_type: Type) -> bool:
     return hasattr(field_type, "__dataclass_params__")
 
 
-def _dict_to_dataclass(dataclass: Type[Dataclass], dictionary: Mapping[str, key]):
+def _dict_to_dataclass(dataclass: Type[Dataclass], dictionary: Mapping[str, Key]):
     field_set = set()
     filtered_arg_dict = {}
     sub_tables = {}

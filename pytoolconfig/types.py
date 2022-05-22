@@ -16,9 +16,9 @@ except ImportError:
     from dataclasses import dataclass
 
     Dataclass = Literal["Dataclass"]
-_base_types = Union[str, int, float, datetime, date, time, bool]
-_base_types_with_list = Union[_base_types, List[_base_types]]
-key = Union[Dict[str, _base_types_with_list], _base_types_with_list]
+_BaseType = Union[str, int, float, datetime, date, time, bool]
+_BaseTypeWithList = Union[_BaseType, List[_BaseType]]
+Key = Union[Dict[str, _BaseTypeWithList], _BaseTypeWithList]
 
 
 # We have a circular dependency preventing us from generating universal keys from
@@ -41,6 +41,6 @@ class ConfigField:
 
     description: Optional[str] = None
     universal_config: Optional[UniversalKey] = None
-    command_line: Optional[Union[Tuple[str]]] = None
+    command_line: Optional[Tuple[str]] = None
     _type: Any = None
     _default: Any = None

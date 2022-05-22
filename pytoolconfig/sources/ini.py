@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 from pytoolconfig.sources.source import Source
-from pytoolconfig.types import key
+from pytoolconfig.types import Key
 from pytoolconfig.utils import find_config_file
 
 
@@ -59,10 +59,10 @@ class IniConfig(Source):
                 return True
         return False
 
-    def parse(self) -> Optional[Dict[str, key]]:
+    def parse(self) -> Optional[Dict[str, Key]]:
         if not self._read():
             return None
-        output: Dict[str, key] = {}
+        output: Dict[str, Key] = {}
         for table in self._config:
             split = table.split(".")
             if split[0] == self.base_table:

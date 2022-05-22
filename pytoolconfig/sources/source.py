@@ -2,7 +2,7 @@
 from abc import ABC, abstractmethod
 from typing import Dict, Optional
 
-from pytoolconfig.types import key
+from pytoolconfig.types import Key
 
 
 class Source(ABC):
@@ -20,7 +20,7 @@ class Source(ABC):
         """
 
     @abstractmethod
-    def parse(self) -> Optional[Dict[str, key]]:
+    def parse(self) -> Optional[Dict[str, Key]]:
         """
         Parse the file for each property as a nested dict.
 
