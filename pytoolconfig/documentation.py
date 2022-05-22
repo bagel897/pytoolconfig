@@ -56,8 +56,7 @@ def _write_model(
                     key_doc = ", ".join(cli_doc)
                 row.append(cli_doc)
             table.append(row)
-    for line in tabulate(table, tablefmt="rst", headers=header).split("\n"):
-        yield line
+    yield from tabulate(table, tablefmt="rst", headers=header).split("\n")
 
 
 class PyToolConfigAutoDocumenter(ClassDocumenter):
