@@ -77,6 +77,13 @@ class PyProject(Source):
         return self.toml_dict["tool"][self.tool]
 
     def universalconfig(self) -> UniversalConfig:
+        """
+        Parse the file for the universal config object's fields.
+
+        Only implement the relevant fields such as minimum python version.
+
+        Pre: file was read but tool isn't necessarily in file.
+        """
         if not self.toml_dict:
             return UniversalConfig()
         if "pytoolconfig" in self.toml_dict["tool"].keys():

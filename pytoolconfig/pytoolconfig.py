@@ -70,7 +70,9 @@ class PyToolConfig:
 
         :param args: any additional command line overwrites.
         """
-        configuration, universal = self._parse_sources()
+        configuration = self._parse_sources()
+        assert isinstance(self.sources[0], PyProject)
+        universal: UniversalConfig = self.sources[0].universalconfig()
         if self.arg_parser:
             parsed = self.arg_parser.parse_args(args)
             for name, value in parsed._get_kwargs():
@@ -101,12 +103,9 @@ class PyToolConfig:
                     dest=name,
                 )
 
-    def _parse_sources(self) -> Tuple[Dataclass, UniversalConfig]:
+    def _parse_sources(self) -> Dataclass:
         for source in self.sources:
             configuration = source.parse()
             if configuration:
-                return (
-                    _dict_to_dataclass(self.model, configuration),
-                    source.universalconfig(),
-                )
-        return self.model(), self.sources[0].universalconfig()
+                return _dict_to_dataclass(self.model, configuration)
+        return self.model()

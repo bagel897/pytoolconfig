@@ -1,7 +1,7 @@
 """Abstractions over dataclass fields."""
 import dataclasses
 from dataclasses import fields
-from typing import Any, Callable, Dict, Optional, Tuple, Type
+from typing import Any, Callable, Dict, Optional, Tuple, Type, Union
 
 from .types import ConfigField, Dataclass, UniversalKey
 
@@ -32,7 +32,7 @@ def field(
 
 
 def _gather_config_fields(
-    model: Type[Dataclass],
+    model: Union[Type[Dataclass], Dataclass],
 ) -> Dict[str, ConfigField]:
     # First try PyToolConfig Annotated Fields
     result = {}

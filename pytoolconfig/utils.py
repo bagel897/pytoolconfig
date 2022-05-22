@@ -49,7 +49,7 @@ def parse_dependencies(dependencies: List[str]) -> Generator[Requirement, None, 
         yield requirement
 
 
-def _is_dataclass(field_type) -> bool:
+def _is_dataclass(field_type: Type) -> bool:
     return hasattr(field_type, "__dataclass_params__")
 
 

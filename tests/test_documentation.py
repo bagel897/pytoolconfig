@@ -1,7 +1,7 @@
 from typing import Optional, Tuple
 
 from pytoolconfig import UniversalKey, dataclass, field
-from pytoolconfig.documentation import _write_model
+from pytoolconfig.documentation import _type_to_str, _write_model
 
 
 @dataclass
@@ -18,6 +18,12 @@ class NestedModel:
     min_py_ver: Tuple[int, int] = field(
         default=None, description="sauf", universal_config=UniversalKey.min_py_version
     )
+
+
+def test_type_to_str():
+    assert _type_to_str(bool) == "bool"
+    assert _type_to_str(int) == "int"
+    assert _type_to_str(Tuple[int, int]) == "Tuple[int, int]"
 
 
 def test_documentation():

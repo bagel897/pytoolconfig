@@ -3,7 +3,6 @@ from abc import ABC, abstractmethod
 from typing import Dict, Optional
 
 from pytoolconfig.types import key
-from pytoolconfig.universal_config import UniversalConfig
 
 
 class Source(ABC):
@@ -29,13 +28,3 @@ class Source(ABC):
         Otherwise, returns configuration pertaining to the tool.
         """
         pass
-
-    def universalconfig(self) -> UniversalConfig:
-        """
-        Parse the file for the universal config object's fields.
-
-        Only implement the relevant fields such as minimum python version.
-
-        Pre: file was read but tool isn't necessarily in file.
-        """
-        return UniversalConfig()

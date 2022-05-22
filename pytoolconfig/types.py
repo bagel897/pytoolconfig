@@ -1,8 +1,10 @@
 """PyToolConfig internal definitions and functions."""
 from datetime import date, datetime, time
 from enum import Enum, auto
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Tuple, Type, Union
 
+dataclass: Callable
+Dataclass: Type
 try:
     from typing import Literal
 except ImportError:
