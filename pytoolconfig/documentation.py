@@ -30,10 +30,7 @@ def _write_model(
 ) -> Generator[str, None, None]:
     header = ["name", "description", "type", "default"]
     model_fields = _gather_config_fields(model)
-    universal_config = any(field.universal_config for field in model_fields.values())
     command_line = any(field.command_line for field in model_fields.values())
-    if universal_config:
-        header.append("universal key")
     if command_line:
         header.append("command line flag")
     extra = []
@@ -48,15 +45,11 @@ def _write_model(
                 _type_to_str(field._type),
                 field._default,
             ]
-            if universal_config:
-                key_doc = None
-                if field.universal_config:
-                    key = field.universal_config
-                    universal_key = _gather_config_fields(UniversalConfig)[key.name]
-                    row[1] = "This field is set via an universal key."
-                    row[3] = universal_key._default
-                    key_doc = universal_key.description
-                row.append(key_doc)
+            if field.universal_config:
+                key = field.universal_config
+                universal_key = _gather_config_fields(UniversalConfig)[key.name]
+                row[1] = universal_key.description
+                row[3] = universal_key._default
             if command_line:
                 cli_doc = field.command_line
                 if isinstance(cli_doc, tuple):
