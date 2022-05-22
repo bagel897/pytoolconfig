@@ -19,6 +19,8 @@ class NestedModel:
         default=None, description="sauf", universal_config=UniversalKey.min_py_version
     )
 
+    test_truth: bool = False
+
 
 def test_type_to_str():
     assert _type_to_str(bool) == "bool"
@@ -27,9 +29,10 @@ def test_type_to_str():
 
 
 def test_documentation():
-    nodes = list(_write_model(NestedModel))
-    assert "description" in nodes[1]
-    assert "foo_other" in nodes[3]
-    assert "Tool One" in nodes[3]
-    assert "no" in nodes[3]
-    assert "Optional" not in nodes[3]
+    lines = list(_write_model(NestedModel))
+    assert "description" in lines[1]
+    assert "foo_other" in lines[3]
+    assert "Tool One" in lines[3]
+    assert "no" in lines[3]
+    assert "Optional" in lines[3]
+    assert "bool" in lines[5]

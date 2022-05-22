@@ -16,7 +16,9 @@ from .universal_config import UniversalConfig
 from .utils import _is_dataclass
 
 
-def _type_to_str(type: Type) -> str:
+def _type_to_str(type: Type) -> Optional[str]:
+    if type is None:
+        return None
     if get_origin(type) is None:
         return type.__name__
     else:
@@ -40,20 +42,10 @@ def _write_model(
         if _is_dataclass(field._type):
             extra.append((field._type, f"{name}.{name}"))
         else:
-            type = field._type
-            if type is not None:
-                resolved_type = ",".join(
-                    _type_to_str(sub_type)
-                    for sub_type in get_args(type)
-                    if sub_type is not NoneType
-                )
-            else:
-                resolved_type = None
-
             row = [
                 f"{name}",
                 field.description.replace("\n", " ") if field.description else None,
-                resolved_type,
+                _type_to_str(field._type),
                 field._default,
             ]
             if universal_config:
