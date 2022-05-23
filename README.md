@@ -5,3 +5,6 @@ The goal of this project is to manage configuration for python tools, such as bl
 [Documentation](https://pytoolconfig.readthedocs.io/en/latest/)
 ## Development
 ```pdm install --dev -G :all``` to setup development environment
+```pdm run tox``` to run tests
+## Alternatives
+[Maison](https://dbatten5.github.io/maison/) is a similar library
