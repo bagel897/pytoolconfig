@@ -1,60 +1,57 @@
 [project]
-name = "pytoolconfig"
-version = "1.0.0"
-description = "Python tool configuration"
-authors = [
-    {name = "bageljr", email = "bageljr897@protonmail.com"},
-]
-license-expression = "LGPL-3.0-or-later"
+name = 'pytoolconfig'
+version = '1.0.0'
+description = 'Python tool configuration'
+license-expression = 'LGPL-3.0-or-later'
 dependencies = [
     'tomli>=2.0; python_version < "3.11"',
-    "packaging>=21.3",
+    'packaging>=21.3',
     'typing-extensions; python_version < "3.9"',
 ]
-requires-python = ">=3.7"
+requires-python = '>=3.7'
+
+[[project.authors]]
+name = 'bageljr'
+email = 'bageljr897@protonmail.com'
 
 [project.urls]
-Homepage = "https://github.com/bageljrkhanofemus/pytoolconfig"
+Homepage = 'https://github.com/bageljrkhanofemus/pytoolconfig'
 
 [project.optional-dependencies]
-validation = [
-    "pydantic>=1.7.4",
-]
-global = [
-    "appdirs>=1.4.4",
-]
+validation = ['pydantic>=1.7.4']
+global = ['appdirs>=1.4.4']
 doc = [
-    "tabulate>=0.8.9",
-    "sphinx>=4.5.0",
+    'tabulate>=0.8.9',
+    'sphinx>=4.5.0',
 ]
-# Required to generate pytoolconfig's own documentation
 gen_docs = [
-    "sphinx>=4.5.0",
-    "sphinx-autodoc-typehints>=1.18.1",
-    "sphinx-rtd-theme>=1.0.0"
+    'sphinx>=4.5.0',
+    'sphinx-autodoc-typehints>=1.18.1',
+    'sphinx-rtd-theme>=1.0.0',
+    'pytoolconfig[doc]',
 ]
-[tool.pdm]
 [tool.pdm.dev-dependencies]
 dev = [
-    "pytoolconfig[validation, global, doc, gen_docs]",
-    "pytest>=7.0.1",
-    "pdm-publish>=0.2.1",
-    "mypy>=0.950",
-    "types-tabulate>=0.8.9",
-    "pre-commit>=2.19.0",
-    "rstcheck>=5.0.0",
-    "tox>=3.25.0",
+    'pytoolconfig[validation, global, doc, gen_docs]',
+    'pytest>=7.0.1',
+    'pdm-publish>=0.2.1',
+    'mypy>=0.950',
+    'types-tabulate>=0.8.9',
+    'pre-commit>=2.19.0',
+    'rstcheck>=5.0.0',
+    'tox>=3.25.0',
 ]
-[tool.pytoolconfig]
-formatter = "black"
 
+[tool.pytoolconfig]
+formatter = 'black'
 [tool.pytest.ini_options]
-testpaths = ["tests",]
+testpaths = ['tests']
 
 [tool.isort]
-profile = "black"
+profile = 'black'
+
 [tool.tox]
-legacy_tox_ini = """
+legacy_tox_ini = '''
 [tox]
 envlist = py37,py38, py39, py310
 isolated_build = True
@@ -63,12 +60,12 @@ deps =
     pytest
     pytoolconfig[doc, global]
 commands = pytest
-"""
+'''
 
 [mypy]
-plugins = "pydantic.mypy"
+plugins = 'pydantic.mypy'
 strict = true
 
 [build-system]
-requires = ["pdm-pep517>=0.12.0"]
-build-backend = "pdm.pep517.api"
+requires = ['pdm-pep517>=0.12.0']
+build-backend = 'pdm.pep517.api'
