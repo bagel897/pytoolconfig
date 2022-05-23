@@ -43,12 +43,27 @@ dev = [
     "types-tabulate>=0.8.9",
     "pre-commit>=2.19.0",
     "rstcheck>=5.0.0",
+    "tox>=3.25.0",
 ]
 [tool.pytoolconfig]
 formatter = "black"
 
+[tool.pytest.ini_options]
+testpaths = ["tests",]
+
 [tool.isort]
 profile = "black"
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist = py37,py38, py39, py310
+isolated_build = True
+[testenv]
+deps =
+    pytest
+    pytoolconfig[doc, global]
+commands = pytest
+"""
 
 [mypy]
 plugins = "pydantic.mypy"

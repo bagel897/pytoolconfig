@@ -2,7 +2,12 @@
 Program to generate documentation for a given PyToolConfig object.
 """
 
-from typing import Any, Generator, Optional, Type, get_origin
+from typing import Any, Generator, Optional, Type
+
+try:
+    from typing import get_origin
+except ImportError:
+    from typing_extensions import get_origin
 
 from docutils.statemachine import StringList
 from sphinx.application import Sphinx
