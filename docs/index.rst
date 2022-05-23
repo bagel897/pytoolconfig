@@ -16,7 +16,6 @@ The goal of this project is to manage configuration for python tools, such as bl
 - :doc:`Optional Pydantic data validation and output. <pydantic>`
 - :doc:`Universal Configuration keys <universal_config>`
 - :doc:`Documentation Generation <documentation>`
-- Read only support
 
 Configuration Sources
 ---------------------
