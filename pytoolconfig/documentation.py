@@ -2,12 +2,13 @@
 Program to generate documentation for a given PyToolConfig object.
 """
 
+import sys
 from typing import Any, Generator, Optional, Type
 
-try:
-    from typing import get_origin
-except ImportError:
+if sys.version_info < (3, 8, 0):
     from typing_extensions import get_origin
+else:
+    from typing import get_origin
 
 from docutils.statemachine import StringList
 from sphinx.application import Sphinx
@@ -20,7 +21,7 @@ from .universal_config import UniversalConfig
 from .utils import _is_dataclass
 
 
-def _type_to_str(type_to_print: Type) -> Optional[str]:
+def _type_to_str(type_to_print: Type[Any]) -> Optional[str]:
     if type_to_print is None:
         return None
     if get_origin(type_to_print) is None:
@@ -82,7 +83,7 @@ class PyToolConfigAutoDocumenter(ClassDocumenter):
 
     def add_content(
         self, more_content: Optional[StringList], no_docstring: bool = False
-    ):
+    ) -> None:
         """Create simple table to document configuration options."""
         source = self.get_sourcename()
         config = self.object
@@ -90,7 +91,7 @@ class PyToolConfigAutoDocumenter(ClassDocumenter):
             self.add_line(line, source)
 
 
-def setup(app: Sphinx):
+def setup(app: Sphinx) -> None:
     """Register automatic documenter."""
     app.setup_extension("sphinx.ext.autodoc")
     app.add_autodocumenter(PyToolConfigAutoDocumenter)

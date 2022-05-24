@@ -8,7 +8,9 @@ from pytoolconfig.types import Key
 from pytoolconfig.utils import find_config_file
 
 
-def _add_split_to_dict(dest: Dict, table_to_add: List[str], table: SectionProxy):
+def _add_split_to_dict(
+    dest: Dict[str, Key], table_to_add: List[str], table: SectionProxy
+) -> None:
     if len(table_to_add) == 0:
         for table_key in table:
             dest[table_key] = table[table_key]
@@ -34,7 +36,7 @@ class IniConfig(Source):
         description: Optional[str] = None,
     ):
         """
-
+        Initialize the Ini Configuration.
 
         :param working_directory: the working directory to search.
         :param filename: the filename to search for.
@@ -60,6 +62,7 @@ class IniConfig(Source):
         return False
 
     def parse(self) -> Optional[Dict[str, Key]]:
+        """Parse the INI file."""
         if not self._read():
             return None
         output: Dict[str, Key] = {}

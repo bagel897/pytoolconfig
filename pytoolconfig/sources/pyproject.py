@@ -1,4 +1,5 @@
 """Source for pyproject.toml files or more generally toml files."""
+import sys
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -13,10 +14,10 @@ from pytoolconfig.utils import (
     parse_dependencies,
 )
 
-try:
-    import tomllib
-except ModuleNotFoundError:
+if sys.version_info < (3, 11, 0):
     import tomli as tomllib
+else:
+    import tomllib
 
 
 class PyProject(Source):
@@ -43,6 +44,8 @@ class PyProject(Source):
         recursive: bool = True,
     ):
         """
+        Initialize the TOML configuration.
+
         :param working_directory: Working Directory
         :param tool: name of your tool. Will read configuration from [tool.yourtool]
         :param bases: Base files/folders to look for (besides pyproject.toml)
@@ -70,6 +73,7 @@ class PyProject(Source):
         return self.tool in self.toml_dict["tool"].keys()
 
     def parse(self) -> Optional[Dict[str, Key]]:
+        """Parse the TOML file."""
         if not self._read():
             return None
         assert self.toml_dict
@@ -85,6 +89,7 @@ class PyProject(Source):
         """
         if not self.toml_dict:
             return UniversalConfig()
+        config: UniversalConfig
         if "pytoolconfig" in self.toml_dict["tool"].keys():
             config = _dict_to_dataclass(
                 UniversalConfig, self.toml_dict["tool"]["pytoolconfig"]
@@ -99,11 +104,11 @@ class PyProject(Source):
                 config.max_py_version = max_py_version(raw_python_ver)
             if "dependencies" in project:
                 dependencies = parse_dependencies(project["dependencies"])
-                config.dependencies = dependencies
+                config.dependencies = list(dependencies)
             if "optional-dependencies" in project:
                 optional_deps = {}
                 for group, deps in project["optional-dependencies"].items():
-                    optional_deps[group] = parse_dependencies(deps)
+                    optional_deps[group] = list(parse_dependencies(deps))
                 config.optional_dependencies = optional_deps
             if "version" in project:
                 config.version = project["version"]

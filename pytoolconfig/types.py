@@ -1,21 +1,21 @@
 """PyToolConfig internal definitions and functions."""
+import sys
 from datetime import date, datetime, time
 from enum import Enum, auto
-from typing import Any, Callable, Dict, List, Optional, Tuple, Type, Union
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
-dataclass: Callable
-Dataclass: Type
-try:
-    from typing import Literal
-except ImportError:
-    from typing_extensions import Literal
+dataclass: Callable[..., Any]
+if sys.version_info < (3, 10, 0):
+    from typing_extensions import TypeAlias
+else:
+    from typing import TypeAlias
+Dataclass: TypeAlias = "Dataclass"
 try:
     from pydantic.dataclasses import Dataclass, dataclass
 
 except ImportError:
     from dataclasses import dataclass
 
-    Dataclass = Literal["Dataclass"]
 _BaseType = Union[str, int, float, datetime, date, time, bool]
 _BaseTypeWithList = Union[_BaseType, List[_BaseType]]
 Key = Union[Dict[str, _BaseTypeWithList], _BaseTypeWithList]

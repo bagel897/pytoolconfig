@@ -1,7 +1,7 @@
 """Tool to configure Python tools."""
 from argparse import SUPPRESS, ArgumentParser
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple, Type
+from typing import Dict, List, Optional, Type
 
 from pytoolconfig.fields import _gather_config_fields
 from pytoolconfig.sources.pyproject import PyProject
@@ -61,9 +61,8 @@ class PyToolConfig:
         if global_sources:
             self.sources.extend(global_sources)
 
-        if arg_parser:
-            self.arg_parser = arg_parser
-            self._setup_arg_parser()
+        self.arg_parser = arg_parser
+        self._setup_arg_parser()
 
     def parse(self, args: List[str] = []) -> Dataclass:
         """
@@ -89,20 +88,19 @@ class PyToolConfig:
                     )
         return configuration
 
-    def _setup_arg_parser(self):
-        for name, field in self._config_fields.items():
-            if field.command_line:
-                flags = field.command_line
-                if not isinstance(flags, Tuple):
-                    flags = (flags,)
-                self.arg_parser.add_argument(
-                    *flags,
-                    type=field._type,
-                    help=field.description,
-                    default=SUPPRESS,
-                    metavar=name,
-                    dest=name,
-                )
+    def _setup_arg_parser(self) -> None:
+        if self.arg_parser:
+            for name, field in self._config_fields.items():
+                if field.command_line:
+                    flags = field.command_line
+                    self.arg_parser.add_argument(
+                        *flags,
+                        type=field._type,
+                        help=field.description,
+                        default=SUPPRESS,
+                        metavar=name,
+                        dest=name,
+                    )
 
     def _parse_sources(self) -> Dataclass:
         for source in self.sources:
