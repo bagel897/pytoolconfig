@@ -28,7 +28,7 @@ class SubTool:
 
 @dataclass
 class NestedModel:
-    subtool: SubTool = SubTool()
+    subtool: SubTool = field(default_factory=lambda: SubTool())
     foo_other: str = field(description="w", default="no", command_line=("--foo", "-f"))
 
     target: Tuple[int, int] = field(

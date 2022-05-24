@@ -8,7 +8,7 @@ dependencies = [
     'packaging>=21.3',
     'typing-extensions; python_version < "3.9"',
 ]
-requires-python = '>=3.7'
+requires-python = '>=3.7, <=3.11'
 
 [[project.authors]]
 name = 'bageljr'
@@ -53,7 +53,7 @@ profile = 'black'
 [tool.tox]
 legacy_tox_ini = '''
 [tox]
-envlist = py37,py38, py39, py310
+envlist = py37,py38, py39, py310, py311
 isolated_build = True
 [testenv]
 deps =

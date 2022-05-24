@@ -11,7 +11,7 @@ class SubTool:
 
 @dataclass
 class NestedModel:
-    subtool: SubTool = SubTool()
+    subtool: SubTool = field(default_factory=lambda: SubTool())
     foo_other: Optional[str] = field(
         description="Tool One", default="no", command_line=("--foo", "-f")
     )
