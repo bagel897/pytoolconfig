@@ -2,12 +2,22 @@
 import sys
 from dataclasses import fields
 from pathlib import Path
-from typing import Generator, List, Mapping, Optional, Tuple, Type
+from typing import (
+    Any,
+    Callable,
+    Dict,
+    Generator,
+    List,
+    Mapping,
+    Optional,
+    Tuple,
+    TypeVar,
+)
 
 from packaging.requirements import Requirement
 from packaging.specifiers import SpecifierSet
 
-from .types import Dataclass, Key
+from .types import Dataclass, Key, _is_dataclass
 
 
 def find_config_file(
@@ -49,13 +59,12 @@ def parse_dependencies(dependencies: List[str]) -> Generator[Requirement, None, 
         yield Requirement(dependency)
 
 
-def _is_dataclass(field_type: Type) -> bool:
-    return hasattr(field_type, "__dataclass_params__")
+T = TypeVar("T", bound="Dataclass")
 
 
-def _dict_to_dataclass(dataclass: Type[Dataclass], dictionary: Mapping[str, Key]):
+def _dict_to_dataclass(dataclass: Callable[..., T], dictionary: Mapping[str, Key]) -> T:
     field_set = set()
-    filtered_arg_dict = {}
+    filtered_arg_dict: Dict[str, Any] = {}
     sub_tables = {}
     for field in fields(dataclass):
         if field.init:

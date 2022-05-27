@@ -1,18 +1,13 @@
 """Abstractions over dataclass fields."""
+from __future__ import annotations
+
 import dataclasses
-import sys
 from dataclasses import fields
 from typing import Any, Callable, Dict, Optional, Tuple, Type, Union
 
 from .types import ConfigField, Dataclass, UniversalKey
 
 _METADATA_KEY = "pytoolconfig"
-
-Field: Type
-if sys.version_info < (3, 10, 0):
-    Field = dataclasses.Field
-else:
-    Field = dataclasses.Field[Any]
 
 
 def field(
@@ -22,7 +17,7 @@ def field(
     universal_config: Optional[UniversalKey] = None,
     default_factory: Optional[Callable[[], Any]] = None,
     init: bool = True,
-) -> Field:
+) -> dataclasses.Field:
     """Create a dataclass field with metadata."""
     metadata = {
         _METADATA_KEY: ConfigField(

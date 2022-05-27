@@ -1,9 +1,8 @@
-"""
-Program to generate documentation for a given PyToolConfig object.
-"""
+"""Program to generate documentation for a given PyToolConfig object."""
+
 
 import sys
-from typing import Any, Generator, Optional, Type
+from typing import Any, Dict, Generator, Optional, Type
 
 if sys.version_info < (3, 8, 0):
     from typing_extensions import get_origin
@@ -16,9 +15,8 @@ from sphinx.ext.autodoc import ClassDocumenter
 from tabulate import tabulate
 
 from .fields import _gather_config_fields
-from .types import Dataclass
+from .types import ConfigField, Dataclass, _is_dataclass
 from .universal_config import UniversalConfig
-from .utils import _is_dataclass
 
 
 def _type_to_str(type_to_print: Type[Any]) -> Optional[str]:
@@ -33,7 +31,7 @@ def _write_model(
     model: Dataclass,
 ) -> Generator[str, None, None]:
     header = ["name", "description", "type", "default"]
-    model_fields = _gather_config_fields(model)
+    model_fields: Dict[str, ConfigField] = _gather_config_fields(model)
     command_line = any(field.command_line for field in model_fields.values())
     if command_line:
         header.append("command line flag")
@@ -51,6 +49,7 @@ def _write_model(
             ]
             if field.universal_config:
                 key = field.universal_config
+                assert _is_dataclass(UniversalConfig)
                 universal_key = _gather_config_fields(UniversalConfig)[key.name]
                 row[1] = universal_key.description
                 row[3] = universal_key._default

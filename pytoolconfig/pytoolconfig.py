@@ -1,7 +1,7 @@
 """Tool to configure Python tools."""
 from argparse import SUPPRESS, ArgumentParser
 from pathlib import Path
-from typing import Dict, List, Optional, Type
+from typing import Dict, Generic, List, Optional, Type, TypeVar
 
 from pytoolconfig.fields import _gather_config_fields
 from pytoolconfig.sources.pyproject import PyProject
@@ -10,14 +10,16 @@ from pytoolconfig.types import ConfigField, Dataclass
 from pytoolconfig.universal_config import UniversalConfig
 from pytoolconfig.utils import _dict_to_dataclass
 
+T = TypeVar("T", bound="Dataclass")
 
-class PyToolConfig:
+
+class PyToolConfig(Generic[T]):
     """Python Tool Configuration Aggregator."""
 
     sources: List[Source] = []
     tool: str
     working_directory: Path
-    model: Type[Dataclass]
+    model: Type[T]
     arg_parser: Optional[ArgumentParser] = None
     _config_fields: Dict[str, ConfigField]
 
@@ -25,7 +27,7 @@ class PyToolConfig:
         self,
         tool: str,
         working_directory: Path,
-        model: Type[Dataclass],
+        model: Type[T],
         arg_parser: Optional[ArgumentParser] = None,
         custom_sources: Optional[List[Source]] = None,
         global_config: bool = False,
@@ -64,7 +66,7 @@ class PyToolConfig:
         self.arg_parser = arg_parser
         self._setup_arg_parser()
 
-    def parse(self, args: List[str] = []) -> Dataclass:
+    def parse(self, args: List[str] = []) -> T:
         """
         Parse the configuration.
 
@@ -102,7 +104,7 @@ class PyToolConfig:
                         dest=name,
                     )
 
-    def _parse_sources(self) -> Dataclass:
+    def _parse_sources(self) -> T:
         for source in self.sources:
             configuration = source.parse()
             if configuration:

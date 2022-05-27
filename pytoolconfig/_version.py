@@ -1,7 +1,8 @@
 """Version of pytoolconfig."""
+from dataclasses import dataclass
 from pathlib import Path
 
-from pytoolconfig import PyToolConfig, UniversalKey, dataclass, field
+from pytoolconfig import PyToolConfig, UniversalKey, field
 
 
 @dataclass

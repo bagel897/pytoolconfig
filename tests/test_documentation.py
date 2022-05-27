@@ -1,6 +1,7 @@
+from dataclasses import dataclass
 from typing import Optional, Tuple
 
-from pytoolconfig import UniversalKey, dataclass, field
+from pytoolconfig import UniversalKey, field
 from pytoolconfig.documentation import _type_to_str, _write_model
 
 
