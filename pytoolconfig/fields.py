@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import dataclasses
-from dataclasses import fields
+from dataclasses import MISSING, fields
 from typing import Any, Callable, Dict, Optional, Tuple, Type, Union
 
 from .types import ConfigField, Dataclass, UniversalKey
@@ -11,11 +11,11 @@ _METADATA_KEY = "pytoolconfig"
 
 
 def field(
-    default: Any = None,
+    default: Any = MISSING,
     description: Optional[str] = None,
     command_line: Optional[Tuple[str]] = None,
     universal_config: Optional[UniversalKey] = None,
-    default_factory: Optional[Callable[[], Any]] = None,
+    default_factory: Optional[Callable[[], Any]] = MISSING,
     init: bool = True,
 ) -> dataclasses.Field:
     """Create a dataclass field with metadata."""
@@ -28,11 +28,12 @@ def field(
         )
     }
 
-    if default_factory:
+    if default_factory is not MISSING and default_factory is not None:
         metadata[_METADATA_KEY]._default = default_factory()
         return dataclasses.field(
             default_factory=default_factory, metadata=metadata, init=init
         )
+    assert default is not MISSING
     return dataclasses.field(default=default, metadata=metadata, init=init)
 
 

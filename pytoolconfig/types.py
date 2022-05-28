@@ -1,38 +1,27 @@
 """PyToolConfig internal definitions and functions."""
 
-import sys
 from dataclasses import dataclass
 from datetime import date, datetime, time
 from enum import Enum, auto
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Tuple, TypeVar, Union
 
-if sys.version_info < (3, 10, 0):
-    from typing_extensions import TypeGuard
-else:
-    from typing import TypeGuard
+DataclassT = TypeVar("DataclassT", bound="Dataclass")
 
 
-if TYPE_CHECKING:
-    try:
-        from pydantic.dataclasses import Dataclass
-    except ModuleNotFoundError:
+class Dataclass:
+    __initialised__: bool
+    __post_init_original__: Optional[Callable[..., None]]
 
-        class Dataclass:
-            """Dataclass stub for type checking purposes."""
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        pass
 
-            pass
-
-else:
-    Dataclass = "Dataclass"
+    def __call__(self: "DataclassT", *args: Any, **kwargs: Any) -> "DataclassT":
+        pass
 
 
 _BaseType = Union[str, int, float, datetime, date, time, bool]
 _BaseTypeWithList = Union[_BaseType, List[_BaseType]]
 Key = Union[Dict[str, _BaseTypeWithList], _BaseTypeWithList]
-
-
-def _is_dataclass(field_type: Any) -> TypeGuard[Dataclass]:
-    return hasattr(field_type, "__dataclass_params__")
 
 
 # We have a circular dependency preventing us from generating universal keys from

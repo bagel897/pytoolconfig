@@ -61,6 +61,8 @@ deps =
     pytoolconfig[doc, global]
 commands = pytest
 '''
+[tool.pylint.format]
+max-line-length = "88"
 
 [mypy]
 plugins = 'pydantic.mypy'

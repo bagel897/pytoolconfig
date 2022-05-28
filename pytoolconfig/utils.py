@@ -1,6 +1,6 @@
 """Utility functions and classes."""
 import sys
-from dataclasses import fields
+from dataclasses import fields, is_dataclass
 from pathlib import Path
 from typing import (
     Any,
@@ -17,7 +17,7 @@ from typing import (
 from packaging.requirements import Requirement
 from packaging.specifiers import SpecifierSet
 
-from .types import Dataclass, Key, _is_dataclass
+from .types import Dataclass, Key
 
 
 def find_config_file(
@@ -68,7 +68,7 @@ def _dict_to_dataclass(dataclass: Callable[..., T], dictionary: Mapping[str, Key
     sub_tables = {}
     for field in fields(dataclass):
         if field.init:
-            if _is_dataclass(field.type):
+            if is_dataclass(field.type):
                 sub_tables[field.name] = field.type
             else:
                 field_set.add(field.name)

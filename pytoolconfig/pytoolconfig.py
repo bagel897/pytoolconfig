@@ -1,5 +1,6 @@
 """Tool to configure Python tools."""
 from argparse import SUPPRESS, ArgumentParser
+from dataclasses import is_dataclass
 from pathlib import Path
 from typing import Dict, Generic, List, Optional, Type, TypeVar
 
@@ -10,16 +11,16 @@ from pytoolconfig.types import ConfigField, Dataclass
 from pytoolconfig.universal_config import UniversalConfig
 from pytoolconfig.utils import _dict_to_dataclass
 
-T = TypeVar("T", bound="Dataclass")
+DataclassT = TypeVar("DataclassT", bound="Dataclass")
 
 
-class PyToolConfig(Generic[T]):
+class PyToolConfig(Generic[DataclassT]):
     """Python Tool Configuration Aggregator."""
 
     sources: List[Source] = []
     tool: str
     working_directory: Path
-    model: Type[T]
+    model: Type[DataclassT]
     arg_parser: Optional[ArgumentParser] = None
     _config_fields: Dict[str, ConfigField]
 
@@ -27,7 +28,7 @@ class PyToolConfig(Generic[T]):
         self,
         tool: str,
         working_directory: Path,
-        model: Type[T],
+        model: Type[DataclassT],
         arg_parser: Optional[ArgumentParser] = None,
         custom_sources: Optional[List[Source]] = None,
         global_config: bool = False,
@@ -48,6 +49,7 @@ class PyToolConfig(Generic[T]):
         :param bases: Custom bases
         :param recursive: Recusively search for the pyproject.toml file
         """
+        assert is_dataclass(model)
         self.model = model
         self._config_fields = _gather_config_fields(model)
         self.tool = tool
@@ -66,7 +68,7 @@ class PyToolConfig(Generic[T]):
         self.arg_parser = arg_parser
         self._setup_arg_parser()
 
-    def parse(self, args: List[str] = []) -> T:
+    def parse(self, args: List[str] = []) -> DataclassT:
         """
         Parse the configuration.
 
@@ -104,7 +106,7 @@ class PyToolConfig(Generic[T]):
                         dest=name,
                     )
 
-    def _parse_sources(self) -> T:
+    def _parse_sources(self) -> DataclassT:
         for source in self.sources:
             configuration = source.parse()
             if configuration:

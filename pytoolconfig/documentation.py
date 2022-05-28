@@ -2,6 +2,7 @@
 
 
 import sys
+from dataclasses import is_dataclass
 from typing import Any, Dict, Generator, Optional, Type
 
 if sys.version_info < (3, 8, 0):
@@ -15,7 +16,7 @@ from sphinx.ext.autodoc import ClassDocumenter
 from tabulate import tabulate
 
 from .fields import _gather_config_fields
-from .types import ConfigField, Dataclass, _is_dataclass
+from .types import ConfigField, Dataclass
 from .universal_config import UniversalConfig
 
 
@@ -38,7 +39,7 @@ def _write_model(
     extra = []
     table = []
     for name, field in model_fields.items():
-        if _is_dataclass(field._type):
+        if is_dataclass(field._type):
             extra.append((field._type, f"{name}.{name}"))
         else:
             row = [
@@ -49,7 +50,7 @@ def _write_model(
             ]
             if field.universal_config:
                 key = field.universal_config
-                assert _is_dataclass(UniversalConfig)
+                assert is_dataclass(UniversalConfig)
                 universal_key = _gather_config_fields(UniversalConfig)[key.name]
                 row[1] = universal_key.description
                 row[3] = universal_key._default
@@ -75,7 +76,7 @@ class PyToolConfigAutoDocumenter(ClassDocumenter):
         cls, member: Any, membername: str, isattr: bool, parent: Any
     ) -> bool:
         """Check if member is dataclass."""
-        return _is_dataclass(member)
+        return is_dataclass(member)
 
     def add_directive_header(self, sig: str) -> None:
         """Remove directive headers."""
