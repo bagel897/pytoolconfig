@@ -2,16 +2,16 @@
 from argparse import SUPPRESS, ArgumentParser
 from dataclasses import is_dataclass
 from pathlib import Path
-from typing import Dict, Generic, List, Optional, Type, TypeVar
+from typing import Dict, Generic, List, Optional, Sequence, Type, TypeVar
 
 from pytoolconfig.fields import _gather_config_fields
 from pytoolconfig.sources.pyproject import PyProject
 from pytoolconfig.sources.source import Source
-from pytoolconfig.types import ConfigField, Dataclass
+from pytoolconfig.types import ConfigField
 from pytoolconfig.universal_config import UniversalConfig
 from pytoolconfig.utils import _dict_to_dataclass
 
-DataclassT = TypeVar("DataclassT", bound="Dataclass")
+DataclassT = TypeVar("DataclassT")
 
 
 class PyToolConfig(Generic[DataclassT]):
@@ -30,9 +30,9 @@ class PyToolConfig(Generic[DataclassT]):
         working_directory: Path,
         model: Type[DataclassT],
         arg_parser: Optional[ArgumentParser] = None,
-        custom_sources: Optional[List[Source]] = None,
+        custom_sources: Optional[Sequence[Source]] = None,
         global_config: bool = False,
-        global_sources: Optional[List[Source]] = None,
+        global_sources: Optional[Sequence[Source]] = None,
         bases: List[str] = [".git", ".hg"],
         recursive: bool = True,
     ):

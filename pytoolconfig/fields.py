@@ -43,25 +43,31 @@ def _gather_config_fields(
     # First try PyToolConfig Annotated Fields
     result = {}
     for dataclass_field in fields(model):
-        if _METADATA_KEY in dataclass_field.metadata:
-            result[dataclass_field.name] = dataclass_field.metadata[_METADATA_KEY]
-        else:
-            result[dataclass_field.name] = ConfigField(_default=dataclass_field.default)
-        result[dataclass_field.name]._type = dataclass_field.type
+        if dataclass_field.init:
+            if _METADATA_KEY in dataclass_field.metadata:
+                result[dataclass_field.name] = dataclass_field.metadata[_METADATA_KEY]
+            else:
+                result[dataclass_field.name] = ConfigField(
+                    _default=dataclass_field.default
+                )
+            result[dataclass_field.name]._type = dataclass_field.type
     # Then use pydantic annotated fields
     if hasattr(model, "__pydantic_model__"):
         for pydantic_field in model.__pydantic_model__.__fields__.values():
-            result[pydantic_field.name] = ConfigField(
-                description=pydantic_field.field_info.description,
-                _type=pydantic_field.type_,
-                _default=pydantic_field.default,
-            )
-            if "universal_config" in pydantic_field.field_info.extra:
-                result[
-                    pydantic_field.name
-                ].universal_config = pydantic_field.field_info.extra["universal_config"]
-            if "command_line" in pydantic_field.field_info.extra:
-                result[
-                    pydantic_field.name
-                ].command_line = pydantic_field.field_info.extra["command_line"]
+            if pydantic_field.init:
+                result[pydantic_field.name] = ConfigField(
+                    description=pydantic_field.field_info.description,
+                    _type=pydantic_field.type_,
+                    _default=pydantic_field.default,
+                )
+                if "universal_config" in pydantic_field.field_info.extra:
+                    result[
+                        pydantic_field.name
+                    ].universal_config = pydantic_field.field_info.extra[
+                        "universal_config"
+                    ]
+                if "command_line" in pydantic_field.field_info.extra:
+                    result[
+                        pydantic_field.name
+                    ].command_line = pydantic_field.field_info.extra["command_line"]
     return result
