@@ -21,8 +21,7 @@ else:
 
 
 class PyProject(Source):
-    """
-    Source for pyproject.toml and pytool.toml files.
+    """Source for pyproject.toml and pytool.toml files.
 
     Can be extended to other toml files.
     """
@@ -42,8 +41,7 @@ class PyProject(Source):
         bases: List[str],
         recursive: bool = True,
     ):
-        """
-        Initialize the TOML configuration.
+        """Initialize the TOML configuration.
 
         :param working_directory: Working Directory
         :param tool: name of your tool. Will read configuration from [tool.yourtool]
@@ -73,8 +71,7 @@ class PyProject(Source):
         return self.toml_dict["tool"][self.tool]
 
     def universalconfig(self) -> UniversalConfig:
-        """
-        Parse the file for the universal config object's fields.
+        """Parse the file for the universal config object's fields.
 
         Only implement the relevant fields such as minimum python version.
 

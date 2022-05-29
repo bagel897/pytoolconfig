@@ -36,7 +36,10 @@ def find_config_file(
 
 
 def min_py_version(specifier: str) -> Tuple[int, int]:
-    """Return the minimum python 3 version. Between 3.4 and interpreter version."""
+    """Return the minimum python 3 version.
+
+    Between 3.4 and interpreter version.
+    """
     parsed = SpecifierSet(specifier)
     for i in range(4, sys.version_info.minor):
         if parsed.contains(f"3.{i}"):
@@ -45,7 +48,10 @@ def min_py_version(specifier: str) -> Tuple[int, int]:
 
 
 def max_py_version(specifier: str) -> Tuple[int, int]:
-    """Return the maximum python 3 version. Between 3.4 and interpreter version."""
+    """Return the maximum python 3 version.
+
+    Between 3.4 and interpreter version.
+    """
     parsed = SpecifierSet(specifier)
     for i in range(sys.version_info.minor, 4, -1):
         if parsed.contains(f"3.{i}"):

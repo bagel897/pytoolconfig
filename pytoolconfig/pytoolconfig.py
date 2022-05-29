@@ -35,8 +35,7 @@ class PyToolConfig(Generic[DataclassT]):
         bases: List[str] = [".git", ".hg"],
         recursive: bool = True,
     ):
-        """
-        Initialize the configuration object.
+        """Initialize the configuration object.
 
         :param tool: name of the tool to use.
         :param working_directory: working directory in use.
@@ -64,8 +63,7 @@ class PyToolConfig(Generic[DataclassT]):
         self._setup_arg_parser()
 
     def parse(self, args: List[str] = []) -> DataclassT:
-        """
-        Parse the configuration.
+        """Parse the configuration.
 
         :param args: any additional command line overwrites.
         """

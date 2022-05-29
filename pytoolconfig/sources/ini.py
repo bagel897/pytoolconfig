@@ -35,8 +35,7 @@ class IniConfig(Source):
         base_table: str,
         description: Optional[str] = None,
     ):
-        """
-        Initialize the Ini Configuration.
+        """Initialize the Ini Configuration.
 
         :param working_directory: the working directory to search.
         :param filename: the filename to search for.

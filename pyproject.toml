@@ -40,6 +40,7 @@ dev = [
     'pre-commit>=2.19.0',
     'rstcheck>=5.0.0',
     'tox>=3.25.0',
+    "docformatter>=1.4",
 ]
 
 [tool.pytoolconfig]
