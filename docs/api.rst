@@ -10,3 +10,4 @@ API
    pytoolconfig.sources.IniConfig
    pytoolconfig.sources.SetupConfig
    pytoolconfig.sources.PyProject
+   pytoolconfig.sources.PyTool

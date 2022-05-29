@@ -40,7 +40,6 @@ class PyProject(Source):
         working_directory: Path,
         tool: str,
         bases: List[str],
-        global_config: bool = False,
         recursive: bool = True,
     ):
         """
@@ -49,15 +48,9 @@ class PyProject(Source):
         :param working_directory: Working Directory
         :param tool: name of your tool. Will read configuration from [tool.yourtool]
         :param bases: Base files/folders to look for (besides pyproject.toml)
-        :param global_config: use the global pytool.toml file instead
         :param recursive: search recursively up the directory tree for the file.
         """
-        if global_config:
-            import appdirs
-
-            self.file = Path(appdirs.user_config_dir()) / "pytool.toml"
-            self.name = "pytool.toml"
-        elif recursive:
+        if recursive:
             self.file = find_config_file(working_directory, "pyproject.toml", bases)
         else:
             self.file = working_directory / "pyproject.toml"

@@ -5,8 +5,7 @@ from pathlib import Path
 from typing import Dict, Generic, List, Optional, Sequence, Type, TypeVar
 
 from pytoolconfig.fields import _gather_config_fields
-from pytoolconfig.sources.pyproject import PyProject
-from pytoolconfig.sources.source import Source
+from pytoolconfig.sources import PyProject, PyTool, Source
 from pytoolconfig.types import ConfigField
 from pytoolconfig.universal_config import UniversalConfig
 from pytoolconfig.utils import _dict_to_dataclass
@@ -57,11 +56,7 @@ class PyToolConfig(Generic[DataclassT]):
         if custom_sources:
             self.sources.extend(custom_sources)
         if global_config:
-            self.sources.append(
-                PyProject(
-                    working_directory, tool, bases, global_config=True, recursive=False
-                )
-            )
+            self.sources.append(PyTool(tool))
         if global_sources:
             self.sources.extend(global_sources)
 
