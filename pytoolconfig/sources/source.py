@@ -27,4 +27,3 @@ class Source(ABC):
         Return None if tool is not configured in file. Otherwise,
         returns configuration pertaining to the tool.
         """
-        pass

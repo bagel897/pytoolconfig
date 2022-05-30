@@ -21,8 +21,10 @@ from .types import Dataclass, Key
 
 
 def find_config_file(
-    working_directory: Path, filename: str, bases: List[str] = [".git", ".hg"]
+    working_directory: Path, filename: str, bases: Optional[List[str]] = None
 ) -> Optional[Path]:
+    if bases is None:
+        bases = [".git", ".hg"]
     """Recursively find the configuration file."""
     target = working_directory / filename
     if target.exists():
