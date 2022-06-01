@@ -13,7 +13,7 @@ from pytoolconfig.universal_config import UniversalConfig
 
 @dataclass
 class SimpleModel:
-    formatter: str
+    formatter: str = "NOT THIS"
 
 
 @dataclass
@@ -86,6 +86,19 @@ def test_global(cwd):
     config = PyToolConfig("bogus", cwd, NestedModel, global_config=True)
     result = config.parse()
     assert result.subtool.foo == "ajf"
+
+
+def test_fall_through(cwd):
+    config = PyToolConfig(
+        "fall_through",
+        cwd,
+        NestedModel,
+        custom_sources=[IniConfig(cwd, "test_config.ini", "bogus")],
+        fall_through=True,
+    )
+    result = config.parse()
+    assert result.subtool.foo == "barr"
+    assert result.foo_other == "ba"
 
 
 def test_universal_key():

@@ -1,6 +1,6 @@
 """Utility functions and classes."""
 import sys
-from dataclasses import fields, is_dataclass
+from dataclasses import Field, fields, is_dataclass, replace
 from pathlib import Path
 from typing import (
     Any,
@@ -11,6 +11,7 @@ from typing import (
     Mapping,
     Optional,
     Tuple,
+    Type,
     TypeVar,
 )
 
@@ -70,21 +71,42 @@ def parse_dependencies(dependencies: List[str]) -> Generator[Requirement, None, 
 T = TypeVar("T", bound="Dataclass")
 
 
+def _subtables(dataclass_fields: Dict[str, Field[Any]]) -> Dict[str, Type[Any]]:
+    return {
+        name: field.type
+        for name, field in dataclass_fields.items()
+        if is_dataclass(field.type)
+    }
+
+
+def _fields(dataclass) -> Dict[str, Field[Any]]:
+    return {field.name: field for field in fields(dataclass) if field.init}
+
+
 def _dict_to_dataclass(dataclass: Callable[..., T], dictionary: Mapping[str, Key]) -> T:
-    field_set = set()
     filtered_arg_dict: Dict[str, Any] = {}
-    sub_tables = {}
-    for field in fields(dataclass):
-        if field.init:
-            if is_dataclass(field.type):
-                sub_tables[field.name] = field.type
-            else:
-                field_set.add(field.name)
+    dataclass_fields = _fields(dataclass)
+    sub_tables = _subtables(dataclass_fields)
     for key_name, value in dictionary.items():
-        if key_name in field_set:
-            filtered_arg_dict[key_name] = value
-        elif key_name in sub_tables:
+        if key_name in sub_tables:
             sub_table = sub_tables[key_name]
             assert isinstance(value, Mapping)
             filtered_arg_dict[key_name] = _dict_to_dataclass(sub_table, value)
+        elif key_name in dataclass_fields:
+            filtered_arg_dict[key_name] = value
     return dataclass(**filtered_arg_dict)
+
+
+def _recursive_merge(dataclass: T, dictionary: Mapping[str, Key]) -> T:
+    """Overwrite every value specified in dictionary on the dataclass."""
+    filtered_arg_dict: Dict[str, Any] = {}
+    dataclass_fields = _fields(dataclass)
+    sub_tables = _subtables(dataclass_fields)
+    for key_name, value in dictionary.items():
+        if key_name in sub_tables:
+            sub_table = getattr(dataclass, key_name)
+            assert isinstance(value, Mapping)
+            filtered_arg_dict[key_name] = _recursive_merge(sub_table, value)
+        elif key_name in dataclass_fields:
+            filtered_arg_dict[key_name] = value
+    return replace(dataclass, **filtered_arg_dict)

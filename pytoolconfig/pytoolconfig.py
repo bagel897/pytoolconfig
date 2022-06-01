@@ -6,11 +6,11 @@ from typing import Dict, Generic, List, Optional, Sequence, Type, TypeVar
 
 from pytoolconfig.fields import _gather_config_fields
 from pytoolconfig.sources import PyProject, PyTool, Source
-from pytoolconfig.types import ConfigField
+from pytoolconfig.types import ConfigField, Dataclass
 from pytoolconfig.universal_config import UniversalConfig
-from pytoolconfig.utils import _dict_to_dataclass
+from pytoolconfig.utils import _dict_to_dataclass, _recursive_merge
 
-DataclassT = TypeVar("DataclassT")
+DataclassT = TypeVar("DataclassT", bound=Dataclass)
 
 
 class PyToolConfig(Generic[DataclassT]):
@@ -20,6 +20,7 @@ class PyToolConfig(Generic[DataclassT]):
     tool: str
     working_directory: Path
     model: Type[DataclassT]
+    fall_through: bool = False
     arg_parser: Optional[ArgumentParser] = None
     _config_fields: Dict[str, ConfigField]
 
@@ -32,8 +33,9 @@ class PyToolConfig(Generic[DataclassT]):
         custom_sources: Optional[Sequence[Source]] = None,
         global_config: bool = False,
         global_sources: Optional[Sequence[Source]] = None,
-        bases: List[str] = [".git", ".hg"],
-        recursive: bool = True,
+        fall_through: bool = False,
+        *args,
+        **kwargs,
     ):
         """Initialize the configuration object.
 
@@ -44,14 +46,15 @@ class PyToolConfig(Generic[DataclassT]):
         :param custom_sources: Custom sources
         :param global_config: Enable global configuration
         :param global_sources: Custom global sources
-        :param bases: Custom bases
-        :param recursive: Recusively search for the pyproject.toml file
+        :param fall_through: Configuration options should fall through between sources.
+        :param *args: Passed to constructor for PyProject
+        :param **kwargs: Passed to constructor for PyProject
         """
         assert is_dataclass(model)
         self.model = model
         self._config_fields = _gather_config_fields(model)
         self.tool = tool
-        self.sources = [PyProject(working_directory, tool, bases, recursive=recursive)]
+        self.sources = [PyProject(working_directory, tool, *args, **kwargs)]
         if custom_sources:
             self.sources.extend(custom_sources)
         if global_config:
@@ -60,9 +63,10 @@ class PyToolConfig(Generic[DataclassT]):
             self.sources.extend(global_sources)
 
         self.arg_parser = arg_parser
+        self.fall_through = fall_through
         self._setup_arg_parser()
 
-    def parse(self, args: List[str] = []) -> DataclassT:
+    def parse(self, args: Optional[List[str]] = None) -> DataclassT:
         """Parse the configuration.
 
         :param args: any additional command line overwrites.
@@ -71,6 +75,8 @@ class PyToolConfig(Generic[DataclassT]):
         assert isinstance(self.sources[0], PyProject)
         universal: UniversalConfig = self.sources[0].universalconfig()
         if self.arg_parser:
+            if args is None:
+                args = []
             parsed = self.arg_parser.parse_args(args)
             for name, value in parsed._get_kwargs():
                 setattr(configuration, name, value)
@@ -100,8 +106,16 @@ class PyToolConfig(Generic[DataclassT]):
                     )
 
     def _parse_sources(self) -> DataclassT:
-        for source in self.sources:
-            configuration = source.parse()
-            if configuration:
-                return _dict_to_dataclass(self.model, configuration)
-        return self.model()
+        configuration = self.model()
+        if self.fall_through:
+            for source in reversed(self.sources):
+                parsed = source.parse()
+                if parsed is not None:
+                    configuration = _recursive_merge(configuration, parsed)
+
+        else:
+            for source in self.sources:
+                parsed = source.parse()
+                if parsed:
+                    return _dict_to_dataclass(self.model, parsed)
+        return configuration

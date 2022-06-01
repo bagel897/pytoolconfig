@@ -38,7 +38,7 @@ class PyProject(Source):
         self,
         working_directory: Path,
         tool: str,
-        bases: List[str],
+        bases: Optional[List[str]] = None,
         recursive: bool = True,
     ):
         """Initialize the TOML configuration.
