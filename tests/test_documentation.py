@@ -36,4 +36,4 @@ def test_documentation():
     assert "Tool One" in lines[3]
     assert "no" in lines[3]
     assert "str" in lines[3]
-    assert "bool" in lines[5]
+    assert "bool" in lines[6]
