@@ -5,19 +5,21 @@ import sys
 from dataclasses import is_dataclass
 from typing import Any, Dict, Generator, Optional, Type
 
-if sys.version_info < (3, 8, 0):
-    from typing_extensions import get_origin
-else:
-    from typing import get_origin
-
 from docutils.statemachine import StringList
 from sphinx.application import Sphinx
 from sphinx.ext.autodoc import ClassDocumenter
 from tabulate import tabulate
 
 from .fields import _gather_config_fields
+from .pytoolconfig import PyToolConfig
+from .sources import Source
 from .types import ConfigField, Dataclass
 from .universal_config import UniversalConfig
+
+if sys.version_info < (3, 8, 0):
+    from typing_extensions import get_origin
+else:
+    from typing import get_origin
 
 
 def _type_to_str(type_to_print: Type[Any]) -> Optional[str]:
@@ -28,22 +30,29 @@ def _type_to_str(type_to_print: Type[Any]) -> Optional[str]:
     return str(type_to_print).replace("typing.", "")
 
 
-def _write_model(
-    model: Dataclass,
+def _subtables(model: Type[Dataclass]) -> Dict[str, Type[Dataclass]]:
+    result = {}
+    for name, field in _gather_config_fields(model).items():
+        if is_dataclass(field._type):
+            result[name] = field._type
+    return result
+
+
+def _generate_table(
+    model: Type[Dataclass],
+    tablefmt: str = "rst",
+    prefix: str = "",
 ) -> Generator[str, None, None]:
     header = ["name", "description", "type", "default"]
     model_fields: Dict[str, ConfigField] = _gather_config_fields(model)
     command_line = any(field.command_line for field in model_fields.values())
     if command_line:
         header.append("command line flag")
-    extra = []
     table = []
     for name, field in model_fields.items():
-        if is_dataclass(field._type):
-            extra.append((field._type, f"{name}.{name}"))
-        else:
+        if not is_dataclass(field._type):
             row = [
-                f"{name}",
+                f"{name}" if prefix == "" else f"{prefix}.{name}",
                 field.description.replace("\n", " ") if field.description else None,
                 _type_to_str(field._type),
                 field._default,
@@ -61,7 +70,7 @@ def _write_model(
                 else:
                     row.append(None)
             table.append(row)
-    yield from tabulate(table, tablefmt="rst", headers=header).split("\n")
+    yield from tabulate(table, tablefmt=tablefmt, headers=header).split("\n")
 
 
 class PyToolConfigAutoDocumenter(ClassDocumenter):
@@ -87,7 +96,32 @@ class PyToolConfigAutoDocumenter(ClassDocumenter):
         """Create simple table to document configuration options."""
         source = self.get_sourcename()
         config = self.object
-        for line in _write_model(config):
+        for line in _generate_table(config):
+            self.add_line(line, source)
+
+
+class PyToolConfigSourceDocumenter(ClassDocumenter):
+    objtype = "pytoolconfigsources"
+    content_indent = ""
+    titles_allowed = True
+
+    @classmethod
+    def can_document_member(
+        cls, member: Any, membername: str, isattr: bool, parent: Any
+    ) -> bool:
+        """Check if member is dataclass."""
+        return isinstance(member, Source)
+
+    def add_directive_header(self, sig: str) -> None:
+        """Remove directive headers."""
+
+    def add_content(
+        self, more_content: Optional[StringList], no_docstring: bool = False
+    ) -> None:
+        """Create simple table to document configuration options."""
+        source = self.get_sourcename()
+        config = self.object
+        for line in _generate_table(config):
             self.add_line(line, source)
 
 
@@ -95,3 +129,27 @@ def setup(app: Sphinx) -> None:
     """Register automatic documenter."""
     app.setup_extension("sphinx.ext.autodoc")
     app.add_autodocumenter(PyToolConfigAutoDocumenter)
+
+
+def generate_documentation(config: PyToolConfig) -> Generator[str, None, None]:
+    """Generate Markdown documentation for a given config model."""
+    yield "# Configuration\n"
+    if len(config.sources) > 1:
+        yield f"{config.tool} supports the following sources:\n"
+        for idx, source in enumerate(config.sources):
+            yield f" {idx}. {source.name}\n"
+    else:
+        name = next(config.sources).name
+        yield f"{config.tool} supports the {name} format\n"
+    yield "\n"
+    for source in config.sources:
+        if source.description:
+            yield f"## {source.name} \n"
+            yield source.description
+            yield "\n"
+    yield "## Options\n"
+    yield from _generate_table(config.model, "github")
+    yield "\n"
+    for prefix, subtable in _subtables(config.model).items():
+        yield from _generate_table(subtable, "github", prefix)
+        yield "\n"
