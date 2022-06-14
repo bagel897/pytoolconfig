@@ -21,21 +21,19 @@ jobs:
     needs: test
     environment: publish
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python
-      uses: actions/setup-python@v3
-      with:
-        python-version: '3.x'
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install build pdm
-        pdm install --dev -G :all
-    - name: Build package
-      run: pdm build
-    - name: Publish package
-      run: pdm publish
-      env: # Or as an environment variable
-        PDM_PUBLISH_PASSWORD: ${{ secrets.PDM_PUBLISH_PASSWORD }}
-
-      
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.x"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install build pdm
+          pdm install --dev -G :all
+      - name: Build package
+        run: pdm build
+      - name: Publish package
+        run: pdm publish
+        env: # Or as an environment variable
+          PDM_PUBLISH_PASSWORD: ${{ secrets.PDM_PUBLISH_PASSWORD }}

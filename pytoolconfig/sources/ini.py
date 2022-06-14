@@ -1,4 +1,6 @@
 """Source for INI configuration files via configparser."""
+from __future__ import annotations
+
 from configparser import ConfigParser, SectionProxy
 from pathlib import Path
 from typing import Dict, List, Optional
@@ -9,7 +11,7 @@ from pytoolconfig.utils import find_config_file
 
 
 def _add_split_to_dict(
-    dest: Dict[str, Key], table_to_add: List[str], table: SectionProxy
+    dest: dict[str, Key], table_to_add: list[str], table: SectionProxy
 ) -> None:
     if len(table_to_add) == 0:
         for table_key in table:
@@ -26,14 +28,14 @@ class IniConfig(Source):
 
     _config: ConfigParser
     name: str
-    description: Optional[str]
+    description: str | None
 
     def __init__(
         self,
         working_directory: Path,
         filename: str,
         base_table: str,
-        description: Optional[str] = None,
+        description: str | None = None,
     ):
         """Initialize the Ini Configuration.
 
@@ -60,11 +62,11 @@ class IniConfig(Source):
                 return True
         return False
 
-    def parse(self) -> Optional[Dict[str, Key]]:
+    def parse(self) -> dict[str, Key] | None:
         """Parse the INI file."""
         if not self._read():
             return None
-        output: Dict[str, Key] = {}
+        output: dict[str, Key] = {}
         for table in self._config:
             split = table.split(".")
             if split[0] == self.base_table:

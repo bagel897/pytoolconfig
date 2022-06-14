@@ -1,4 +1,6 @@
 """Source for pytool.toml files."""
+from __future__ import annotations
+
 from pathlib import Path
 
 from .pyproject import PyProject

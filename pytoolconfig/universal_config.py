@@ -1,4 +1,6 @@
 """Universal Configuration base model."""
+from __future__ import annotations
+
 from typing import Dict, List, Optional, Tuple
 
 from packaging.requirements import Requirement
@@ -11,29 +13,29 @@ from .types import dataclass
 class UniversalConfig:
     """Universal Configuration base model."""
 
-    formatter: Optional[str] = field(None, "Formatter used to format this File")
-    max_line_length: Optional[int] = field(None, description="Maximum line length")
+    formatter: str | None = field(None, "Formatter used to format this File")
+    max_line_length: int | None = field(None, description="Maximum line length")
 
-    min_py_version: Optional[Tuple[int, int]] = field(
+    min_py_version: tuple[int, int] | None = field(
         None,
         """Mimimum target python version. Requires PEP 621.
         Taken from project.requires-python""",
     )
-    max_py_version: Optional[Tuple[int, int]] = field(
+    max_py_version: tuple[int, int] | None = field(
         None,
         """Maximum target python version. Requires PEP 621.
         Taken from project.requires-python""",
     )
-    dependencies: Optional[List[Requirement]] = field(
+    dependencies: list[Requirement] | None = field(
         None,
         """Dependencies of project. Requires PEP 621.
         Taken from project.dependencies. """,
     )
-    optional_dependencies: Optional[Dict[str, List[Requirement]]] = field(
+    optional_dependencies: dict[str, list[Requirement]] | None = field(
         None,
         """Optional dependencies of project. Requires PEP 621.
     Taken from project.optional_dependencies.""",
     )
-    version: Optional[str] = field(
+    version: str | None = field(
         None, "Version of the project. Requires PEP 621. Taken from project.version."
     )

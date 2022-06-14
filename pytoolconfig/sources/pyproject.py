@@ -1,4 +1,6 @@
 """Source for pyproject.toml files or more generally toml files."""
+from __future__ import annotations
+
 import sys
 from pathlib import Path
 from typing import Dict, List, Optional
@@ -27,18 +29,18 @@ class PyProject(Source):
     """
 
     tool: str
-    toml_dict: Optional[Dict] = None
+    toml_dict: dict | None = None
     name: str = "pyproject.toml"
     description: str = """
     PEP 518 defines pyproject.toml as a configuration file to store build system requirements for Python projects. With the help of tools like Poetry or Flit it can fully replace the need for setup.py and setup.cfg files.
     """  # taken from black.
-    file: Optional[Path]
+    file: Path | None
 
     def __init__(
         self,
         working_directory: Path,
         tool: str,
-        bases: Optional[List[str]] = None,
+        bases: list[str] | None = None,
         recursive: bool = True,
     ):
         """Initialize the TOML configuration.
@@ -63,7 +65,7 @@ class PyProject(Source):
             return False
         return self.tool in self.toml_dict["tool"].keys()
 
-    def parse(self) -> Optional[Dict[str, Key]]:
+    def parse(self) -> dict[str, Key] | None:
         """Parse the TOML file."""
         if not self._read():
             return None

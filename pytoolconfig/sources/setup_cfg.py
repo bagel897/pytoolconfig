@@ -1,4 +1,6 @@
 """Source for setup.cfg configuration files via ini config."""
+from __future__ import annotations
+
 from pathlib import Path
 
 from .ini import IniConfig

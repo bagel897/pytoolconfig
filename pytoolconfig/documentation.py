@@ -1,6 +1,8 @@
 """Program to generate documentation for a given PyToolConfig object."""
 
 
+from __future__ import annotations
+
 import sys
 from dataclasses import is_dataclass
 from typing import Any, Dict, Generator, Optional, Type
@@ -22,7 +24,7 @@ else:
     from typing import get_origin
 
 
-def _type_to_str(type_to_print: Type[Any]) -> Optional[str]:
+def _type_to_str(type_to_print: type[Any]) -> str | None:
     if type_to_print is None:
         return None
     if get_origin(type_to_print) is None:
@@ -30,7 +32,7 @@ def _type_to_str(type_to_print: Type[Any]) -> Optional[str]:
     return str(type_to_print).replace("typing.", "")
 
 
-def _subtables(model: Type[Dataclass]) -> Dict[str, Type[Dataclass]]:
+def _subtables(model: type[Dataclass]) -> dict[str, type[Dataclass]]:
     result = {}
     for name, field in _gather_config_fields(model).items():
         if is_dataclass(field._type):
@@ -39,12 +41,12 @@ def _subtables(model: Type[Dataclass]) -> Dict[str, Type[Dataclass]]:
 
 
 def _generate_table(
-    model: Type[Dataclass],
+    model: type[Dataclass],
     tablefmt: str = "rst",
     prefix: str = "",
 ) -> Generator[str, None, None]:
     header = ["name", "description", "type", "default"]
-    model_fields: Dict[str, ConfigField] = _gather_config_fields(model)
+    model_fields: dict[str, ConfigField] = _gather_config_fields(model)
     command_line = any(field.command_line for field in model_fields.values())
     if command_line:
         header.append("command line flag")
@@ -91,7 +93,7 @@ class PyToolConfigAutoDocumenter(ClassDocumenter):
         """Remove directive headers."""
 
     def add_content(
-        self, more_content: Optional[StringList], no_docstring: bool = False
+        self, more_content: StringList | None, no_docstring: bool = False
     ) -> None:
         """Create simple table to document configuration options."""
         source = self.get_sourcename()
@@ -116,7 +118,7 @@ class PyToolConfigSourceDocumenter(ClassDocumenter):
         """Remove directive headers."""
 
     def add_content(
-        self, more_content: Optional[StringList], no_docstring: bool = False
+        self, more_content: StringList | None, no_docstring: bool = False
     ) -> None:
         """Create simple table to document configuration options."""
         source = self.get_sourcename()

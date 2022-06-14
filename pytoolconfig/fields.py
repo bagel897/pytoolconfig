@@ -12,10 +12,10 @@ _METADATA_KEY = "pytoolconfig"
 
 def field(
     default: Any = MISSING,
-    description: Optional[str] = None,
-    command_line: Optional[Tuple[str]] = None,
-    universal_config: Optional[UniversalKey] = None,
-    default_factory: Optional[Callable[[], Any]] = MISSING,
+    description: str | None = None,
+    command_line: tuple[str] | None = None,
+    universal_config: UniversalKey | None = None,
+    default_factory: Callable[[], Any] | None = MISSING,
     init: bool = True,
 ) -> dataclasses.Field:
     """Create a dataclass field with metadata."""
@@ -38,8 +38,8 @@ def field(
 
 
 def _gather_config_fields(
-    model: Union[Type[Dataclass], Dataclass],
-) -> Dict[str, ConfigField]:
+    model: type[Dataclass] | Dataclass,
+) -> dict[str, ConfigField]:
     # First try PyToolConfig Annotated Fields
     result = {}
     for dataclass_field in fields(model):

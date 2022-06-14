@@ -1,4 +1,6 @@
 """Tool to configure Python tools."""
+from __future__ import annotations
+
 from argparse import SUPPRESS, ArgumentParser
 from dataclasses import is_dataclass
 from pathlib import Path
@@ -16,23 +18,23 @@ DataclassT = TypeVar("DataclassT", bound=Dataclass)
 class PyToolConfig(Generic[DataclassT]):
     """Python Tool Configuration Aggregator."""
 
-    sources: List[Source] = []
+    sources: list[Source] = []
     tool: str
     working_directory: Path
-    model: Type[DataclassT]
+    model: type[DataclassT]
     fall_through: bool = False
-    arg_parser: Optional[ArgumentParser] = None
-    _config_fields: Dict[str, ConfigField]
+    arg_parser: ArgumentParser | None = None
+    _config_fields: dict[str, ConfigField]
 
     def __init__(
         self,
         tool: str,
         working_directory: Path,
-        model: Type[DataclassT],
-        arg_parser: Optional[ArgumentParser] = None,
-        custom_sources: Optional[Sequence[Source]] = None,
+        model: type[DataclassT],
+        arg_parser: ArgumentParser | None = None,
+        custom_sources: Sequence[Source] | None = None,
         global_config: bool = False,
-        global_sources: Optional[Sequence[Source]] = None,
+        global_sources: Sequence[Source] | None = None,
         fall_through: bool = False,
         *args,
         **kwargs,
@@ -66,7 +68,7 @@ class PyToolConfig(Generic[DataclassT]):
         self.fall_through = fall_through
         self._setup_arg_parser()
 
-    def parse(self, args: Optional[List[str]] = None) -> DataclassT:
+    def parse(self, args: list[str] | None = None) -> DataclassT:
         """Parse the configuration.
 
         :param args: any additional command line overwrites.

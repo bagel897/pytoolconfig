@@ -1,5 +1,7 @@
 """PyToolConfig internal definitions and functions."""
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 from datetime import date, datetime, time
 from enum import Enum, auto
@@ -10,12 +12,12 @@ DataclassT = TypeVar("DataclassT", bound="Dataclass")
 
 class Dataclass:
     __initialised__: bool
-    __post_init_original__: Optional[Callable[..., None]]
+    __post_init_original__: Callable[..., None] | None
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         pass
 
-    def __call__(self: "DataclassT", *args: Any, **kwargs: Any) -> "DataclassT":
+    def __call__(self: DataclassT, *args: Any, **kwargs: Any) -> DataclassT:
         pass
 
 
@@ -42,8 +44,8 @@ class UniversalKey(Enum):
 class ConfigField:
     """Dataclass store and validate fields in a configuration model."""
 
-    description: Optional[str] = None
-    universal_config: Optional[UniversalKey] = None
-    command_line: Optional[Tuple[str]] = None
+    description: str | None = None
+    universal_config: UniversalKey | None = None
+    command_line: tuple[str] | None = None
     _type: Any = None
     _default: Any = None

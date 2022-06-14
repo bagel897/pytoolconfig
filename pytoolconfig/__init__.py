@@ -1,4 +1,6 @@
 """Python Tool Configuration."""
+from __future__ import annotations
+
 from dataclasses import dataclass  # Backwards compatibility
 
 from .fields import field

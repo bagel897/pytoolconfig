@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 from typing import Optional, Tuple
 
@@ -13,10 +15,10 @@ class SubTool:
 @dataclass
 class NestedModel:
     subtool: SubTool = field(default_factory=lambda: SubTool())
-    foo_other: Optional[str] = field(
+    foo_other: str | None = field(
         description="Tool One", default="no", command_line=("--foo", "-f")
     )
-    min_py_ver: Tuple[int, int] = field(
+    min_py_ver: tuple[int, int] = field(
         default=None, description="sauf", universal_config=UniversalKey.min_py_version
     )
 

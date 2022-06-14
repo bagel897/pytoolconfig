@@ -13,9 +13,7 @@ PyToolConfig allows you to parse command line overwrites for configuration items
 
         @dataclass
         class NestedModel:
-            foo_other: str = field(
-                description="w", default="no", command_line=("--foo", "-f")
-            )
+            foo_other: str = field(description="w", default="no", command_line=("--foo", "-f"))
 
 2. Pass an Argument Parser to the ``PyToolConfig`` constructor
 3. (Optional) Pass arguments to the ``parse()`` command

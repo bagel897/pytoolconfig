@@ -1,4 +1,6 @@
 """Utility functions and classes."""
+from __future__ import annotations
+
 import sys
 from dataclasses import Field, fields, is_dataclass, replace
 from pathlib import Path
@@ -22,8 +24,8 @@ from .types import Dataclass, Key
 
 
 def find_config_file(
-    working_directory: Path, filename: str, bases: Optional[List[str]] = None
-) -> Optional[Path]:
+    working_directory: Path, filename: str, bases: list[str] | None = None
+) -> Path | None:
     if bases is None:
         bases = [".git", ".hg"]
     """Recursively find the configuration file."""
@@ -38,7 +40,7 @@ def find_config_file(
     return find_config_file(working_directory.parent, filename, bases)
 
 
-def min_py_version(specifier: str) -> Tuple[int, int]:
+def min_py_version(specifier: str) -> tuple[int, int]:
     """Return the minimum python 3 version.
 
     Between 3.4 and interpreter version.
@@ -50,7 +52,7 @@ def min_py_version(specifier: str) -> Tuple[int, int]:
     return (3, sys.version_info.minor)
 
 
-def max_py_version(specifier: str) -> Tuple[int, int]:
+def max_py_version(specifier: str) -> tuple[int, int]:
     """Return the maximum python 3 version.
 
     Between 3.4 and interpreter version.
@@ -62,7 +64,7 @@ def max_py_version(specifier: str) -> Tuple[int, int]:
     return (3, 4)  # Please don't cap your project at python3.4
 
 
-def parse_dependencies(dependencies: List[str]) -> Generator[Requirement, None, None]:
+def parse_dependencies(dependencies: list[str]) -> Generator[Requirement, None, None]:
     """Parse the dependencies from TOML using packaging."""
     for dependency in dependencies:
         yield Requirement(dependency)
@@ -71,7 +73,7 @@ def parse_dependencies(dependencies: List[str]) -> Generator[Requirement, None, 
 T = TypeVar("T", bound="Dataclass")
 
 
-def _subtables(dataclass_fields: Dict[str, Field[Any]]) -> Dict[str, Type[Any]]:
+def _subtables(dataclass_fields: dict[str, Field[Any]]) -> dict[str, type[Any]]:
     return {
         name: field.type
         for name, field in dataclass_fields.items()
@@ -79,12 +81,12 @@ def _subtables(dataclass_fields: Dict[str, Field[Any]]) -> Dict[str, Type[Any]]:
     }
 
 
-def _fields(dataclass) -> Dict[str, Field[Any]]:
+def _fields(dataclass) -> dict[str, Field[Any]]:
     return {field.name: field for field in fields(dataclass) if field.init}
 
 
 def _dict_to_dataclass(dataclass: Callable[..., T], dictionary: Mapping[str, Key]) -> T:
-    filtered_arg_dict: Dict[str, Any] = {}
+    filtered_arg_dict: dict[str, Any] = {}
     dataclass_fields = _fields(dataclass)
     sub_tables = _subtables(dataclass_fields)
     for key_name, value in dictionary.items():
@@ -99,7 +101,7 @@ def _dict_to_dataclass(dataclass: Callable[..., T], dictionary: Mapping[str, Key
 
 def _recursive_merge(dataclass: T, dictionary: Mapping[str, Key]) -> T:
     """Overwrite every value specified in dictionary on the dataclass."""
-    filtered_arg_dict: Dict[str, Any] = {}
+    filtered_arg_dict: dict[str, Any] = {}
     dataclass_fields = _fields(dataclass)
     sub_tables = _subtables(dataclass_fields)
     for key_name, value in dictionary.items():

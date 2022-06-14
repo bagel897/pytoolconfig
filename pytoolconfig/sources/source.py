@@ -1,4 +1,6 @@
 """Base class for defining custom sources."""
+from __future__ import annotations
+
 from abc import ABC, abstractmethod
 from typing import Dict, Optional
 
@@ -9,7 +11,7 @@ class Source(ABC):
     """Base class for defining custom sources."""
 
     name: str  # The name of the tool for documentation
-    description: Optional[str]  # The description, written as markdown.
+    description: str | None  # The description, written as markdown.
 
     @abstractmethod
     def _read(self) -> bool:
@@ -21,7 +23,7 @@ class Source(ABC):
         """
 
     @abstractmethod
-    def parse(self) -> Optional[Dict[str, Key]]:
+    def parse(self) -> dict[str, Key] | None:
         """Parse the file for each property as a nested dict.
 
         Return None if tool is not configured in file. Otherwise,

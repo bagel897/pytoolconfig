@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from .ini import IniConfig
 from .pyproject import PyProject
 from .pytool import PyTool
