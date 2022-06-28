@@ -1,10 +1,8 @@
-from __future__ import annotations
-
 from dataclasses import dataclass
 from typing import Optional, Tuple
 
 from pytoolconfig import UniversalKey, field
-from pytoolconfig.documentation import _type_to_str, _write_model
+from pytoolconfig.documentation import _generate_table, _type_to_str
 
 
 @dataclass
@@ -15,10 +13,10 @@ class SubTool:
 @dataclass
 class NestedModel:
     subtool: SubTool = field(default_factory=lambda: SubTool())
-    foo_other: str | None = field(
+    foo_other: Optional[str] = field(
         description="Tool One", default="no", command_line=("--foo", "-f")
     )
-    min_py_ver: tuple[int, int] = field(
+    min_py_ver: Tuple[int, int] = field(
         default=None, description="sauf", universal_config=UniversalKey.min_py_version
     )
 
@@ -32,7 +30,7 @@ def test_type_to_str():
 
 
 def test_documentation():
-    lines = list(_write_model(NestedModel))
+    lines = list(_generate_table(NestedModel))
     assert "description" in lines[1]
     assert "foo_other" in lines[3]
     assert "Tool One" in lines[3]

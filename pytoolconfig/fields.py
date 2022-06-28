@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import dataclasses
 from dataclasses import MISSING, fields
-from typing import Any, Callable, Dict, Optional, Tuple, Type, Union
+from typing import Any, Callable
 
 from .types import ConfigField, Dataclass, UniversalKey
 

@@ -6,6 +6,9 @@
 
 from __future__ import annotations
 
+# -- Project information -----------------------------------------------------
+from pytoolconfig._version import version
+
 # -- Path setup --------------------------------------------------------------
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -15,9 +18,6 @@ from __future__ import annotations
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
-
-# -- Project information -----------------------------------------------------
-from pytoolconfig._version import version
 
 project = "pytoolconfig"
 copyright = "2022, bageljr"

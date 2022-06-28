@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from pytoolconfig.utils import find_config_file, parse_dependencies
 
 
