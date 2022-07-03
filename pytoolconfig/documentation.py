@@ -133,8 +133,11 @@ def setup(app: Sphinx) -> None:
     app.add_autodocumenter(PyToolConfigAutoDocumenter)
 
 
-def generate_documentation(config: PyToolConfig) -> Generator[str, None, None]:
-    """Generate Markdown documentation for a given config model."""
+def _generate_documentation(config: PyToolConfig) -> Generator[str, None, None]:
+    """Generate Markdown documentation for a given config model.
+    
+    This currently Beta at best. Do not use.
+    """
     yield "# Configuration\n"
     if len(config.sources) > 1:
         yield f"{config.tool} supports the following sources:\n"
