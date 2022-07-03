@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import sys
 from dataclasses import is_dataclass
-from typing import Any, Dict, Generator, Optional, Type
+from typing import Any, Generator
 
 from docutils.statemachine import StringList
 from sphinx.application import Sphinx

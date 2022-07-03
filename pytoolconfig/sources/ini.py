@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from configparser import ConfigParser, SectionProxy
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict
 
 from pytoolconfig.sources.source import Source
 from pytoolconfig.types import Key

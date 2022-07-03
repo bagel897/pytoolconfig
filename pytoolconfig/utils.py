@@ -7,13 +7,8 @@ from pathlib import Path
 from typing import (
     Any,
     Callable,
-    Dict,
     Generator,
-    List,
     Mapping,
-    Optional,
-    Tuple,
-    Type,
     TypeVar,
 )
 

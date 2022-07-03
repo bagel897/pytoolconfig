@@ -1,7 +1,6 @@
 """Universal Configuration base model."""
 from __future__ import annotations
 
-from typing import Dict, List, Optional, Tuple
 
 from packaging.requirements import Requirement
 

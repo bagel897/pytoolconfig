@@ -4,7 +4,7 @@ from __future__ import annotations
 from argparse import SUPPRESS, ArgumentParser
 from dataclasses import is_dataclass
 from pathlib import Path
-from typing import Dict, Generic, List, Optional, Sequence, Type, TypeVar
+from typing import Generic, Sequence, TypeVar
 
 from pytoolconfig.fields import _gather_config_fields
 from pytoolconfig.sources import PyProject, PyTool, Source
