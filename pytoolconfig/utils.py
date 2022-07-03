@@ -4,13 +4,7 @@ from __future__ import annotations
 import sys
 from dataclasses import Field, fields, is_dataclass, replace
 from pathlib import Path
-from typing import (
-    Any,
-    Callable,
-    Generator,
-    Mapping,
-    TypeVar,
-)
+from typing import Any, Callable, Generator, Mapping, TypeVar
 
 from packaging.requirements import Requirement
 from packaging.specifiers import SpecifierSet

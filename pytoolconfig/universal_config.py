@@ -1,7 +1,6 @@
 """Universal Configuration base model."""
 from __future__ import annotations
 
-
 from packaging.requirements import Requirement
 
 from .fields import field
