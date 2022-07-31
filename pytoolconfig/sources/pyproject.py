@@ -31,7 +31,9 @@ class PyProject(Source):
     toml_dict: dict | None = None
     name: str = "pyproject.toml"
     description: str = """
-    PEP 518 defines pyproject.toml as a configuration file to store build system requirements for Python projects. With the help of tools like Poetry or Flit it can fully replace the need for setup.py and setup.cfg files.
+    PEP 518 defines pyproject.toml as a configuration file to store build system
+    requirements for Python projects. With the help of tools like Poetry or Flit
+    it can fully replace the need for setup.py and setup.cfg files.
     """  # taken from black.
     file: Path | None
 
@@ -81,7 +83,7 @@ class PyProject(Source):
         if not self.toml_dict:
             return UniversalConfig()
         config: UniversalConfig
-        if "pytoolconfig" in self.toml_dict["tool"].keys():
+        if "pytoolconfig" in self.toml_dict.get("tool", {}).keys():
             config = _dict_to_dataclass(
                 UniversalConfig, self.toml_dict["tool"]["pytoolconfig"]
             )
