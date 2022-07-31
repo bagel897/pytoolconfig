@@ -35,7 +35,6 @@ gen_docs = [
 dev = [
     'pytoolconfig[validation, global, doc, gen_docs]',
     'pytest>=7.0.1',
-    'pdm-publish>=0.2.1',
     'mypy>=0.950',
     'types-tabulate>=0.8.9',
     'pre-commit>=2.19.0',
@@ -79,5 +78,5 @@ plugins = 'pydantic.mypy'
 strict = true
 
 [build-system]
-requires = ['pdm-pep517>=0.12.0']
+requires = ['pdm-pep517>=1.0.0']
 build-backend = 'pdm.pep517.api'
