@@ -23,6 +23,10 @@ def test_empty_pyproject(tmp_path):
     pyproject.parse()
     pyproject.universalconfig()
 
+    with pyproject_toml.open(mode="w") as f:
+        pass
+    pyproject.parse()
+
 
 def test_base_ini(cwd):
     config = IniConfig(cwd, "test_config.ini", "pytoolconfig").parse()
