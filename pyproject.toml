@@ -2,7 +2,7 @@
 name = 'pytoolconfig'
 version = '1.2.2'
 description = 'Python tool configuration'
-license-expression = 'LGPL-3.0-or-later'
+license = 'LGPL-3.0-or-later'
 dependencies = [
     'tomli>=2.0; python_version < "3.11"',
     'packaging>=21.3',
@@ -21,10 +21,7 @@ Homepage = 'https://github.com/bageljrkhanofemus/pytoolconfig'
 [project.optional-dependencies]
 validation = ['pydantic>=1.7.4']
 global = ['appdirs>=1.4.4']
-doc = [
-    'tabulate>=0.8.9',
-    'sphinx>=4.5.0',
-]
+doc = ['tabulate>=0.8.9', 'sphinx>=4.5.0']
 gen_docs = [
     'sphinx>=4.5.0',
     'sphinx-autodoc-typehints>=1.18.1',
@@ -78,5 +75,5 @@ plugins = 'pydantic.mypy'
 strict = true
 
 [build-system]
-requires = ['pdm-pep517>=1.0.0']
+requires = ['pdm-pep517>=1.0.5']
 build-backend = 'pdm.pep517.api'
