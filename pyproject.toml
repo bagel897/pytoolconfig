@@ -1,6 +1,6 @@
 [project]
 name = 'pytoolconfig'
-version = '1.2.2'
+dynamic=["version"]
 description = 'Python tool configuration'
 license = 'LGPL-3.0-or-later'
 dependencies = [
@@ -28,6 +28,9 @@ gen_docs = [
     'sphinx-rtd-theme>=1.0.0',
     'pytoolconfig[doc]',
 ]
+[tool.pdm]
+version = { source = "scm"}
+
 [tool.pdm.dev-dependencies]
 dev = [
     'pytoolconfig[validation, global, doc, gen_docs]',
