@@ -1,6 +1,6 @@
 [project]
 name = 'pytoolconfig'
-dynamic=["version"]
+dynamic = ["version"]
 description = 'Python tool configuration'
 license = 'LGPL-3.0-or-later'
 dependencies = [
@@ -20,7 +20,7 @@ Homepage = 'https://github.com/bageljrkhanofemus/pytoolconfig'
 
 [project.optional-dependencies]
 validation = ['pydantic>=1.7.4']
-global = ['appdirs>=1.4.4']
+global = ['platformdirs>=1.4.4']
 doc = ['tabulate>=0.8.9', 'sphinx>=4.5.0']
 gen_docs = [
     'sphinx>=4.5.0',
@@ -29,7 +29,7 @@ gen_docs = [
     'pytoolconfig[doc]',
 ]
 [tool.pdm]
-version = { source = "scm"}
+version = { source = "scm" }
 
 [tool.pdm.dev-dependencies]
 dev = [

@@ -9,7 +9,7 @@ from .pyproject import PyProject
 class PyTool(PyProject):
     """Source for pytool.toml files.
 
-    Uses appdirs to find configuration directories.
+    Uses platformdirs to find configuration directories.
     """
 
     description: str
@@ -19,9 +19,9 @@ class PyTool(PyProject):
 
         :param tool: name of your tool. Will read configuration from [tool.yourtool]
         """
-        import appdirs
+        import platformdirs
 
-        self.file = Path(appdirs.user_config_dir()) / "pytool.toml"
+        self.file = Path(platformdirs.user_config_dir()) / "pytool.toml"
         self.name = "pytool.toml"
         self.tool = tool
         self.description = rf"""
