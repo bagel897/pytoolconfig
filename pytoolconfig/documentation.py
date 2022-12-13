@@ -135,7 +135,7 @@ def setup(app: Sphinx) -> None:
 
 def _generate_documentation(config: PyToolConfig) -> Generator[str, None, None]:
     """Generate Markdown documentation for a given config model.
-    
+
     This currently Beta at best. Do not use.
     """
     yield "# Configuration\n"

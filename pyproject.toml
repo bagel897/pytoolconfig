@@ -39,8 +39,9 @@ dev = [
     'types-tabulate>=0.8.9',
     'pre-commit>=2.19.0',
     'rstcheck>=5.0.0',
-    'tox>=3.25.0',
+    'tox>=4.0',
     "docformatter>=1.4",
+    "tox-pdm>=0.6.0",
 ]
 
 [tool.pytoolconfig]
@@ -65,9 +66,7 @@ python =
     3.10: py310
     3.11: py311
 [testenv]
-deps =
-    pytest
-    pytoolconfig[doc, global]
+groups = dev
 commands = pytest
 '''
 [tool.pylint.format]
