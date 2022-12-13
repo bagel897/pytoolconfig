@@ -64,7 +64,8 @@ python =
     3.10: py310
     3.11: py311
 [testenv]
-groups = dev, doc, global
+extras = gen_docs, global
+groups = dev
 commands = pytest
 '''
 [tool.pylint.format]
