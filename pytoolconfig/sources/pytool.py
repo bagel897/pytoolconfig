@@ -28,7 +28,8 @@ class PyTool(PyProject):
         The pytool.toml file is found at
 
         Mac OS X:               ~/Library/Application Support/pytool.toml
-        Unix:                   ~/.config/pytool.toml     # or in $XDG_CONFIG_HOME, if defined
+        Unix:                   ~/.config/pytool.toml     # or in $XDG_CONFIG_HOME,
+                                if defined
         Win *:                  C:\Users\<username>\AppData\Local\pytool.toml
         It is configured in the same fashion as your pyproject.toml.
         Configuration for {tool} is found in the [tool.{tool}] table.

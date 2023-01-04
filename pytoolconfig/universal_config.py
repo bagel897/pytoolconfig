@@ -16,7 +16,7 @@ class UniversalConfig:
 
     min_py_version: tuple[int, int] | None = field(
         None,
-        """Mimimum target python version. Requires PEP 621.
+        """Minimum target python version. Requires PEP 621.
         Taken from project.requires-python""",
     )
     max_py_version: tuple[int, int] | None = field(
