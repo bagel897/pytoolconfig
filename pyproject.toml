@@ -1,8 +1,8 @@
 [project]
-name = 'pytoolconfig'
+name = "pytoolconfig"
 dynamic = ["version"]
 description = 'Python tool configuration'
-license = 'LGPL-3.0'
+license = { file = 'LGPL-3.0' }
 dependencies = [
     "tomli>=2.0.1; python_version < \"3.11\"",
     "packaging>=22.0",
@@ -22,7 +22,7 @@ Homepage = 'https://github.com/bageljrkhanofemus/pytoolconfig'
 validation = ['pydantic>=1.7.4']
 global = ['platformdirs>=1.4.4']
 doc = ['tabulate>=0.8.9', 'sphinx>=4.5.0']
-gen_docs = [
+gendocs = [
     'sphinx>=4.5.0',
     'sphinx-autodoc-typehints>=1.18.1',
     'sphinx-rtd-theme>=1.0.0',
@@ -64,14 +64,14 @@ python =
     3.10: py310
     3.11: py311
 [testenv]
-extras = gen_docs, global
+extras = gendocs, global
 groups = dev
 commands = pytest
 '''
 [tool.pylint.format]
 max-line-length = "88"
 
-[mypy]
+[tool.mypy]
 plugins = 'pydantic.mypy'
 strict = true
 
