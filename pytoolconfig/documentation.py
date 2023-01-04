@@ -28,7 +28,10 @@ def _type_to_str(type_to_print: type[Any]) -> str | None:
     if type_to_print is None:
         return None
     if get_origin(type_to_print) is None:
-        return type_to_print.__name__
+        try:
+            return type_to_print.__name__
+        except AttributeError:
+            return type_to_print
     return str(type_to_print).replace("typing.", "")
 
 
