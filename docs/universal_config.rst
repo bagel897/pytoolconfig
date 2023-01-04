@@ -3,7 +3,7 @@ Universal Configuration
 
 Universal Configuration refers to configuration keys given by pytoolconfig. You can overwrite your own configuration keys with the ones provided by pytoolconfig.
 
-In your configuration model, set the ``universal_config`` value in the `Field` constructor. (This only works for items in the base model). You still need to set a default value.
+In your configuration model, set the ``universal_config`` value in the ``Field`` constructor. (This only works for items in the base model). You still need to set a default value.
 For example:
 
 .. code-block:: python
