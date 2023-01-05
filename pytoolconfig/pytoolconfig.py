@@ -49,8 +49,8 @@ class PyToolConfig(Generic[DataclassT]):
         :param global_config: Enable global configuration
         :param global_sources: Custom global sources
         :param fall_through: Configuration options should fall through between sources.
-        :param *args: Passed to constructor for PyProject
-        :param **kwargs: Passed to constructor for PyProject
+        :param args: Passed to constructor for PyProject
+        :param kwargs: Passed to constructor for PyProject
         """
         assert is_dataclass(model)
         self.model = model

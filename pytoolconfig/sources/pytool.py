@@ -13,6 +13,9 @@ class PyTool(PyProject):
     """
 
     description: str
+    tool: str
+    name: str
+    file: Path
 
     def __init__(self, tool: str):
         """Initialize the TOML configuration.
