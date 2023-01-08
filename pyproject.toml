@@ -2,7 +2,7 @@
 name = "pytoolconfig"
 dynamic = ["version"]
 description = 'Python tool configuration'
-license = { file = 'LGPL-3.0' }
+license = { text = 'LGPL-3.0-or-later' }
 dependencies = [
     "tomli>=2.0.1; python_version < \"3.11\"",
     "packaging>=22.0",
