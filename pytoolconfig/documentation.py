@@ -79,6 +79,7 @@ def _generate_table(
 
 
 class PyToolConfigAutoDocumenter(ClassDocumenter):
+
     """Sphinx autodocumenter for pytoolconfig models."""
 
     objtype = "pytoolconfigtable"
@@ -87,7 +88,7 @@ class PyToolConfigAutoDocumenter(ClassDocumenter):
 
     @classmethod
     def can_document_member(
-        cls, member: Any, membername: str, isattr: bool, parent: Any
+        cls, member: Any, membername: str, isattr: bool, parent: Any  # noqa: ARG003
     ) -> bool:
         """Check if member is dataclass."""
         return is_dataclass(member)
@@ -96,7 +97,9 @@ class PyToolConfigAutoDocumenter(ClassDocumenter):
         """Remove directive headers."""
 
     def add_content(
-        self, more_content: StringList | None, no_docstring: bool = False
+        self,
+        more_content: StringList | None,  # noqa: ARG002
+        no_docstring: bool = False,  # noqa: ARG002
     ) -> None:
         """Create simple table to document configuration options."""
         source = self.get_sourcename()
@@ -106,13 +109,16 @@ class PyToolConfigAutoDocumenter(ClassDocumenter):
 
 
 class PyToolConfigSourceDocumenter(ClassDocumenter):
+
+    """Expiremental documenter for docmenting a source for pytoolconfig."""
+
     objtype = "pytoolconfigsources"
     content_indent = ""
     titles_allowed = True
 
     @classmethod
     def can_document_member(
-        cls, member: Any, membername: str, isattr: bool, parent: Any
+        cls, member: Any, membername: str, isattr: bool, parent: Any  # noqa: ARG003
     ) -> bool:
         """Check if member is dataclass."""
         return isinstance(member, Source)
@@ -121,7 +127,9 @@ class PyToolConfigSourceDocumenter(ClassDocumenter):
         """Remove directive headers."""
 
     def add_content(
-        self, more_content: StringList | None, no_docstring: bool = False
+        self,
+        more_content: StringList | None,  # noqa: ARG002
+        no_docstring: bool = False,  # noqa: ARG002
     ) -> None:
         """Create simple table to document configuration options."""
         source = self.get_sourcename()

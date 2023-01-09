@@ -7,6 +7,7 @@ from .pyproject import PyProject
 
 
 class PyTool(PyProject):
+
     """Source for pytool.toml files.
 
     Uses platformdirs to find configuration directories.
@@ -17,7 +18,7 @@ class PyTool(PyProject):
     name: str
     file: Path
 
-    def __init__(self, tool: str):
+    def __init__(self, tool: str) -> None:
         """Initialize the TOML configuration.
 
         :param tool: name of your tool. Will read configuration from [tool.yourtool]

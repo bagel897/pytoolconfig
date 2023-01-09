@@ -22,6 +22,7 @@ else:
 
 
 class PyProject(Source):
+
     """Source for pyproject.toml and pytool.toml files.
 
     Can be extended to other toml files.
@@ -43,7 +44,7 @@ class PyProject(Source):
         tool: str,
         bases: list[str] | None = None,
         recursive: bool = True,
-    ):
+    ) -> None:
         """Initialize the TOML configuration.
 
         :param working_directory: Working Directory
@@ -65,7 +66,7 @@ class PyProject(Source):
             return False
         if "tool" not in self.toml_dict.keys():
             return False
-        return self.tool in self.toml_dict["tool"].keys()
+        return self.tool in self.toml_dict["tool"]
 
     def parse(self) -> dict[str, Key] | None:
         """Parse the TOML file."""
@@ -84,15 +85,14 @@ class PyProject(Source):
         if not self.toml_dict:
             return UniversalConfig()
         config: UniversalConfig
-        if "pytoolconfig" in self.toml_dict.get("tool", {}).keys():
-            config = _dict_to_dataclass(
-                UniversalConfig, self.toml_dict["tool"]["pytoolconfig"]
-            )
-        else:
-            config = UniversalConfig()
-        if "project" in self.toml_dict.keys():
+        config = (
+            _dict_to_dataclass(UniversalConfig, self.toml_dict["tool"]["pytoolconfig"])
+            if "pytoolconfig" in self.toml_dict.get("tool", {})
+            else UniversalConfig()
+        )
+        if "project" in self.toml_dict:
             project = self.toml_dict["project"]
-            if "requires-python" in project.keys():
+            if "requires-python" in project:
                 raw_python_ver = project["requires-python"]
                 config.min_py_version = min_py_version(raw_python_ver)
                 config.max_py_version = max_py_version(raw_python_ver)

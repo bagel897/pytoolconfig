@@ -4,7 +4,7 @@ from __future__ import annotations
 from argparse import SUPPRESS, ArgumentParser
 from dataclasses import is_dataclass
 from pathlib import Path
-from typing import Generic, Sequence, TypeVar
+from typing import Any, Generic, Sequence, TypeVar
 
 from pytoolconfig.fields import _gather_config_fields
 from pytoolconfig.sources import PyProject, PyTool, Source
@@ -16,6 +16,7 @@ DataclassT = TypeVar("DataclassT", bound=Dataclass)
 
 
 class PyToolConfig(Generic[DataclassT]):
+
     """Python Tool Configuration Aggregator."""
 
     sources: list[Source] = []
@@ -36,9 +37,9 @@ class PyToolConfig(Generic[DataclassT]):
         global_config: bool = False,
         global_sources: Sequence[Source] | None = None,
         fall_through: bool = False,
-        *args,
-        **kwargs,
-    ):
+        *args: list,
+        **kwargs: dict[str, Any],
+    ) -> None:
         """Initialize the configuration object.
 
         :param tool: name of the tool to use.

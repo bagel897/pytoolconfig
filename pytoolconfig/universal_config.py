@@ -9,6 +9,7 @@ from .types import dataclass
 
 @dataclass
 class UniversalConfig:
+
     """Universal Configuration base model."""
 
     formatter: str | None = field(None, "Formatter used to format this File")

@@ -24,6 +24,7 @@ def _add_split_to_dict(
 
 
 class IniConfig(Source):
+
     """Source for INI configuration files via configparser."""
 
     _config: ConfigParser
@@ -36,7 +37,7 @@ class IniConfig(Source):
         filename: str,
         base_table: str,
         description: str | None = None,
-    ):
+    ) -> None:
         """Initialize the Ini Configuration.
 
         :param working_directory: the working directory to search.
