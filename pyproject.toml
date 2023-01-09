@@ -50,6 +50,9 @@ testpaths = ['tests']
 [tool.isort]
 profile = 'black'
 
+[tool.ruff]
+select = ["E", "W", "F", "I", "C90", "UP"]
+
 [tool.tox]
 legacy_tox_ini = '''
 [tox]
