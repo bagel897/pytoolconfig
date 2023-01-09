@@ -102,6 +102,6 @@ def test_fall_through(cwd):
 
 
 def test_universal_key():
-    assert [field.name for field in fields(UniversalConfig)] == [
-        name for name in UniversalKey.__members__
-    ]
+    assert [field.name for field in fields(UniversalConfig)] == list(
+        UniversalKey.__members__
+    )

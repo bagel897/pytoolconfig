@@ -9,12 +9,25 @@ from typing import Any, Callable, Generator, Mapping, TypeVar
 from packaging.requirements import Requirement
 from packaging.specifiers import SpecifierSet
 
+from pytoolconfig.types import DataclassT
+
 from .types import Dataclass, Key
 
 
 def find_config_file(
     working_directory: Path, filename: str, bases: list[str] | None = None
 ) -> Path | None:
+    """Find a configuration file given a working directory.
+
+    Args:
+        working_directory: Working directory to start from
+        filename: Filename to look for
+        bases: Bases to stop at
+
+    Returns:
+        Path of config file
+
+    """
     if bases is None:
         bases = [".git", ".hg"]
     """Recursively find the configuration file."""
@@ -70,7 +83,7 @@ def _subtables(dataclass_fields: dict[str, Field[Any]]) -> dict[str, type[Any]]:
     }
 
 
-def _fields(dataclass) -> dict[str, Field[Any]]:
+def _fields(dataclass: DataclassT) -> dict[str, Field[Any]]:
     return {field.name: field for field in fields(dataclass) if field.init}
 
 

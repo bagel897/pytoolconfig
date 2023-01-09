@@ -1,3 +1,4 @@
+"""Sources for configuration files."""
 from __future__ import annotations
 
 from .ini import IniConfig
