@@ -8,7 +8,7 @@ Welcome to pytoolconfig's documentation!
 
 Python Tool Configuration
 
-The goal of this project is to manage configuration for python tools, such as black and rope and add support for a pyproject.toml configuration file.
+The goal of this project is to manage configuration for python tools, such as rope and add support for a pyproject.toml configuration file.
 
 - Configuration file autodetection. (Searches for the .git and .hg directories (and others as configured)).
 - :doc:`Optional global configuration <global_configuration>`
@@ -36,7 +36,7 @@ Usage
 Configuration Load Order
 ------------------------
 1. Command Line - overwrites selected configuration properties individually
-2. pyproject.toml (mandatory, automatic) if tool.black (or your tool) is present
+2. pyproject.toml (mandatory, automatic) if tool.rope (or your tool) is present
 3. additional sources configured in order they were added.
 4. global configuration from pytool.toml global file
 5. configured global configurations
