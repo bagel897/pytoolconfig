@@ -27,7 +27,7 @@ class PyToolConfig(Generic[DataclassT]):
     arg_parser: ArgumentParser | None = None
     _config_fields: dict[str, ConfigField]
 
-    def __init__(
+    def __init__(  # noqa: PLR0913
         self,
         tool: str,
         working_directory: Path,

@@ -11,7 +11,7 @@ from typing_extensions import Literal
 from .types import ConfigField, UniversalKey
 
 
-class _MISSING_TYPE(enum.Enum):
+class _MISSING_TYPE(enum.Enum):  # noqa: N801
     MISSING = enum.auto()
 
 
@@ -23,7 +23,7 @@ _METADATA_KEY = "pytoolconfig"
 T = TypeVar("T")
 
 
-def field(
+def field(  # noqa: PLR0913
     default: T | Literal[MISSING] = Literal[MISSING],
     description: str | None = None,
     command_line: tuple[str] | None = None,
