@@ -4,14 +4,15 @@ from __future__ import annotations
 import sys
 from dataclasses import Field, fields, is_dataclass, replace
 from pathlib import Path
-from typing import Any, Callable, Generator, Mapping, TypeVar
+from typing import TYPE_CHECKING, Any, Generator, Mapping, TypeVar
 
 from packaging.requirements import Requirement
 from packaging.specifiers import SpecifierSet
 
-from pytoolconfig.types import DataclassT
+from .types import Key
 
-from .types import Dataclass, Key
+if TYPE_CHECKING:
+    from _typeshed import DataclassInstance
 
 
 def find_config_file(
@@ -74,7 +75,7 @@ def parse_dependencies(dependencies: list[str]) -> Generator[Requirement, None, 
         yield Requirement(dependency)
 
 
-T = TypeVar("T", bound="Dataclass")
+T = TypeVar("T", bound="DataclassInstance")
 
 
 def _subtables(dataclass_fields: dict[str, Field[Any]]) -> dict[str, type[Any]]:
@@ -85,11 +86,14 @@ def _subtables(dataclass_fields: dict[str, Field[Any]]) -> dict[str, type[Any]]:
     }
 
 
-def _fields(dataclass: DataclassT) -> dict[str, Field[Any]]:
+def _fields(dataclass: DataclassInstance) -> dict[str, Field[Any]]:
     return {field.name: field for field in fields(dataclass) if field.init}
 
 
-def _dict_to_dataclass(dataclass: Callable[..., T], dictionary: Mapping[str, Key]) -> T:
+def _dict_to_dataclass(
+    dataclass: T,
+    dictionary: Mapping[str, Key],
+) -> T:
     filtered_arg_dict: dict[str, Any] = {}
     dataclass_fields = _fields(dataclass)
     sub_tables = _subtables(dataclass_fields)

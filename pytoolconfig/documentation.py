@@ -5,17 +5,21 @@ from __future__ import annotations
 
 import sys
 from dataclasses import is_dataclass
-from typing import Any, Generator
+from typing import TYPE_CHECKING, Any, Generator
 
-from docutils.statemachine import StringList
-from sphinx.application import Sphinx
+if TYPE_CHECKING:
+    from _typeshed import DataclassInstance
+    from docutils.statemachine import StringList
+    from sphinx.application import Sphinx
+
+    from .pytoolconfig import PyToolConfig
+    from .types import ConfigField
+
 from sphinx.ext.autodoc import ClassDocumenter
 from tabulate import tabulate
 
 from .fields import _gather_config_fields
-from .pytoolconfig import PyToolConfig
 from .sources import Source
-from .types import ConfigField, Dataclass
 from .universal_config import UniversalConfig
 
 if sys.version_info < (3, 8, 0):
@@ -31,11 +35,11 @@ def _type_to_str(type_to_print: type[Any]) -> str | None:
         try:
             return type_to_print.__name__
         except AttributeError:
-            return type_to_print
+            return str(type_to_print)
     return str(type_to_print).replace("typing.", "")
 
 
-def _subtables(model: type[Dataclass]) -> dict[str, type[Dataclass]]:
+def _subtables(model: type[DataclassInstance]) -> dict[str, type[DataclassInstance]]:
     result = {}
     for name, field in _gather_config_fields(model).items():
         if is_dataclass(field._type):
@@ -44,7 +48,7 @@ def _subtables(model: type[Dataclass]) -> dict[str, type[Dataclass]]:
 
 
 def _generate_table(
-    model: type[Dataclass],
+    model: type[DataclassInstance],
     tablefmt: str = "rst",
     prefix: str = "",
 ) -> Generator[str, None, None]:
@@ -90,8 +94,8 @@ class PyToolConfigAutoDocumenter(ClassDocumenter):
     def can_document_member(
         cls,
         member: Any,
-        membername: str,
-        isattr: bool,
+        membername: str,  # noqa: ARG003
+        isattr: bool,  # noqa: ARG003
         parent: Any,  # noqa: ARG003
     ) -> bool:
         """Check if member is dataclass."""
@@ -124,8 +128,8 @@ class PyToolConfigSourceDocumenter(ClassDocumenter):
     def can_document_member(
         cls,
         member: Any,
-        membername: str,
-        isattr: bool,
+        membername: str,  # noqa: ARG003
+        isattr: bool,  # noqa: ARG003
         parent: Any,  # noqa: ARG003
     ) -> bool:
         """Check if member is dataclass."""
@@ -176,4 +180,5 @@ def _generate_documentation(config: PyToolConfig) -> Generator[str, None, None]:
     yield "\n"
     for prefix, subtable in _subtables(config.model).items():
         yield from _generate_table(subtable, "github", prefix)
+        yield "\n"
         yield "\n"

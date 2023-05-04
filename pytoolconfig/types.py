@@ -5,28 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import date, datetime, time
 from enum import Enum, auto
-from typing import Any, Callable, Dict, List, TypeVar, Union
-
-DataclassT = TypeVar("DataclassT", bound="Dataclass")
-
-
-class Dataclass:
-
-    """
-    Dataclass annotation.
-
-    Included in pydantic.
-    """
-
-    __initialised__: bool
-    __post_init_original__: Callable[..., None] | None
-
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
-        """Type annotation for initializing a class."""
-
-    def __call__(self: DataclassT, *args: Any, **kwargs: Any) -> DataclassT:
-        """Type annotation for applying the decorator on the class."""
-
+from typing import Any, Dict, List, Union
 
 _BaseType = Union[str, int, float, datetime, date, time, bool]
 _BaseTypeWithList = Union[_BaseType, List[_BaseType]]

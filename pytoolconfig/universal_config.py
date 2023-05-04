@@ -1,10 +1,11 @@
 """Universal Configuration base model."""
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 from packaging.requirements import Requirement
 
-from .fields import field
-from .types import dataclass
+from pytoolconfig import field
 
 
 @dataclass

@@ -40,6 +40,7 @@ dev = [
 	"tox>=4.0.8",
 	"docformatter>=1.5.0",
 	"tox-pdm>=0.6.0",
+	"types-docutils>=0.19.1.7",
 ]
 
 [tool.pytoolconfig]
@@ -64,6 +65,7 @@ ignore = [
 	"TCH001",
 	"TCH002",
 	"TCH003",
+	"SLF001",
 ]
 # Always generate Python 3.7-compatible code.
 target-version = "py37"
@@ -75,8 +77,6 @@ force-exclude = true
 convention = "google" # Accepts: "google", "numpy", or "pep257".
 [tool.ruff.flake8-bugbear]
 extend-immutable-calls = ["pytoolconfig.field"]
-[tool.ruff.flake8-self]
-ignore-names = ["_default", "_type"]
 [tool.tox]
 legacy_tox_ini = '''
 [tox]

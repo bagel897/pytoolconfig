@@ -2,22 +2,35 @@
 from __future__ import annotations
 
 import dataclasses
-from dataclasses import MISSING, fields
-from typing import Any, Callable
+import enum
+from dataclasses import fields
+from typing import TYPE_CHECKING, Callable, TypeVar
 
-from .types import ConfigField, Dataclass, UniversalKey
+from typing_extensions import Literal
 
+from .types import ConfigField, UniversalKey
+
+
+class _MISSING_TYPE(enum.Enum):
+    MISSING = enum.auto()
+
+
+MISSING = _MISSING_TYPE.MISSING
+if TYPE_CHECKING:
+    from _typeshed import DataclassInstance
 _METADATA_KEY = "pytoolconfig"
+
+T = TypeVar("T")
 
 
 def field(
-    default: Any = MISSING,
+    default: T | Literal[MISSING] = Literal[MISSING],
     description: str | None = None,
     command_line: tuple[str] | None = None,
     universal_config: UniversalKey | None = None,
-    default_factory: Callable[[], Any] | None = MISSING,
+    default_factory: Callable[[], T] | Literal[MISSING] = Literal[MISSING],
     init: bool = True,
-) -> dataclasses.Field:
+) -> dataclasses.Field[T]:
     """Create a dataclass field with metadata."""
     metadata = {
         _METADATA_KEY: ConfigField(
@@ -40,7 +53,7 @@ def field(
 
 
 def _gather_config_fields(
-    model: type[Dataclass] | Dataclass,
+    model: type[DataclassInstance] | DataclassInstance,
 ) -> dict[str, ConfigField]:
     # First try PyToolConfig Annotated Fields
     result = {}
