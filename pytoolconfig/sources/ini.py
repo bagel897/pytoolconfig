@@ -11,7 +11,9 @@ from pytoolconfig.utils import find_config_file
 
 
 def _add_split_to_dict(
-    dest: dict[str, Key], table_to_add: list[str], table: SectionProxy
+    dest: dict[str, Key],
+    table_to_add: list[str],
+    table: SectionProxy,
 ) -> None:
     if len(table_to_add) == 0:
         for table_key in table:

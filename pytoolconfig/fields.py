@@ -25,13 +25,15 @@ def field(
             universal_config=universal_config,
             command_line=command_line,
             _default=default,
-        )
+        ),
     }
 
     if default_factory is not MISSING and default_factory is not None:
         metadata[_METADATA_KEY]._default = default_factory()
         return dataclasses.field(
-            default_factory=default_factory, metadata=metadata, init=init
+            default_factory=default_factory,
+            metadata=metadata,
+            init=init,
         )
     assert default is not MISSING
     return dataclasses.field(default=default, metadata=metadata, init=init)
@@ -48,7 +50,7 @@ def _gather_config_fields(
                 result[dataclass_field.name] = dataclass_field.metadata[_METADATA_KEY]
             else:
                 result[dataclass_field.name] = ConfigField(
-                    _default=dataclass_field.default
+                    _default=dataclass_field.default,
                 )
             result[dataclass_field.name]._type = dataclass_field.type
     # Then use pydantic annotated fields

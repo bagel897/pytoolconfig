@@ -57,7 +57,7 @@ def _generate_table(
     for name, field in model_fields.items():
         if not is_dataclass(field._type):
             row = [
-                f"{name}" if prefix == "" else f"{prefix}.{name}",
+                f"{name}" if not prefix else f"{prefix}.{name}",
                 field.description.replace("\n", " ") if field.description else None,
                 _type_to_str(field._type),
                 field._default,
@@ -88,7 +88,11 @@ class PyToolConfigAutoDocumenter(ClassDocumenter):
 
     @classmethod
     def can_document_member(
-        cls, member: Any, membername: str, isattr: bool, parent: Any  # noqa: ARG003
+        cls,
+        member: Any,
+        membername: str,
+        isattr: bool,
+        parent: Any,  # noqa: ARG003
     ) -> bool:
         """Check if member is dataclass."""
         return is_dataclass(member)
@@ -118,7 +122,11 @@ class PyToolConfigSourceDocumenter(ClassDocumenter):
 
     @classmethod
     def can_document_member(
-        cls, member: Any, membername: str, isattr: bool, parent: Any  # noqa: ARG003
+        cls,
+        member: Any,
+        membername: str,
+        isattr: bool,
+        parent: Any,  # noqa: ARG003
     ) -> bool:
         """Check if member is dataclass."""
         return isinstance(member, Source)

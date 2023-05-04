@@ -15,7 +15,9 @@ from .types import Dataclass, Key
 
 
 def find_config_file(
-    working_directory: Path, filename: str, bases: list[str] | None = None
+    working_directory: Path,
+    filename: str,
+    bases: list[str] | None = None,
 ) -> Path | None:
     """Find a configuration file given a working directory.
 

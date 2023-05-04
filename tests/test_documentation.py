@@ -14,10 +14,14 @@ class SubTool:
 class NestedModel:
     subtool: SubTool = field(default_factory=lambda: SubTool())
     foo_other: Optional[str] = field(
-        description="Tool One", default="no", command_line=("--foo", "-f")
+        description="Tool One",
+        default="no",
+        command_line=("--foo", "-f"),
     )
     min_py_ver: Tuple[int, int] = field(
-        default=None, description="sauf", universal_config=UniversalKey.min_py_version
+        default=None,
+        description="sauf",
+        universal_config=UniversalKey.min_py_version,
     )
 
     test_truth: bool = False

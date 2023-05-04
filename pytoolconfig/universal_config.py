@@ -36,5 +36,6 @@ class UniversalConfig:
     Taken from project.optional_dependencies.""",
     )
     version: str | None = field(
-        None, "Version of the project. Requires PEP 621. Taken from project.version."
+        None,
+        "Version of the project. Requires PEP 621. Taken from project.version.",
     )
