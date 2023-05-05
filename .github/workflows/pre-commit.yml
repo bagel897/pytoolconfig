@@ -18,8 +18,9 @@ jobs:
         name: Setup PDM
         with:
           python-version: ${{ matrix.python-version }}
-          cache: true
+          enable-pep582: true
       - name: Install dependencies
         run: |
+          pdm lock
           pdm install
       - uses: pre-commit/action@v3.0.0

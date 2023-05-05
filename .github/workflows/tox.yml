@@ -18,7 +18,6 @@ jobs:
         name: Setup PDM
         with:
           python-version: ${{ matrix.python-version }}
-          cache: true
       - name: Install dependencies
         run: |
           pdm install
