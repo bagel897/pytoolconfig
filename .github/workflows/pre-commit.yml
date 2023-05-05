@@ -22,6 +22,4 @@ jobs:
       - name: Install dependencies
         run: |
           pdm install
-      - name: Test with tox
-        run: |
-          pdm run tox
+      - uses: pre-commit/action@v3.0.0
