@@ -37,7 +37,6 @@ dev = [
 	"mypy>=0.991",
 	"types-tabulate>=0.9.0.0",
 	"tox>=4.0.8",
-	"docformatter>=1.5.0",
 	"tox-pdm>=0.6.0",
 	"types-docutils>=0.19.1.7",
 	"tox-gh>=1.0.0",
