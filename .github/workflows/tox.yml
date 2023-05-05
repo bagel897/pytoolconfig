@@ -21,6 +21,5 @@ jobs:
       - name: Install dependencies
         run: |
           pdm install
-      - name: Test with tox
-        run: |
-          pdm run tox
+      - name: Run pytest
+        uses: pavelzw/pytest-action@v2

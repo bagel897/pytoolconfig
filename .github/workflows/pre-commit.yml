@@ -1,4 +1,4 @@
-name: Run tests
+name: Pre-commit
 
 on:
   - push
@@ -21,6 +21,5 @@ jobs:
           enable-pep582: true
       - name: Install dependencies
         run: |
-          pdm lock
           pdm install
       - uses: pre-commit/action@v3.0.0
