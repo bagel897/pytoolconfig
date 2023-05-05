@@ -20,5 +20,5 @@ jobs:
           enable-pep582: true
       - name: Install dependencies
         run: |
-          pdm install
+          pdm install -v
       - uses: pre-commit/action@v3.0.0
