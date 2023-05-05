@@ -78,7 +78,7 @@ def parse_dependencies(dependencies: list[str]) -> Generator[Requirement, None, 
 T = TypeVar("T", bound="DataclassInstance")
 
 
-def _subtables(dataclass_fields: dict[str, Field[Any]]) -> dict[str, type[Any]]:
+def _subtables(dataclass_fields: dict[str, Field]) -> dict[str, type[Any]]:
     return {
         name: field.type
         for name, field in dataclass_fields.items()
@@ -86,12 +86,12 @@ def _subtables(dataclass_fields: dict[str, Field[Any]]) -> dict[str, type[Any]]:
     }
 
 
-def _fields(dataclass: DataclassInstance) -> dict[str, Field[Any]]:
+def _fields(dataclass: DataclassInstance | type[DataclassInstance]) -> dict[str, Field]:
     return {field.name: field for field in fields(dataclass) if field.init}
 
 
 def _dict_to_dataclass(
-    dataclass: T,
+    dataclass: type[T],
     dictionary: Mapping[str, Key],
 ) -> T:
     filtered_arg_dict: dict[str, Any] = {}

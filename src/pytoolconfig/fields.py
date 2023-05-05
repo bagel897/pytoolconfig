@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import dataclasses
+import enum
 from dataclasses import fields
 from typing import TYPE_CHECKING, Callable, TypeVar, overload
 
@@ -14,13 +15,20 @@ _METADATA_KEY = "pytoolconfig"
 T = TypeVar("T")
 
 
+class _MISSING_TYPE(enum.Enum):
+    MISSING = enum.auto()
+
+
+MISSING = _MISSING_TYPE.MISSING
+
+
 @overload
 def field(  # noqa: PLR0913
     default: T,
     description: str | None = None,
     command_line: tuple[str] | None = None,
     universal_config: UniversalKey | None = None,
-    default_factory: None = None,
+    default_factory: _MISSING_TYPE = _MISSING_TYPE.MISSING,
     init: bool = True,
 ) -> T:
     pass
@@ -39,11 +47,11 @@ def field(
 
 
 def field(  # noqa: PLR0913
-    default: T | None = None,
+    default: T | _MISSING_TYPE = _MISSING_TYPE.MISSING,
     description: str | None = None,
     command_line: tuple[str] | None = None,
     universal_config: UniversalKey | None = None,
-    default_factory: Callable[[], T] | None = None,
+    default_factory: Callable[[], T] | _MISSING_TYPE = _MISSING_TYPE.MISSING,
     init: bool = True,
 ) -> T:
     """Create a dataclass field with metadata."""
@@ -56,14 +64,14 @@ def field(  # noqa: PLR0913
         ),
     }
 
-    if default_factory is not None:
+    if default_factory is not MISSING:
         metadata[_METADATA_KEY]._default = default_factory()
         return dataclasses.field(
             default_factory=default_factory,
             metadata=metadata,
             init=init,
         )
-    assert default is not None
+    assert default is not MISSING
     return dataclasses.field(default=default, metadata=metadata, init=init)
 
 
