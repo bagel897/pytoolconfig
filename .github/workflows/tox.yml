@@ -28,3 +28,5 @@ jobs:
           pdm install -v
       - name: Run pytest
         uses: pavelzw/pytest-action@v2
+        with:
+          custom-pytest: pdm run pytest
