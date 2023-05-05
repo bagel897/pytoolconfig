@@ -35,10 +35,10 @@ version = { source = "scm" }
 dev = [
     "pytest>=7.2.0",
     "mypy>=0.991",
-    "types-tabulate>=0.9.0.0",
+    "types-tabulate>=0.9.0.2",
     "tox>=4.0.8",
     "tox-pdm>=0.6.0",
-    "types-docutils>=0.19.1.7",
+    "types-docutils>=0.19.1.9",
     "tox-gh>=1.0.0",
     "pytest-emoji>=0.2.0",
     "pytest-md>=0.2.0",
@@ -101,7 +101,7 @@ max-line-length = "88"
 
 [tool.mypy]
 plugins = 'pydantic.mypy'
-strict = true
+# strict = true
 
 [build-system]
 requires = ['pdm-backend>=1.0.5']

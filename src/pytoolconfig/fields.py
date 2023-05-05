@@ -2,20 +2,11 @@
 from __future__ import annotations
 
 import dataclasses
-import enum
 from dataclasses import fields
-from typing import TYPE_CHECKING, Callable, TypeVar
-
-from typing_extensions import Literal
+from typing import TYPE_CHECKING, Callable, TypeVar, overload
 
 from .types import ConfigField, UniversalKey
 
-
-class _MISSING_TYPE(enum.Enum):  # noqa: N801
-    MISSING = enum.auto()
-
-
-MISSING = _MISSING_TYPE.MISSING
 if TYPE_CHECKING:
     from _typeshed import DataclassInstance
 _METADATA_KEY = "pytoolconfig"
@@ -23,14 +14,38 @@ _METADATA_KEY = "pytoolconfig"
 T = TypeVar("T")
 
 
+@overload
 def field(  # noqa: PLR0913
-    default: T | Literal[MISSING] = Literal[MISSING],
+    default: T,
     description: str | None = None,
     command_line: tuple[str] | None = None,
     universal_config: UniversalKey | None = None,
-    default_factory: Callable[[], T] | Literal[MISSING] = Literal[MISSING],
+    default_factory: None = None,
     init: bool = True,
-) -> dataclasses.Field[T]:
+) -> T:
+    pass
+
+
+@overload
+def field(
+    *,
+    default_factory: Callable[[], T],
+    description: str | None = None,
+    command_line: tuple[str] | None = None,
+    universal_config: UniversalKey | None = None,
+    init: bool = True,
+) -> T:
+    pass
+
+
+def field(  # noqa: PLR0913
+    default: T | None = None,
+    description: str | None = None,
+    command_line: tuple[str] | None = None,
+    universal_config: UniversalKey | None = None,
+    default_factory: Callable[[], T] | None = None,
+    init: bool = True,
+) -> T:
     """Create a dataclass field with metadata."""
     metadata = {
         _METADATA_KEY: ConfigField(
@@ -41,14 +56,14 @@ def field(  # noqa: PLR0913
         ),
     }
 
-    if default_factory is not Literal[MISSING] and default_factory is not None:
+    if default_factory is not None:
         metadata[_METADATA_KEY]._default = default_factory()
         return dataclasses.field(
             default_factory=default_factory,
             metadata=metadata,
             init=init,
         )
-    assert default is not Literal[MISSING]
+    assert default is not None
     return dataclasses.field(default=default, metadata=metadata, init=init)
 
 

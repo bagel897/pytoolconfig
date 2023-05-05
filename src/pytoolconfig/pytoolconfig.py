@@ -7,9 +7,9 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Generic, Sequence, TypeVar
 
 if TYPE_CHECKING:
-    from _typeshed import Dataclass
+    from _typeshed import DataclassInstance
 
-    DataclassT = TypeVar("DataclassT", bound=Dataclass)
+    DataclassT = TypeVar("DataclassT", bound=DataclassInstance)
 else:
     DataclassT = TypeVar("DataclassT")
 from pytoolconfig.fields import _gather_config_fields
@@ -41,8 +41,8 @@ class PyToolConfig(Generic[DataclassT]):
         global_config: bool = False,
         global_sources: Sequence[Source] | None = None,
         fall_through: bool = False,
-        *args: list,
-        **kwargs: dict[str, Any],
+        *args: Any,
+        **kwargs: Any,
     ) -> None:
         """Initialize the configuration object.
 

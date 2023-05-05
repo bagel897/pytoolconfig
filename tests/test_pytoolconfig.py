@@ -5,7 +5,6 @@ from dataclasses import dataclass, fields
 from typing import Tuple
 
 import pytest
-
 from pytoolconfig import PyToolConfig, UniversalKey, field
 from pytoolconfig.sources import IniConfig
 from pytoolconfig.universal_config import UniversalConfig
