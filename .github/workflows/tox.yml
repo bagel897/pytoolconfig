@@ -26,7 +26,9 @@ jobs:
       - name: Install dependencies
         run: |
           pdm install -G:all
-      - name: Run pytest
-        uses: pavelzw/pytest-action@v2
-        with:
-          custom-pytest: pdm run pytest
+      - name: Setup test suite
+        run: pdm run tox4 r -vv --notest
+      - name: Run test suite
+        run: pdm run tox4 r --skip-pkg-install
+        env:
+          PYTEST_ADDOPTS: "-vv --durations=10"
