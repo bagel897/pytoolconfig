@@ -167,7 +167,7 @@ def _generate_documentation(config: PyToolConfig) -> Generator[str, None, None]:
         for idx, source in enumerate(config.sources):
             yield f" {idx}. {source.name}\n"
     else:
-        name = next(config.sources).name
+        name = config.sources[0].name
         yield f"{config.tool} supports the {name} format\n"
     yield "\n"
     for source in config.sources:

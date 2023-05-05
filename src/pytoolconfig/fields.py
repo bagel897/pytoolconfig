@@ -15,11 +15,11 @@ _METADATA_KEY = "pytoolconfig"
 T = TypeVar("T")
 
 
-class _MISSING_TYPE(enum.Enum):
+class _MISSINGTYPE(enum.Enum):
     MISSING = enum.auto()
 
 
-MISSING = _MISSING_TYPE.MISSING
+MISSING = _MISSINGTYPE.MISSING
 
 
 @overload
@@ -28,7 +28,7 @@ def field(  # noqa: PLR0913
     description: str | None = None,
     command_line: tuple[str] | None = None,
     universal_config: UniversalKey | None = None,
-    default_factory: _MISSING_TYPE = _MISSING_TYPE.MISSING,
+    default_factory: _MISSINGTYPE = _MISSINGTYPE.MISSING,
     init: bool = True,
 ) -> T:
     pass
@@ -47,11 +47,11 @@ def field(
 
 
 def field(  # noqa: PLR0913
-    default: T | _MISSING_TYPE = _MISSING_TYPE.MISSING,
+    default: T | _MISSINGTYPE = _MISSINGTYPE.MISSING,
     description: str | None = None,
     command_line: tuple[str] | None = None,
     universal_config: UniversalKey | None = None,
-    default_factory: Callable[[], T] | _MISSING_TYPE = _MISSING_TYPE.MISSING,
+    default_factory: Callable[[], T] | _MISSINGTYPE = _MISSINGTYPE.MISSING,
     init: bool = True,
 ) -> T:
     """Create a dataclass field with metadata."""
