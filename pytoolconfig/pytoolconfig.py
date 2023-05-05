@@ -4,15 +4,19 @@ from __future__ import annotations
 from argparse import SUPPRESS, ArgumentParser
 from dataclasses import is_dataclass
 from pathlib import Path
-from typing import Any, Generic, Sequence, TypeVar
+from typing import TYPE_CHECKING, Any, Generic, Sequence, TypeVar
 
+if TYPE_CHECKING:
+    from _typeshed import Dataclass
+
+    DataclassT = TypeVar("DataclassT", bound=Dataclass)
+else:
+    DataclassT = TypeVar("DataclassT")
 from pytoolconfig.fields import _gather_config_fields
 from pytoolconfig.sources import PyProject, PyTool, Source
-from pytoolconfig.types import ConfigField, Dataclass
+from pytoolconfig.types import ConfigField
 from pytoolconfig.universal_config import UniversalConfig
 from pytoolconfig.utils import _dict_to_dataclass, _recursive_merge
-
-DataclassT = TypeVar("DataclassT", bound=Dataclass)
 
 
 class PyToolConfig(Generic[DataclassT]):

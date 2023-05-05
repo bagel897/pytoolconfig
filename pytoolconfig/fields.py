@@ -41,14 +41,14 @@ def field(  # noqa: PLR0913
         ),
     }
 
-    if default_factory is not MISSING and default_factory is not None:
+    if default_factory is not Literal[MISSING] and default_factory is not None:
         metadata[_METADATA_KEY]._default = default_factory()
         return dataclasses.field(
             default_factory=default_factory,
             metadata=metadata,
             init=init,
         )
-    assert default is not MISSING
+    assert default is not Literal[MISSING]
     return dataclasses.field(default=default, metadata=metadata, init=init)
 
 
