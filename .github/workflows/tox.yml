@@ -27,8 +27,8 @@ jobs:
         run: |
           pdm install -G:all
       - name: Setup test suite
-        run: pdm run tox4 r -vv --notest
+        run: pdm run tox r -vv --notest
       - name: Run test suite
-        run: pdm run tox4 r --skip-pkg-install
+        run: pdm run tox r --skip-pkg-install
         env:
           PYTEST_ADDOPTS: "-vv --durations=10"
