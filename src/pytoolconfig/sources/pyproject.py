@@ -64,7 +64,7 @@ class PyProject(Source):
         self.toml_dict = tomllib.loads(self.file.read_text())
         if self.toml_dict is None:
             return False
-        if "tool" not in self.toml_dict.keys():
+        if "tool" not in self.toml_dict:
             return False
         return self.tool in self.toml_dict["tool"]
 

@@ -42,6 +42,7 @@ dev = [
     "tox-gh>=1.0.0",
     "pytest-emoji>=0.2.0",
     "pytest-md>=0.2.0",
+    "pydantic>=2.3.0",
 ]
 
 [tool.pytoolconfig]

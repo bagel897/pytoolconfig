@@ -1,8 +1,9 @@
+from __future__ import annotations
+
 import os
 import sys
 from argparse import ArgumentParser
 from dataclasses import dataclass, fields
-from typing import Tuple
 
 import pytest
 from pytoolconfig import PyToolConfig, UniversalKey, field
@@ -30,7 +31,7 @@ class NestedModel:
     subtool: SubTool = field(default_factory=lambda: SubTool())
     foo_other: str = field(description="w", default="no", command_line=("--foo", "-f"))
 
-    target: Tuple[int, int] = field(
+    target: tuple[int, int] = field(
         description="Minimum python version",
         default=(3, 1),
         universal_config=UniversalKey.min_py_version,
