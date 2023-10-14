@@ -68,6 +68,7 @@ ignore = [
   "TCH002",
   "TCH003",
   "SLF001",
+  "FA100",
 ]
 # Always generate Python 3.7-compatible code.
 target-version = "py37"
