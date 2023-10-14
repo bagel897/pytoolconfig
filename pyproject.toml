@@ -95,7 +95,7 @@ python =
     3.12: py312
 [testenv]
 extras = doc, global
-groups = dev 
+groups = dev
 commands = pytest
 '''
 [tool.pylint.format]
