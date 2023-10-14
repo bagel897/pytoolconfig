@@ -23,7 +23,7 @@ class PyToolConfig(Generic[DataclassT]):
 
     """Python Tool Configuration Aggregator."""
 
-    sources: list[Source] = []
+    sources: list[Source]
     tool: str
     working_directory: Path
     model: type[DataclassT]

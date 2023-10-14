@@ -10,14 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up PDM
-        uses: pdm-project/setup-pdm@v2
-        with:
-          python-version: 3.11
-          enable-pep582: true
-      - name:
-          Work around requests bug https://github.com/psf/requests/issues/6437
-        run: pip install --force requests==2.29.0
-      - name: Install dependencies
-        run: |
-          pdm install -v
+        uses: pdm-project/setup-pdm@v3
+      - name: Install deps
+        run: pdm install -G :all
       - uses: pre-commit/action@v3.0.0

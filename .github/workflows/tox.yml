@@ -10,25 +10,15 @@ jobs:
     strategy:
       matrix:
         platform: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
 
     steps:
       - uses: actions/checkout@v3
-      - uses: pdm-project/setup-pdm@v3
       - name: Set up PDM
-        uses: pdm-project/setup-pdm@v2
+        uses: pdm-project/setup-pdm@v3
         with:
           python-version: ${{ matrix.python-version }}
-          enable-pep582: true
-      - name:
-          Work around requests bug https://github.com/psf/requests/issues/6437
-        run: pip install --force requests==2.29.0
-      - name: Install dependencies
-        run: |
-          pdm install -G:all
-      - name: Setup test suite
-        run: pdm run tox r -vv --notest
-      - name: Run test suite
-        run: pdm run tox r --skip-pkg-install
-        env:
-          PYTEST_ADDOPTS: "-vv --durations=10"
+      - name: Install deps
+        run: pdm install -G :all
+      - name: Run tests
+        run: pdm run pytest
