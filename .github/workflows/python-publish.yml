@@ -12,11 +12,11 @@ on:
   release:
     types: [published]
 
-permissions:
-  contents: read
-
 jobs:
   publish:
+    permissions:
+      # IMPORTANT: this permission is mandatory for trusted publishing
+      id-token: write
     runs-on: ubuntu-latest
     environment: publish
     steps:
