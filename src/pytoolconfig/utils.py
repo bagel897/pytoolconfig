@@ -1,6 +1,7 @@
 """Utility functions and classes."""
 from __future__ import annotations
-
+from enum import Enum, EnumType
+import warnings
 import sys
 from dataclasses import Field, fields, is_dataclass, replace
 from pathlib import Path
@@ -90,6 +91,12 @@ def _fields(dataclass: DataclassInstance | type[DataclassInstance]) -> dict[str,
     return {field.name: field for field in fields(dataclass) if field.init}
 
 
+def _format_enum(option) -> str:
+    if isinstance(option, str):
+        return f'"{option}"'
+    return str(option)
+
+
 def _dict_to_dataclass(
     dataclass: type[T],
     dictionary: Mapping[str, Key],
@@ -103,7 +110,18 @@ def _dict_to_dataclass(
             assert isinstance(value, Mapping)
             filtered_arg_dict[key_name] = _dict_to_dataclass(sub_table, value)
         elif key_name in dataclass_fields:
-            filtered_arg_dict[key_name] = value
+            keytype = dataclass_fields[key_name].type
+            if isinstance(keytype, EnumType):
+                try:
+                    filtered_arg_dict[key_name] = keytype(value)
+                except ValueError:
+                    valid = set(keytype._value2member_map_.keys())
+                    warnings.warn(
+                        f"{value} is not a valid option for {key_name}, skipping."
+                        f"Valid options are: {','.join(_format_enum(v) for v in valid)}."
+                    )
+            else:
+                filtered_arg_dict[key_name] = value
     return dataclass(**filtered_arg_dict)
 
 
