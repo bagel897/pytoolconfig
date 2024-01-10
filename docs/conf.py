@@ -8,14 +8,13 @@ https://www.sphinx-doc.org/en/master/usage/configuration.html
 
 from __future__ import annotations
 
-# -- Project information -----------------------------------------------------
-from pytoolconfig._version import version
-
 # -- Path setup --------------------------------------------------------------
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
+# -- Project information -----------------------------------------------------
+from pytoolconfig._version import version
 
 project = "pytoolconfig"
 copyright = "2023, bagel897"  # noqa: A001
@@ -31,8 +30,10 @@ pygments_style = "sphinx"
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    "sphinx.ext.napoleon",
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
+    "sphinx.ext.intersphinx",
     "sphinx_autodoc_typehints",
     "pytoolconfig.documentation",
     "sphinx_rtd_theme",
@@ -57,4 +58,6 @@ html_theme = "sphinx_rtd_theme"
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ["_static"]
+html_static_path = []
+autodoc_mock_imports = ["_typeshed"]
+intersphinx_mapping = {"python": ("https://docs.python.org/3", None)}
