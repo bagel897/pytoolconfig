@@ -4,5 +4,8 @@
   "ignorePaths": ["**/node_modules/**", "**/bower_components/**", "tests/**"],
   "pre-commit": {
     "enabled": true
+  },
+  "constraints": {
+    "python": "3.8"
   }
 }
