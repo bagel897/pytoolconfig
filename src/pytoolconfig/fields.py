@@ -23,7 +23,7 @@ MISSING = _MISSINGTYPE.MISSING
 
 
 @overload
-def field(  # noqa: PLR0913
+def field(
     default: T,
     description: str | None = None,
     command_line: tuple[str] | None = None,
