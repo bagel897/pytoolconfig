@@ -3,7 +3,6 @@
 
 from __future__ import annotations
 
-import sys
 from dataclasses import is_dataclass
 from typing import TYPE_CHECKING, Any, Generator
 
@@ -15,17 +14,14 @@ if TYPE_CHECKING:
     from .pytoolconfig import PyToolConfig
     from .types import ConfigField
 
+from typing import get_origin
+
 from sphinx.ext.autodoc import ClassDocumenter
 from tabulate import tabulate
 
 from .fields import _gather_config_fields
 from .sources import Source
 from .universal_config import UniversalConfig
-
-if sys.version_info < (3, 8, 0):
-    from typing_extensions import get_origin
-else:
-    from typing import get_origin
 
 
 def _type_to_str(type_to_print: type[Any]) -> str | None:
