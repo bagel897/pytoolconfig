@@ -4,7 +4,7 @@ from __future__ import annotations
 import sys
 import warnings
 from dataclasses import Field, fields, is_dataclass, replace
-from enum import EnumType
+from enum import EnumMeta
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Generator, Mapping, TypeVar
 
@@ -112,7 +112,7 @@ def _dict_to_dataclass(
             filtered_arg_dict[key_name] = _dict_to_dataclass(sub_table, value)
         elif key_name in dataclass_fields:
             keytype = dataclass_fields[key_name].type
-            if isinstance(keytype, EnumType):
+            if isinstance(keytype, EnumMeta):
                 try:
                     filtered_arg_dict[key_name] = keytype(value)
                 except ValueError:
