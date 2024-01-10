@@ -1,6 +1,7 @@
 from dataclasses import dataclass
-from pytoolconfig.pytoolconfig import PyToolConfig
 from enum import Enum
+
+from pytoolconfig.pytoolconfig import PyToolConfig
 
 
 class Demo(Enum):
