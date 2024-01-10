@@ -4,28 +4,28 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "tomli"
-version = "2.0.1"  # DO NOT EDIT THIS LINE MANUALLY. LET bump2version UTILITY DO IT
+version = "2.0.1" # DO NOT EDIT THIS LINE MANUALLY. LET bump2version UTILITY DO IT
 description = "A lil' TOML parser"
 authors = [
-    { name = "Taneli Hukkinen", email = "hukkin@users.noreply.github.com" },
+  { name = "Taneli Hukkinen", email = "hukkin@users.noreply.github.com" },
 ]
 license = { file = "LICENSE" }
 requires-python = ">=3.7"
 readme = "README.md"
 classifiers = [
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: MacOS",
-    "Operating System :: Microsoft :: Windows",
-    "Operating System :: POSIX :: Linux",
-    "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.7",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: Implementation :: CPython",
-    "Programming Language :: Python :: Implementation :: PyPy",
-    "Topic :: Software Development :: Libraries :: Python Modules",
-    "Typing :: Typed",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: MacOS",
+  "Operating System :: Microsoft :: Windows",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Typing :: Typed",
 ]
 keywords = ["toml"]
 
@@ -34,6 +34,10 @@ keywords = ["toml"]
 "Changelog" = "https://github.com/hukkin/tomli/blob/master/CHANGELOG.md"
 [tool.pytoolconfig]
 formatter = "black"
+[tool.pytoolconfig2]
+option2 = true
+option1 = false
+option3 = "alternate"
 [tool.fall_through]
 foo_other = "ba"
 [tool.isort]
@@ -50,16 +54,9 @@ profile = "black"
 
 
 [project.optional-dependencies]
-validation = [
-    "pydantic>=1.7.4",
-]
-global = [
-    "appdirs>=1.4.4",
-]
-doc = [
-    "tabulate>=0.8.9",
-    "sphinx>=4.5.0",
-]
+validation = ["pydantic>=1.7.4"]
+global = ["appdirs>=1.4.4"]
+doc = ["tabulate>=0.8.9", "sphinx>=4.5.0"]
 [tool.tox]
 legacy_tox_ini = '''
 [tox]
@@ -135,12 +132,12 @@ source = ['tomli']
 [tool.coverage.report]
 # Regexes for lines to exclude from consideration
 exclude_lines = [
-    # Re-enable the standard pragma (with extra strictness)
-    '# pragma: no cover\b',
-    # Code for static type checkers
-    'if TYPE_CHECKING:',
-    # Scripts
-    'if __name__ == .__main__.:',
+  # Re-enable the standard pragma (with extra strictness)
+  '# pragma: no cover\b',
+  # Code for static type checkers
+  'if TYPE_CHECKING:',
+  # Scripts
+  'if __name__ == .__main__.:',
 ]
 
 
