@@ -13,8 +13,14 @@ from __future__ import annotations
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
+#
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path("../src").resolve()))
 # -- Project information -----------------------------------------------------
-from pytoolconfig._version import version
+
+from pytoolconfig._version import version  # noqa: E402
 
 project = "pytoolconfig"
 copyright = "2023, bagel897"  # noqa: A001
