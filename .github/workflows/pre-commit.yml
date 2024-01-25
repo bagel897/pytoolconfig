@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Set up PDM
-        uses: pdm-project/setup-pdm@v3
+        uses: pdm-project/setup-pdm@v4
       - name: Install deps
         run: pdm install -G :all
       - uses: pre-commit/action@v3.0.0
