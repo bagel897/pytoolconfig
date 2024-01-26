@@ -1,4 +1,5 @@
 """Universal Configuration base model."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -10,7 +11,6 @@ from pytoolconfig import field
 
 @dataclass
 class UniversalConfig:
-
     """Universal Configuration base model."""
 
     formatter: str | None = field(None, "Formatter used to format this File")

@@ -1,4 +1,5 @@
 """Source for INI configuration files via configparser."""
+
 from __future__ import annotations
 
 from configparser import ConfigParser, SectionProxy
@@ -26,7 +27,6 @@ def _add_split_to_dict(
 
 
 class IniConfig(Source):
-
     """Source for INI configuration files via configparser."""
 
     _config: ConfigParser

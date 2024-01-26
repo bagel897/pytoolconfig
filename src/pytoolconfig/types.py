@@ -15,7 +15,6 @@ Key = Union[Dict[str, _BaseTypeWithList], _BaseTypeWithList]
 # We have a circular dependency preventing us from generating universal keys from
 # universal_config. Universal Config requires field, which requires Universal Key.
 class UniversalKey(Enum):
-
     """See universal config documentation."""
 
     formatter = auto()
@@ -29,7 +28,6 @@ class UniversalKey(Enum):
 
 @dataclass
 class ConfigField:
-
     """Dataclass store and validate fields in a configuration model."""
 
     description: str | None = None

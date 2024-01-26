@@ -1,4 +1,5 @@
 """Tool to configure Python tools."""
+
 from __future__ import annotations
 
 from argparse import SUPPRESS, ArgumentParser
@@ -20,7 +21,6 @@ from pytoolconfig.utils import _dict_to_dataclass, _recursive_merge
 
 
 class PyToolConfig(Generic[DataclassT]):
-
     """Python Tool Configuration Aggregator."""
 
     sources: list[Source]

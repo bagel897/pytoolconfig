@@ -1,4 +1,5 @@
 """Source for pyproject.toml files or more generally toml files."""
+
 from __future__ import annotations
 
 import sys
@@ -22,7 +23,6 @@ else:
 
 
 class PyProject(Source):
-
     """Source for pyproject.toml and pytool.toml files.
 
     Can be extended to other toml files.
