@@ -1,4 +1,5 @@
 """Source for pytool.toml files."""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -7,7 +8,6 @@ from .pyproject import PyProject
 
 
 class PyTool(PyProject):
-
     """Source for pytool.toml files.
 
     Uses platformdirs to find configuration directories.

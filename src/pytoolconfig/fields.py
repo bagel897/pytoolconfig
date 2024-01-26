@@ -1,4 +1,5 @@
 """Abstractions over dataclass fields."""
+
 from __future__ import annotations
 
 import dataclasses
@@ -99,13 +100,11 @@ def _gather_config_fields(
                     _default=pydantic_field.default,
                 )
                 if "universal_config" in pydantic_field.field_info.extra:
-                    result[
-                        pydantic_field.name
-                    ].universal_config = pydantic_field.field_info.extra[
-                        "universal_config"
-                    ]
+                    result[pydantic_field.name].universal_config = (
+                        pydantic_field.field_info.extra["universal_config"]
+                    )
                 if "command_line" in pydantic_field.field_info.extra:
-                    result[
-                        pydantic_field.name
-                    ].command_line = pydantic_field.field_info.extra["command_line"]
+                    result[pydantic_field.name].command_line = (
+                        pydantic_field.field_info.extra["command_line"]
+                    )
     return result

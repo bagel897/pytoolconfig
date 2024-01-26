@@ -1,6 +1,5 @@
 """Program to generate documentation for a given PyToolConfig object."""
 
-
 from __future__ import annotations
 
 from dataclasses import is_dataclass
@@ -79,7 +78,6 @@ def _generate_table(
 
 
 class PyToolConfigAutoDocumenter(ClassDocumenter):
-
     """Sphinx autodocumenter for pytoolconfig models."""
 
     objtype = "pytoolconfigtable"
@@ -113,7 +111,6 @@ class PyToolConfigAutoDocumenter(ClassDocumenter):
 
 
 class PyToolConfigSourceDocumenter(ClassDocumenter):
-
     """Expiremental documenter for docmenting a source for pytoolconfig."""
 
     objtype = "pytoolconfigsources"

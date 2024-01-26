@@ -1,4 +1,5 @@
 """Base class for defining custom sources."""
+
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
@@ -7,7 +8,6 @@ from pytoolconfig.types import Key
 
 
 class Source(ABC):
-
     """Base class for defining custom sources."""
 
     name: str  # The name of the tool for documentation
