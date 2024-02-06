@@ -20,7 +20,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path("../src").resolve()))
 # -- Project information -----------------------------------------------------
 
-from pytoolconfig._version import version  # noqa: E402
+from pytoolconfig._version import version
 
 project = "pytoolconfig"
 copyright = "2023, bagel897"  # noqa: A001
