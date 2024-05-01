@@ -28,7 +28,7 @@ gendocs = [
 version = { source = "scm" }
 
 [tool.pdm.dev-dependencies]
-dev = [
+test = [
   "pytest>=7.4.4",
   "tox>=4.11.4",
   "tox-pdm>=0.7.2",
@@ -36,7 +36,7 @@ dev = [
   "pytest-emoji>=0.2.0",
   "pytest-md>=0.2.0",
 ]
-type = [
+typing = [
   "mypy>=1.8.0",
   "types-tabulate>=0.9.0.20240106",
   "types-docutils>=0.20.0.20240106",
@@ -92,7 +92,7 @@ python =
     3.11: py311
     3.12: py312
 [testenv]
-groups = dev, doc, global
+groups = test, doc, global
 commands = pytest
 
 [testenv:type]
@@ -101,7 +101,7 @@ passenv =
     TERM
     MYPY_FORCE_COLOR
     MYPY_FORCE_TERMINAL_WIDTH
-groups = dev, doc, global, type
+groups = doc, global, typing
 commands =
     python -m mypy .
 '''
@@ -114,5 +114,5 @@ exclude = ['docs']
 # strict = true
 
 [build-system]
-requires = ['pdm-backend>=1.0.5']
+requires = ['pdm-backend>=2.3.0']
 build-backend = 'pdm.backend'
