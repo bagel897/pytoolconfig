@@ -2,11 +2,19 @@
 
 from __future__ import annotations
 
+import sys
 from dataclasses import dataclass
 from enum import Enum, auto
-from typing import Any, TypeAlias
+from typing import TYPE_CHECKING, Any, Dict
 
-JSON: TypeAlias = dict[str, "JSON"] | list["JSON"] | str | int | float | bool | None
+if sys.version_info >= (3, 10):
+    from typing import TypeAlias
+else:
+    from typing_extensions import TypeAlias
+if TYPE_CHECKING:
+    JSON: TypeAlias = dict[str, "JSON"] | list["JSON"] | str | int | float | bool | None
+else:
+    JSON = Dict[str, Any]
 JSON_DICT = dict[str, JSON]
 
 

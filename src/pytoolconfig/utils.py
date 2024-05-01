@@ -7,11 +7,15 @@ import warnings
 from dataclasses import Field, fields, is_dataclass, replace
 from enum import EnumMeta
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Dict, Generator, Mapping, TypeGuard, TypeVar
+from typing import TYPE_CHECKING, Any, Dict, Generator, Mapping, TypeVar
 
 from packaging.requirements import Requirement
 from packaging.specifiers import SpecifierSet
 
+if sys.version_info >= (3, 10):
+    from typing import TypeGuard
+else:
+    from typing_extensions import TypeGuard
 from .types import JSON, JSON_DICT, ValidationError
 
 if TYPE_CHECKING:
