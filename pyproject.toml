@@ -99,6 +99,7 @@ max-line-length = "88"
 
 [tool.mypy]
 plugins = 'pydantic.mypy'
+exclude = ['docs']
 # strict = true
 
 [build-system]

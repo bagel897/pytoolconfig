@@ -32,6 +32,6 @@ class ConfigField:
 
     description: str | None = None
     universal_config: UniversalKey | None = None
-    command_line: tuple[str] | None = None
+    command_line: tuple[str, ...] | None = None
     _type: Any = None
     _default: Any = None

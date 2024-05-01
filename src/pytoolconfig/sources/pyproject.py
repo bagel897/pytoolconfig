@@ -16,10 +16,10 @@ from pytoolconfig.utils import (
     parse_dependencies,
 )
 
-if sys.version_info < (3, 11, 0):
-    import tomli as tomllib
-else:
+if sys.version_info >= (3, 11):
     import tomllib
+else:
+    import tomli as tomllib
 
 
 class PyProject(Source):
