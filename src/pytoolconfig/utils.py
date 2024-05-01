@@ -7,12 +7,12 @@ import warnings
 from dataclasses import Field, fields, is_dataclass, replace
 from enum import EnumMeta
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Generator, Mapping, TypeVar
+from typing import TYPE_CHECKING, Any, Dict, Generator, Mapping, TypeGuard, TypeVar
 
 from packaging.requirements import Requirement
 from packaging.specifiers import SpecifierSet
 
-from .types import Key
+from .types import JSON, JSON_DICT, ValidationError
 
 if TYPE_CHECKING:
     from _typeshed import DataclassInstance
@@ -81,7 +81,9 @@ def parse_dependencies(dependencies: list[str]) -> Generator[Requirement, None, 
 T = TypeVar("T", bound="DataclassInstance")
 
 
-def _subtables(dataclass_fields: dict[str, Field]) -> dict[str, type[Any]]:
+def _subtables(
+    dataclass_fields: dict[str, Field],
+) -> dict[str, type[DataclassInstance]]:
     return {
         name: field.type
         for name, field in dataclass_fields.items()
@@ -99,18 +101,23 @@ def _format_enum(option: Any) -> str:
     return str(option)
 
 
-def _dict_to_dataclass(
-    dataclass: type[T],
-    dictionary: Mapping[str, Key],
-) -> T:
+def assert_mapping(obj: JSON) -> TypeGuard[JSON_DICT]:
+    """Assert JSON is a Dictionary. Always returns True."""
+    if not isinstance(obj, Dict):
+        message = f"Expected a mapping, got {type(obj)}"
+        raise ValidationError(message)
+    return True
+
+
+def _dict_to_dataclass(dataclass: type[T], dictionary: JSON_DICT) -> T:
     filtered_arg_dict: dict[str, Any] = {}
     dataclass_fields = _fields(dataclass)
     sub_tables = _subtables(dataclass_fields)
     for key_name, value in dictionary.items():
         if key_name in sub_tables:
             sub_table = sub_tables[key_name]
-            assert isinstance(value, Mapping)
-            filtered_arg_dict[key_name] = _dict_to_dataclass(sub_table, value)
+            if assert_mapping(value):
+                filtered_arg_dict[key_name] = _dict_to_dataclass(sub_table, value)
         elif key_name in dataclass_fields:
             keytype = dataclass_fields[key_name].type
             if isinstance(keytype, EnumMeta):
@@ -128,7 +135,7 @@ def _dict_to_dataclass(
     return dataclass(**filtered_arg_dict)
 
 
-def _recursive_merge(dataclass: T, dictionary: Mapping[str, Key]) -> T:
+def _recursive_merge(dataclass: T, dictionary: JSON_DICT) -> T:
     """Overwrite every value specified in dictionary on the dataclass."""
     filtered_arg_dict: dict[str, Any] = {}
     dataclass_fields = _fields(dataclass)

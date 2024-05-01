@@ -3,13 +3,11 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import date, datetime, time
 from enum import Enum, auto
-from typing import Any, Dict, List, Union
+from typing import Any, TypeAlias
 
-_BaseType = Union[str, int, float, datetime, date, time, bool]
-_BaseTypeWithList = Union[_BaseType, List[_BaseType]]
-Key = Union[Dict[str, _BaseTypeWithList], _BaseTypeWithList]
+JSON: TypeAlias = dict[str, "JSON"] | list["JSON"] | str | int | float | bool | None
+JSON_DICT = dict[str, JSON]
 
 
 # We have a circular dependency preventing us from generating universal keys from
@@ -35,3 +33,20 @@ class ConfigField:
     command_line: tuple[str, ...] | None = None
     _type: Any = None
     _default: Any = None
+
+
+class ValidationError(BaseException):
+    """Raised when the configuration is invalid."""
+
+    def __init__(self, message: str) -> None:
+        """Raise a validation error."""
+        super().__init__(message)
+
+
+__alll__ = [
+    "JSON",
+    "JSON_DICT",
+    "UniversalKey",
+    "ConfigField",
+    "ValidationError",
+]

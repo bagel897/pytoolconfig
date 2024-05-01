@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 
 from pytoolconfig.sources.source import Source
-from pytoolconfig.types import Key
+from pytoolconfig.types import JSON_DICT
 from pytoolconfig.universal_config import UniversalConfig
 from pytoolconfig.utils import (
     _dict_to_dataclass,
@@ -68,7 +68,7 @@ class PyProject(Source):
             return False
         return self.tool in self.toml_dict["tool"]
 
-    def parse(self) -> dict[str, Key] | None:
+    def parse(self) -> JSON_DICT | None:
         """Parse the TOML file."""
         if not self._read():
             return None

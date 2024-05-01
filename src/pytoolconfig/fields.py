@@ -5,7 +5,7 @@ from __future__ import annotations
 import dataclasses
 import enum
 from dataclasses import fields
-from typing import TYPE_CHECKING, Callable, TypeVar, overload
+from typing import TYPE_CHECKING, Any, Callable, TypeVar, overload
 
 from .types import ConfigField, UniversalKey
 
@@ -21,6 +21,18 @@ class _MISSINGTYPE(enum.Enum):
 
 
 MISSING = _MISSINGTYPE.MISSING
+
+
+@overload
+def field(
+    default: None,
+    description: str | None = None,
+    command_line: tuple[str, ...] | None = None,
+    universal_config: UniversalKey | None = None,
+    default_factory: _MISSINGTYPE = _MISSINGTYPE.MISSING,
+    init: bool = True,
+) -> Any:
+    pass
 
 
 @overload

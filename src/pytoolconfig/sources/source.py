@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 
-from pytoolconfig.types import Key
+from pytoolconfig.types import JSON
 
 
 class Source(ABC):
@@ -23,7 +23,7 @@ class Source(ABC):
         """
 
     @abstractmethod
-    def parse(self) -> dict[str, Key] | None:
+    def parse(self) -> dict[str, JSON] | None:
         """Parse the file for each property as a nested dict.
 
         Return None if tool is not configured in file. Otherwise,
