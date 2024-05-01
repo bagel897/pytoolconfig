@@ -15,7 +15,7 @@ if TYPE_CHECKING:
     JSON: TypeAlias = dict[str, "JSON"] | list["JSON"] | str | int | float | bool | None
 else:
     JSON = Dict[str, Any]
-JSON_DICT = dict[str, JSON]
+JSON_DICT = Dict[str, JSON]
 
 
 # We have a circular dependency preventing us from generating universal keys from
