@@ -2,14 +2,20 @@
 
 from __future__ import annotations
 
+import sys
 from dataclasses import dataclass
-from datetime import date, datetime, time
 from enum import Enum, auto
-from typing import Any, Dict, List, Union
+from typing import TYPE_CHECKING, Any, Dict
 
-_BaseType = Union[str, int, float, datetime, date, time, bool]
-_BaseTypeWithList = Union[_BaseType, List[_BaseType]]
-Key = Union[Dict[str, _BaseTypeWithList], _BaseTypeWithList]
+if sys.version_info >= (3, 10):
+    from typing import TypeAlias
+else:
+    from typing_extensions import TypeAlias
+if TYPE_CHECKING:
+    JSON: TypeAlias = dict[str, "JSON"] | list["JSON"] | str | int | float | bool | None
+else:
+    JSON = Dict[str, Any]
+JSON_DICT = Dict[str, JSON]
 
 
 # We have a circular dependency preventing us from generating universal keys from
@@ -32,6 +38,23 @@ class ConfigField:
 
     description: str | None = None
     universal_config: UniversalKey | None = None
-    command_line: tuple[str] | None = None
+    command_line: tuple[str, ...] | None = None
     _type: Any = None
     _default: Any = None
+
+
+class ValidationError(BaseException):
+    """Raised when the configuration is invalid."""
+
+    def __init__(self, message: str) -> None:
+        """Raise a validation error."""
+        super().__init__(message)
+
+
+__alll__ = [
+    "JSON",
+    "JSON_DICT",
+    "UniversalKey",
+    "ConfigField",
+    "ValidationError",
+]

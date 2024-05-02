@@ -57,8 +57,10 @@ class PyToolConfig(Generic[DataclassT]):
         :param args: Passed to constructor for PyProject
         :param kwargs: Passed to constructor for PyProject
         """
-        assert is_dataclass(model)
         self.model = model
+        # This coereces the type checker to recognize the model as a DataclassInstance.
+        # Must be done before assigning to type[DataclassT]
+        assert is_dataclass(model)
         self._config_fields = _gather_config_fields(model)
         self.tool = tool
         self.sources = [PyProject(working_directory, tool, *args, **kwargs)]

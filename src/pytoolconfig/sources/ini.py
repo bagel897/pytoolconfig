@@ -4,15 +4,14 @@ from __future__ import annotations
 
 from configparser import ConfigParser, SectionProxy
 from pathlib import Path
-from typing import Dict
 
 from pytoolconfig.sources.source import Source
-from pytoolconfig.types import Key
-from pytoolconfig.utils import find_config_file
+from pytoolconfig.types import JSON_DICT
+from pytoolconfig.utils import assert_mapping, find_config_file
 
 
 def _add_split_to_dict(
-    dest: dict[str, Key],
+    dest: JSON_DICT,
     table_to_add: list[str],
     table: SectionProxy,
 ) -> None:
@@ -22,8 +21,9 @@ def _add_split_to_dict(
     else:
         first = table_to_add[0]
         dest.setdefault(first, {})
-        assert isinstance(dest[first], Dict)
-        _add_split_to_dict(dest[first], table_to_add[1:], table)
+        to_add = dest[first]
+        if assert_mapping(to_add):
+            _add_split_to_dict(to_add, table_to_add[1:], table)
 
 
 class IniConfig(Source):
@@ -65,11 +65,11 @@ class IniConfig(Source):
                 return True
         return False
 
-    def parse(self) -> dict[str, Key] | None:
+    def parse(self) -> JSON_DICT | None:
         """Parse the INI file."""
         if not self._read():
             return None
-        output: dict[str, Key] = {}
+        output: JSON_DICT = {}
         for table in self._config:
             split = table.split(".")
             if split[0] == self.base_table:
