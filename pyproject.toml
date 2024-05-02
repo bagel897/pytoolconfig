@@ -66,10 +66,16 @@ lint.ignore = [
   "TCH003",
   "SLF001",
   "FA100",
+  "COM812",
+  "ISC001",
 ]
 # Always generate Python 3.8-compatible code.
 target-version = "py38"
 force-exclude = true
+
+[tool.ruff.format]
+docstring-code-format = true
+
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["D", "ANN201", "ANN001"]
 "docs/conf.py" = ["INP001"]
